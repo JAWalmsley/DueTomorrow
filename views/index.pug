@@ -1,5 +1,27 @@
 html
     head
         title= title
+        link(rel='stylesheet', href='css/materialize.css', type='text/css')
+        link(href='https://fonts.googleapis.com/icon?family=Material+Icons', rel='stylesheet')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
     body
-        h1= message
+        nav
+            div.nav-wrapper
+                a(href="#", class="brand-logo center") BetterThanExcel
+                ul.right.hide-on-med-and-down
+                    li
+                        a
+                            i.material-icons menu
+        div.container
+            div.col.s12
+                table.highlight
+                    thead
+                        tr
+                            th Item
+                            th Course
+                            th Due Date
+                            th(style="width: 16px") Completed
+
+        script(type='text/javascript', src='js/materialize.min.js')
+
+
