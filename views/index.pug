@@ -21,16 +21,31 @@ html
                             th Course
                             th Due Date
                             th(style="width: 16px") Completed
-                        for assignment in assignments
-                            tr
-                            for item in assignment
+                    for assignment in assignments
+                        tr(class=assignment[3]?'grey':'white')
+                            for item in assignment.slice(0, 3)
                                 td #{item}
                             td.center
                                 label
-                                    input(type='checkbox', id=assignment[0], onclick='alert("aa")')
+                                    input(type='checkbox', id=assignment[0], checked=assignment[3], onclick=`sendCompleted('${assignment[0]}', this)`)
                                     span
 
 
         script(type='text/javascript', src='js/materialize.min.js')
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js")
+        script(type='text/javascript').
+            function sendCompleted(item, done) {
+                console.log()
+                done = $(done).is(':checked')
+                let data = {item, done}
+                fetch("/complete", {
+                    method: "POST",
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                }).then(res => {
+                    // console.log("Request complete! response:", res);
+                });
+                $('#'+item).closest('tr')[0].classList.replace(done?'white':'grey', done?'grey':'white');
+            }
 
 
