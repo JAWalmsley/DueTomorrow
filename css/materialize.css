@@ -2657,7 +2657,7 @@ a {
 blockquote {
   margin: 20px 0;
   padding-left: 1.5rem;
-  border-left: 5px solid #64B5F6;
+  border-left: 5px solid #3f51b5;
 }
 
 i {
@@ -2708,7 +2708,7 @@ video.responsive-video {
   color: #fff;
 }
 .pagination li.active {
-  background-color: #64B5F6;
+  background-color: #3f51b5;
 }
 .pagination li.disabled a {
   cursor: default;
@@ -2894,7 +2894,7 @@ ul.staggered-list li {
 .page-footer {
   padding-top: 20px;
   color: #fff;
-  background-color: #64B5F6;
+  background-color: #3f51b5;
 }
 .page-footer .footer-copyright {
   overflow: hidden;
@@ -4075,7 +4075,7 @@ table span.badge {
 
 nav {
   color: #fff;
-  background-color: #64B5F6;
+  background-color: #3f51b5;
   width: 100%;
   height: 56px;
   line-height: 56px;
@@ -4724,7 +4724,7 @@ small {
   text-transform: uppercase;
 }
 .tabs .tab a {
-  color: rgba(100, 181, 246, 0.7);
+  color: rgba(63, 81, 181, 0.7);
   display: block;
   width: 100%;
   height: 100%;
@@ -4735,22 +4735,22 @@ small {
   transition: color 0.28s ease, background-color 0.28s ease;
 }
 .tabs .tab a:focus, .tabs .tab a:focus.active {
-  background-color: rgba(172, 216, 250, 0.2);
+  background-color: rgba(114, 128, 206, 0.2);
   outline: none;
 }
 .tabs .tab a:hover, .tabs .tab a.active {
   background-color: transparent;
-  color: #64B5F6;
+  color: #3f51b5;
 }
 .tabs .tab.disabled a, .tabs .tab.disabled a:hover {
-  color: rgba(100, 181, 246, 0.4);
+  color: rgba(63, 81, 181, 0.4);
   cursor: default;
 }
 .tabs .indicator {
   position: absolute;
   bottom: 0;
   height: 2px;
-  background-color: #acd8fa;
+  background-color: #7280ce;
   will-change: left, right;
 }
 
@@ -6796,12 +6796,12 @@ input[type=range]::-ms-thumb {
 .table-of-contents a:hover {
   color: #a8a8a8;
   padding-left: 15px;
-  border-left: 1px solid #64B5F6;
+  border-left: 1px solid #3f51b5;
 }
 .table-of-contents a.active {
   font-weight: 500;
   padding-left: 14px;
-  border-left: 2px solid #64B5F6;
+  border-left: 2px solid #3f51b5;
 }
 
 .sidenav {
@@ -6966,7 +6966,7 @@ input[type=range]::-ms-thumb {
 }
 .sidenav .collapsible-body > ul:not(.collapsible) > li.active,
 .sidenav.sidenav-fixed .collapsible-body > ul:not(.collapsible) > li.active {
-  background-color: #64B5F6;
+  background-color: #3f51b5;
 }
 .sidenav .collapsible-body > ul:not(.collapsible) > li.active a,
 .sidenav.sidenav-fixed .collapsible-body > ul:not(.collapsible) > li.active a {
@@ -7651,7 +7651,7 @@ input[type=range]::-ms-thumb {
   position: absolute;
   font-size: 1rem;
   border-radius: 50%;
-  background-color: #64B5F6;
+  background-color: #3f51b5;
   box-shadow: 0 20px 20px 0 rgba(0, 0, 0, 0.14), 0 10px 50px 0 rgba(0, 0, 0, 0.12), 0 30px 10px -20px rgba(0, 0, 0, 0.2);
   width: 100%;
   height: 100%;
