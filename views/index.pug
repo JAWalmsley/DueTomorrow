@@ -21,6 +21,15 @@ html
                             th Course
                             th Due Date
                             th(style="width: 16px") Completed
+                        for assignment in assignments
+                            tr
+                            for item in assignment
+                                td #{item}
+                            td.center
+                                label
+                                    input(type='checkbox', id=assignment[0], onclick='alert("aa")')
+                                    span
+
 
         script(type='text/javascript', src='js/materialize.min.js')
 
