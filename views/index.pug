@@ -21,22 +21,93 @@ html
                             th Course
                             th Due Date
                             th(style="width: 16px") Completed
-                    for assignment in assignments
-                        tr(class=assignment[3]?'grey':'white')
-                            for item in assignment.slice(0, 3)
-                                td #{item}
-                            td.center
-                                label
-                                    input(type='checkbox', id=assignment[0], checked=assignment[3], onclick=`sendCompleted('${assignment[0]}', this)`)
-                                    span
+                        each assignment, key in assignments
+                            - var curr_item = assignments[key];
+                            tr(class=curr_item[3] ? 'grey' : 'white')
+                                td(style="display:none;") #{key}
+                                for i in curr_item.slice(0, 3)
+                                    td #{i}
+                                td.center
+                                    label
+                                        input(type='checkbox', id=curr_item[0], checked=curr_item[3], onclick=`sendCompleted(this)`)
+                                        span
+            div.card
+                div.card-content
+                    span.card-title Add New Item
+                    div.row
+                        form.col.s12(id="newitemform")
+                            div.input-field.col.s4
+                                input(placeholder="Title",name="title", type="text", class="validate")
+                                label(for="title") Title
+                            div.input-field.col.s4
+                                input.autocomplete(placeholder="Course", id="course", name="course", type="text", class="validate")
+                                label(for="course") Course
+                            div.input-field.col.s4
+                                input(placeholder="Due Date", id="date", name="due", type="date", class="validate", max="2999-12-31")
+                                label(for="due") Due Date
+                            div.card-action
+                                a(href="#", onclick="newitem()", id="submit").right.orange-text Add
+
+
 
 
         script(type='text/javascript', src='js/materialize.min.js')
         script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js")
         script(type='text/javascript').
-            function sendCompleted(item, done) {
+
+            options = {
+                data: {
+                    "ENGINEER 1P13B": null,
+                    "MATH 1ZC3": null
+                }
+            }
+            document.addEventListener('DOMContentLoaded', function () {
+                var elems = document.querySelectorAll('.autocomplete');
+                var instances = M.Autocomplete.init(elems, options);
+            });
+
+            $('#course').keyup(function(e){
+                console.log(M.Autocomplete.getInstance($('#course')[0]).dropdown())
+            })
+
+            $('#date').keyup(function (e) {
+                if (e.keyCode === 13) {
+                    newitem();
+                }
+            })
+
+            function objectifyForm(formArray) {
+                //serialize data function
+                var returnArray = {};
+                for (var i = 0; i < formArray.length; i++) {
+                    returnArray[formArray[i]['name']] = formArray[i]['value'];
+                }
+                return returnArray;
+            }
+
+            function newitem() {
+                let empties = 0
+                $(':input').each(function () {
+                    if ($(this).val() == "") {
+                        empties++;
+                    }
+                })
+                if (empties > 0) {
+                    return
+                }
+                fetch("/newitem", {
+                    method: "POST",
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(objectifyForm($('#newitemform').serializeArray()))
+                }).then(res => {
+                    // console.log("Request complete! response:", res);
+                });
+            }
+
+            function sendCompleted(self) {
                 console.log()
-                done = $(done).is(':checked')
+                let done = $(self).is(':checked')
+                let item = $(self).closest('tr').find('td:first').text()
                 let data = {item, done}
                 fetch("/complete", {
                     method: "POST",
@@ -45,7 +116,8 @@ html
                 }).then(res => {
                     // console.log("Request complete! response:", res);
                 });
-                $('#'+item).closest('tr')[0].classList.replace(done?'white':'grey', done?'grey':'white');
+                $(self).closest('tr')[0].classList.replace(done ? 'white' : 'grey', done ? 'grey' : 'white');
             }
+
 
 
