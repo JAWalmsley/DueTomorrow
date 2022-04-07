@@ -37,16 +37,14 @@ con.connect(function (err) {
 app.use('/css', express.static(__dirname + '/css'))
 app.use('/js', express.static(__dirname + '/js'))
 app.get('/', (req, res) => {
-    let ass = ['no', 'bad', '2020-09-30', false]
+    let assig = ['no', 'bad', '2020-09-30', false]
     con.query('select * from assignments', function(err, result){
         if (err) {
             res.sendStatus(500);
             throw err;
-            console.log("L")
         } else {
-            ass = result
-            console.log("W")
-            res.render('index', {assignments: ass})
+            assig = result
+            res.render('index', {assignments: assig})
         }
     })
 
