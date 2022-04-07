@@ -67,7 +67,8 @@ html
             });
 
             $('#course').keyup(function(e){
-                console.log(M.Autocomplete.getInstance($('#course')[0]).dropdown())
+                let ac = M.Autocomplete.getInstance($('#course'))
+                console.log(ac.dropdown)
             })
 
             $('#date').keyup(function (e) {
