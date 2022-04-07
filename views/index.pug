@@ -28,7 +28,7 @@ html
                                 td #{curr_item.name}
                                 td #{curr_item.course}
                                 - var dateopts = {weekday: "long", year: "numeric", month: "long", day: "numeric"}
-                                td #{new Date().toLocaleDateString(curr_item.due,dateopts)}
+                                td #{new Date(curr_item.due).toLocaleString("en-US", dateopts)}
                                 td.center
                                     label
                                         input(type='checkbox', id=curr_item.id, checked=curr_item.done == 1, onclick=`sendCompleted(this)`)
