@@ -21,16 +21,29 @@ html
                             th Course
                             th Due Date
                             th(style="width: 16px") Completed
-                        each assignment, key in assignments
-                            - var curr_item = assignments[key];
-                            tr(class=curr_item[3] ? 'grey' : 'white')
-                                td(style="display:none;") #{key}
-                                for i in curr_item.slice(0, 3)
-                                    td #{i}
+
+                        for curr_item in assignments
+                            tr(class=curr_item.done==1 ? 'grey' : 'white')
+                                - console.log(curr_item.done)
+                                td(style="display:none;") #{curr_item.id}
+                                td #{curr_item.name}
+                                td #{curr_item.course}
+                                td #{curr_item.due}
                                 td.center
-                                    label
-                                        input(type='checkbox', id=curr_item[0], checked=curr_item[3], onclick=`sendCompleted(this)`)
-                                        span
+                                  label
+                                      input(type='checkbox', id=curr_item.id, checked=curr_item.done==1, onclick=`sendCompleted(this)`)
+                                      span
+                        // each curr_item in assignments
+                        //     - console.log("aaa"+curr_item)
+                        //      tr(class=curr_item[3] ? 'grey' : 'white')
+                        //          td(style="display:none;") #{key}
+                        //          for i in curr_item.slice(0, 3)
+                        //              td #{i}
+                        //          td.center
+                        //              label
+                        //                  input(type='checkbox', id=curr_item[0], checked=curr_item[3], onclick=`sendCompleted(this)`)
+                        //                  span
+
             div.card
                 div.card-content
                     span.card-title Add New Item
