@@ -36,11 +36,6 @@ con.connect(function (err) {
 // app.use(express.static(__dirname + '/html'))
 app.use('/css', express.static(__dirname + '/css'))
 app.use('/js', express.static(__dirname + '/js'))
-assig = {
-    '1': ['one', 'two', 'three', false],
-    '2': ['ones', 'two', 'three', false],
-    '3': ['oness', 'two', 'three', true]
-}
 app.get('/', (req, res) => {
     res.render('index', {assignments: assig})
 })
@@ -48,6 +43,11 @@ app.get('/', (req, res) => {
 app.post('/complete', (req, res) => {
     console.log(req.body);
     assig[req.body.item][3] = req.body.done;
+    var sql = "UPDATE assignments SET done = ? WHERE id = ?"
+    con.query(sql, [req.body.done, req.body.item], function(err, result) {
+        if (err) throw err;
+        console.log("Number updated: " + result.affectedRows)
+    })
     res.sendStatus(200);
 });
 
