@@ -21,17 +21,28 @@ con.connect(function (err) {
     if (err) throw err;
     console.log("Connected!")
 
-    var sql = "USE BTE;"
-    con.query(sql, function (err, result) {
+    con.query("USE BTE;", function (err, result) {
         if (err) throw err;
-        console.log("Database and table created");
+        console.log("Database connected");
     })
 
-    sql = "CREATE TABLE IF NOT EXISTS assignments (userid VARCHAR(255), id VARCHAR(255) PRIMARY KEY,  name VARCHAR(255), course VARCHAR(255), due DATE, done BOOLEAN);"
-    con.query(sql, function (err, result) {
-        if (err) throw err;
-        console.log("Table created/exists");
-    })
+    con.query("CREATE TABLE IF NOT EXISTS logins (userid VARCHAR(255) primary key, username VARCHAR(255), password VARCHAR(255));",
+        function (err, result) {
+            if (err) throw err;
+            console.log("Login table created/exists");
+        })
+
+    con.query("CREATE TABLE IF NOT EXISTS courses (userid VARCHAR(255), course VARCHAR(255), FOREIGN KEY (userid) REFERENCES logins(userid));\n",
+        function (err, result) {
+            if (err) throw err;
+            console.log("Courses table created/exists");
+        })
+
+    con.query("CREATE TABLE IF NOT EXISTS assignments (userid VARCHAR(255), id VARCHAR(255) PRIMARY KEY,  name VARCHAR(255), course VARCHAR(255), due DATE, done BOOLEAN, FOREIGN KEY (userid) REFERENCES logins(userid));",
+        function (err, result) {
+            if (err) throw err;
+            console.log("Assignment table created/exists");
+        })
 })
 
 // app.use(express.static(__dirname + '/html'))
@@ -39,7 +50,7 @@ app.use('/css', express.static(__dirname + '/css'))
 app.use('/js', express.static(__dirname + '/js'))
 app.get('/', (req, res) => {
     let assig = ['no', 'bad', '2020-09-30', false]
-    con.query('select * from assignments order by done, due', function(err, result){
+    con.query('select * from assignments order by done, due', function (err, result) {
         if (err) {
             res.sendStatus(500);
             throw err;
@@ -53,8 +64,7 @@ app.get('/', (req, res) => {
 
 app.post('/complete', (req, res) => {
     console.log(req.body);
-    var sql = "UPDATE assignments SET done = ? WHERE id = ?"
-    con.query(sql, [req.body.done, req.body.item], function(err, result) {
+    con.query("UPDATE assignments SET done = ? WHERE id = ?", [req.body.done, req.body.item], function (err, result) {
         if (err) throw err;
         console.log("Number updated: " + result.affectedRows)
     })
@@ -63,11 +73,12 @@ app.post('/complete', (req, res) => {
 
 app.post('/newitem', (req, res) => {
     console.log(req.body);
-    var sql = "INSERT INTO assignments (id, userid, name, course, due, done) VALUES ?"
-    con.query(sql, [[[uuid.v4(), "tempuser", req.body.title, req.body.course, req.body.due, false]]], function(err, result) {
-        if (err) throw err;
-        console.log("Number of records inserted: " + result.affectedRows);
-    })
+    con.query("INSERT INTO assignments (id, userid, name, course, due, done) VALUES ?",
+        [[[uuid.v4(), "8d3d39ed-7569-465f-a6b7-153d115f29ed", req.body.title, req.body.course, req.body.due, false]]],
+        function (err, result) {
+            if (err) throw err;
+            console.log("Number of records inserted: " + result.affectedRows);
+        })
     res.sendStatus(200);
 })
 
