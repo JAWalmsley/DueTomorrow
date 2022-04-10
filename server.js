@@ -2,6 +2,7 @@ const express = require('express')
 const bodyparser = require('body-parser')
 const mysql = require('mysql')
 const config = require('./config.json')
+const uuid = require("uuid");
 
 const app = express()
 app.use(bodyparser.json())
@@ -26,7 +27,7 @@ con.connect(function (err) {
         console.log("Database and table created");
     })
 
-    sql = "CREATE TABLE IF NOT EXISTS assignments (id INT PRIMARY KEY AUTO_INCREMENT,name VARCHAR(255), course VARCHAR(255), due DATE, done BOOLEAN);"
+    sql = "CREATE TABLE IF NOT EXISTS assignments (userid VARCHAR(255), id VARCHAR(255) PRIMARY KEY,  name VARCHAR(255), course VARCHAR(255), due DATE, done BOOLEAN);"
     con.query(sql, function (err, result) {
         if (err) throw err;
         console.log("Table created/exists");
@@ -60,11 +61,10 @@ app.post('/complete', (req, res) => {
     res.sendStatus(200);
 });
 
-// TODO: Sort items by due date and done
 app.post('/newitem', (req, res) => {
     console.log(req.body);
-    var sql = "INSERT INTO assignments (name, course, due, done) VALUES ?"
-    con.query(sql, [[[req.body.title, req.body.course, req.body.due, false]]], function(err, result) {
+    var sql = "INSERT INTO assignments (id, userid, name, course, due, done) VALUES ?"
+    con.query(sql, [[[uuid.v4(), "tempuser", req.body.title, req.body.course, req.body.due, false]]], function(err, result) {
         if (err) throw err;
         console.log("Number of records inserted: " + result.affectedRows);
     })
