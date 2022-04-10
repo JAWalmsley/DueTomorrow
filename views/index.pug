@@ -7,11 +7,11 @@ html
     body
         nav
             div.nav-wrapper
-                a(href="#", class="brand-logo center") BetterThanExcel
-                ul.right.hide-on-med-and-down
-                    li
-                        a
-                            i.material-icons menu
+                a(href="#", class="brand-logo", style="padding-left: 10px;") BetterThanExcel
+                //ul.right.hide-on-med-and-down
+                //    li
+                //        a
+                //            i.material-icons menu
         div.container
             div.col.s12
                 table.highlight
@@ -23,6 +23,7 @@ html
                             th(style="width: 16px") Completed
 
                         for curr_item in assignments
+                            // TODO: Colour coding
                             tr(class=curr_item.done == 1 ? 'grey' : 'white')
                                 td(style="display:none;") #{curr_item.id}
                                 td #{curr_item.name}

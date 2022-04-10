@@ -38,7 +38,7 @@ app.use('/css', express.static(__dirname + '/css'))
 app.use('/js', express.static(__dirname + '/js'))
 app.get('/', (req, res) => {
     let assig = ['no', 'bad', '2020-09-30', false]
-    con.query('select * from assignments', function(err, result){
+    con.query('select * from assignments order by done, due', function(err, result){
         if (err) {
             res.sendStatus(500);
             throw err;
@@ -60,6 +60,7 @@ app.post('/complete', (req, res) => {
     res.sendStatus(200);
 });
 
+// TODO: Sort items by due date and done
 app.post('/newitem', (req, res) => {
     console.log(req.body);
     var sql = "INSERT INTO assignments (name, course, due, done) VALUES ?"
