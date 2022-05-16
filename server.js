@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyparser = require('body-parser')
-const mysql = require('mysql')
+const mysql = require('mysql2')
 const config = require('./config.json')
 const uuid = require("uuid");
 
@@ -21,45 +21,52 @@ app.use('/js', express.static(__dirname + '/js'))
 
 app.get('/', (req, res) => {
     let assig = ['no', 'bad', '2020-09-30', false]
-    dbManager.makeReq("select * from assignments order by done, due", [], function (result) {
-        res.render('index', {assignments: result})
+    dbManager.getAssignments("85dc03ce-426e-4263-9087-8044eed8da62")
+        .then(function (result) {
+            res.render('index', {assignments: result})
+        }).catch((err) => {
+        console.log(err)
     })
+})
 
+app.get('/login', (req, res) => {
+    res.render('login')
+})
+
+app.get('/register', (req, res) => {
+    res.render('register')
 })
 
 app.post('/complete', (req, res) => {
     console.log(req.body);
-    dbManager.makeReq("UPDATE assignments SET done = ? WHERE id = ?", [req.body.done, req.body.item], function (result) {
-        console.log("Number updated: " + result.affectedRows)
+    dbManager.markComplete(req.body.done, req.body.item)
+        .then(function (result) {
+            console.log("Number updated: " + result.affectedRows)
+        }).catch((err) => {
+        console.log(err)
     })
     res.sendStatus(200);
 });
 
 app.post('/newitem', (req, res) => {
     console.log(req.body);
-    dbManager.makeReq("INSERT INTO assignments (id, userid, name, course, due, done) VALUES ?",
-        [[[uuid.v4(), "8d3d39ed-7569-465f-a6b7-153d115f29ed", req.body.title, req.body.course, req.body.due, false]]],
-        function (result) {
+    dbManager.createAssignment(uuid.v4(), "85dc03ce-426e-4263-9087-8044eed8da62", req.body.title, req.body.course, req.body.due, false)
+        .then(function (result) {
             console.log("Number of records inserted: " + result.affectedRows);
-        })
+        }).catch((err) => {
+        console.log(err)
+    })
     res.sendStatus(200);
 })
 
 app.post('/login', (req, res) => {
-    console.log(req.body)
-    const {username, password} = req.body;
-    if (!username || !password) {
-        callback(res.status(400))
-    }
-    dbManager.makeReq("SELECT * FROM logins WHERE username = ?", [username], function (result) {
-        let user = result[0];
-        bcrypt.compare(password, user.password).then(function (result) {
-            res.sendStatus(200)
-            console.log("done")
-        })
-    })
+    login.login(req, res);
 });
-app.post('/register', (req, res) => register.register(req, res, res.sendStatus));
+
+
+app.post('/register', (req, res) => {
+    register.register(req, res);
+});
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
