@@ -1,0 +1,25 @@
+html
+    head
+        title= title
+        link(rel='stylesheet', href='css/materialize.css', type='text/css')
+        link(href='https://fonts.googleapis.com/icon?family=Material+Icons', rel='stylesheet')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    body
+        nav
+            div.nav-wrapper
+                a(href="#", class="brand-logo", style="padding-left: 10px;") BetterThanExcel
+        div.container
+            div.row
+                div.col.s12
+                    h1.headercol.col.s4.offset-s4.center.indigo-text BTE
+                    form(action="/login", method="post")
+                        div.input-field.col.s4.offset-s4
+                            input(id="username", type="text", name="username")
+                            label(for="username") Username
+                        div.input-field.col.s4.offset-s4
+                            input(id="password", type="password", name="password")
+                            label(for="password") Password
+                        div.input-field.col.s4.offset-s4.right-align
+                            button.btn.waves-effect.waves-light.indigo(type="submit") Login
+        script(type='text/javascript', src='js/materialize.min.js')
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js")
