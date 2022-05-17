@@ -5,43 +5,26 @@ block all
             table.highlight
                 thead
                     tr
-                        th Item
                         th Course
-                        th Due Date
-                        th(style="width: 16px") Completed
+                        th Colour
 
-                    for curr_item in assignments
+                    for curr_item in courses
                         // TODO: Colour coding
-                        tr(class=curr_item.done == 1 ? 'grey' : 'white')
-                            td(style="display:none;") #{curr_item.id}
+                        tr
                             td #{curr_item.name}
-                            td #{curr_item.course}
-                            - var dateopts = {weekday: "long", year: "numeric", month: "long", day: "numeric"}
-                            td #{new Date(curr_item.due).toLocaleString("en-US", dateopts)}
-                            td.center
-                                label
-                                    input(type='checkbox', id=curr_item.id, checked=curr_item.done == 1, onclick=`sendCompleted(this)`)
-                                    span
-
+                            td #{curr_item.colour}
         div.card
             div.card-content
-                span.card-title Add New Item
+                span.card-title Add New Course
                 div.row
                     form.col.s12(id="newitemform")
                         div.input-field.col.s4
-                            input(placeholder="Title",name="title", type="text", class="validate")
-                            label(for="title") Title
+                            input(placeholder="Course Name",name="courseName", type="text", class="validate")
+                            label(for="title") Course Name
                         div.input-field.col.s4
-                            input.autocomplete(placeholder="Course", id="course", name="course", type="text", class="validate")
-                            label(for="course") Course
-                        div.input-field.col.s4
-                            input(placeholder="Due Date", id="date", name="due", type="date", class="validate", max="2999-12-31")
-                            label(for="due") Due Date
+                            input.autocomplete(id="colour", name="colour" type="color", class="validate")
                         div.card-action
                             a(href="#", onclick="newitem()", id="submit").right.orange-text Add
-
-
-
 
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js")
     script(type='text/javascript', src='js/materialize.min.js')
@@ -50,26 +33,6 @@ block all
         $(document).ready(function () {
             $(".dropdown-trigger").dropdown();
         })
-        let options = {
-            data: {
-                "ENGINEER 1P13B": null,
-                "MATH 1ZC3": null,
-                "MATH 1ZB3": null,
-                "PHYSICS 1E03": null
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            var elems = document.querySelectorAll('.autocomplete');
-            var instances = M.Autocomplete.init(elems, options);
-        });
-
-        $('#date').keyup(function (e) {
-            if (e.keyCode === 13) {
-                newitem();
-            }
-        })
-
         function newitem() {
             let empties = 0
             $(':input').each(function () {
@@ -80,7 +43,7 @@ block all
             if (empties > 0) {
                 return
             }
-            fetch("/newitem", {
+            fetch("/newcourse", {
                 method: "POST",
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(objectifyForm($('#newitemform').serializeArray()))

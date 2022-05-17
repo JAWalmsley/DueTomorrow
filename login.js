@@ -9,7 +9,7 @@ exports.login = function (req, res) {
     if (!username || !password) {
         res.sendStatus(400)
     }
-    let userSearch = dbManager.getUser(username)
+    let userSearch = dbManager.getUsers(username)
     let passwordCompare = userSearch.then(function (result) {
         if (result[0] == undefined) {
             return;

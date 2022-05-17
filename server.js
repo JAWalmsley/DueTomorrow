@@ -18,7 +18,7 @@ app.use(session({
     saveUninitialized: true
 }));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 
 app.set('views', './views')
 app.set('view engine', 'pug')
@@ -47,6 +47,19 @@ app.get('/register', (req, res) => {
     res.render('register')
 })
 
+app.get('/courses', (req, res) => {
+    if (!req.session.loggedin) {
+        res.redirect('/login');
+        return;
+    }
+    dbManager.getCourses(req.session.userid)
+        .then(function (result) {
+                res.render('courses', {username: req.session.username, courses: result});
+            }
+        )
+
+})
+
 app.post('/complete', (req, res) => {
     console.log(req.body);
     dbManager.markComplete(req.body.done, req.body.item)
@@ -58,9 +71,20 @@ app.post('/complete', (req, res) => {
     res.sendStatus(200);
 });
 
+app.post('/newcourse', (req, res) => {
+    dbManager.createCourse(req.session.userid, req.body.courseName, req.body.colour)
+        .then(function (result) {
+            console.log("Number of records inserted: " + result.affectedRows);
+            res.sendStatus(200);
+        }).catch((err) => {
+            console.log(err);
+            res.sendStatus(500);
+    })
+})
+
 app.post('/newitem', (req, res) => {
     console.log(req.body);
-    dbManager.createAssignment(uuid.v4(), req.session.userid, req.body.title, req.body.course, req.body.due, false)
+    dbManager.createAssignment(req.session.userid, req.body.title, req.body.course, req.body.due, false)
         .then(function (result) {
             console.log("Number of records inserted: " + result.affectedRows);
         }).catch((err) => {

@@ -24,7 +24,7 @@ con.connect(function (err) {
         // console.log("Login table created/exists");
     })
 
-    con.query("CREATE TABLE IF NOT EXISTS courses (userid VARCHAR(255), course VARCHAR(255), FOREIGN KEY (userid) REFERENCES logins(userid));\n", function (err, result) {
+    con.query("CREATE TABLE IF NOT EXISTS courses (userid VARCHAR(255), name VARCHAR(255), colour VARCHAR(7), FOREIGN KEY (userid) REFERENCES logins(userid));\n", function (err, result) {
         if (err) throw err;
         // console.log("Courses table created/exists");
     })
@@ -49,19 +49,31 @@ makeReq = function (cmd, vals) {
     })
 }
 
+
+
+
+exports.getCourses = function (userid) {
+    return makeReq("SELECT * FROM courses WHERE userid = ?", [userid]);
+}
+
+exports.createCourse = function (userid, name, colour) {
+    console.log(userid, name, colour);
+    return makeReq("INSERT INTO courses (userid, name, colour) VALUES (?)", [[userid, name, colour]]);
+}
+
 exports.getAssignments = function (userid) {
     return makeReq("select * from assignments where userid = ? order by done, due", [userid]);
+}
+
+exports.createAssignment = function (userid, name, course, due, done) {
+    return makeReq("INSERT INTO assignments (id, userid, name, course, due, done) VALUES (?)", [[uuid.v4(), userid, name, course, due, done]]);
 }
 
 exports.markComplete = function (done, assignmentID) {
     return makeReq("UPDATE assignments SET done = ? WHERE id = ?", [done, assignmentID]);
 }
 
-exports.createAssignment = function (id, userid, name, course, due, done) {
-    return makeReq("INSERT INTO assignments (id, userid, name, course, due, done) VALUES (?)", [[id, userid, name, course, due, done]]);
-}
-
-exports.getUser = function (username) {
+exports.getUsers = function (username) {
     return makeReq("SELECT * FROM logins WHERE username = ?", [username]);
 }
 
