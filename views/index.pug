@@ -5,16 +5,23 @@ html
         link(href='https://fonts.googleapis.com/icon?family=Material+Icons', rel='stylesheet')
         meta(name='viewport', content='width=device-width, initial-scale=1.0')
     body
+        ul#dropdown.dropdown-content
+            li
+                a(href="/courses") Courses
+                a(href="/login") Log Out
+
         nav
             div.nav-wrapper
                 div.container
-                    a(href="#", class="brand-logo", style="padding-left: 10px;") BetterThanExcel
-                    a(href="/login").right #{username}
+                    a(href="/", class="brand-logo", style="padding-left: 10px;") BetterThanExcel
+                    ul.right
+                        li
+                            a(data-target="dropdown").dropdown-trigger #{username}
 
-                //ul.right.hide-on-med-and-down
-                //    li
-                //        a
-                //            i.material-icons menu
+            //ul.right.hide-on-med-and-down
+            //    li
+            //        a
+            //            i.material-icons menu
         div.container
             div.col.s12
                 table.highlight
@@ -58,11 +65,13 @@ html
 
 
 
-        script(type='text/javascript', src='js/materialize.min.js')
         script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js")
+        script(type='text/javascript', src='js/materialize.min.js')
         script(src="js/formHandler.js")
         script(type='text/javascript').
-
+            $(document).ready(function () {
+                $(".dropdown-trigger").dropdown();
+            })
             let options = {
                 data: {
                     "ENGINEER 1P13B": null,

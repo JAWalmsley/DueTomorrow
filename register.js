@@ -14,7 +14,12 @@ exports.register = function (req, res, callback) {
     }).then(function (hash) {
         return dbManager.createUser(username, hash)
     }).then(function (result) {
-        console.log("created user")
+        return dbManager.getUser(username)
+    }).then(function (result) {
+        let user = result[0];
+        req.session.loggedin = true;
+        req.session.userid = user.userid;
+        req.session.username = user.username;
         res.sendStatus(200);
     })
 }
