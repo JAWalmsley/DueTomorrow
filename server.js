@@ -1,17 +1,24 @@
 const express = require('express')
-const bodyparser = require('body-parser')
-const mysql = require('mysql2')
-const config = require('./config.json')
+const session = require('express-session');
 const uuid = require("uuid");
 
 const login = require("./login")
 const register = require("./register")
 const dbManager = require("./dbManager");
-const bcrypt = require("bcryptjs");
+
+const config = require("./config.json")
+
+const port = 3000
 
 const app = express()
-app.use(bodyparser.json())
-const port = 3000
+
+app.use(session({
+    secret: config.jwtSecret,
+    resave: true,
+    saveUninitialized: true
+}));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.set('views', './views')
 app.set('view engine', 'pug')
@@ -20,10 +27,13 @@ app.use('/css', express.static(__dirname + '/css'))
 app.use('/js', express.static(__dirname + '/js'))
 
 app.get('/', (req, res) => {
-    let assig = ['no', 'bad', '2020-09-30', false]
-    dbManager.getAssignments("85dc03ce-426e-4263-9087-8044eed8da62")
+    if (!req.session.loggedin) {
+        res.redirect('/login');
+        return;
+    }
+    dbManager.getAssignments(req.session.userid)
         .then(function (result) {
-            res.render('index', {assignments: result})
+            res.render('index', {username: req.session.username, assignments: result})
         }).catch((err) => {
         console.log(err)
     })
@@ -50,7 +60,7 @@ app.post('/complete', (req, res) => {
 
 app.post('/newitem', (req, res) => {
     console.log(req.body);
-    dbManager.createAssignment(uuid.v4(), "85dc03ce-426e-4263-9087-8044eed8da62", req.body.title, req.body.course, req.body.due, false)
+    dbManager.createAssignment(uuid.v4(), req.session.userid, req.body.title, req.body.course, req.body.due, false)
         .then(function (result) {
             console.log("Number of records inserted: " + result.affectedRows);
         }).catch((err) => {

@@ -45,7 +45,7 @@ html
                         $('#loginForm').trigger("reset");
                         $('#errorText').css("visibility","visible");
                     } else {
-                        console.log("we go")
+                        res.json().then((r)=> console.log(r))
                         window.location.href = "/";
                     }
                 });
