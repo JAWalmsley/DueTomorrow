@@ -22,12 +22,14 @@ block all
                                 label
                                     input(type='checkbox', id=curr_item.id, checked=curr_item.done == 1, onclick=`sendCompleted(this)`)
                                     span
+            div(style="min-height: 400px")
 
-        div.card
-            div.card-content
-                span.card-title Add New Item
+
+        div.white-text(style="z-index: 3000")
+            div.indigo.accent-2(style="position: fixed; bottom:0; right: 15vw; width: 70vw; padding: 16px; border-radius: 8px")
                 div.row
-                    form.col.s12(id="newitemform")
+                    h5 Add New Item
+                    form(id="newitemform", style="color: white")
                         div.input-field.col.s4
                             input(placeholder="Title",name="title", type="text", class="validate")
                             label(for="title") Title
@@ -38,7 +40,7 @@ block all
                             input(placeholder="Due Date", id="date", name="due", type="date", class="validate", max="2999-12-31")
                             label(for="due") Due Date
                         div.card-action
-                            a(href="#", onclick="newitem()", id="submit").right.orange-text Add
+                            a.btn.right.black-text(href="#", onclick="newitem()", id="submit") Add
 
 
 
