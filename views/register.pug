@@ -11,17 +11,17 @@ html
         div.container
             div.row
                 div.col.s12
-                    h1.headercol.col.s6.offset-s3.center.indigo-text Create Account
+                    h1.header.col.l6.s12.offset-l3.center.indigo-text Create Account
                     form(action="/register", method="post", id="registerForm")
-                        div.input-field.col.s4.offset-s4
+                        div.input-field.col.l6.s12.offset-l3
                             input(id="username", type="text", name="username")
                             label(for="username") Username
-                        div.input-field.col.s4.offset-s4
+                        div.input-field.col.l6.s12.offset-l3
                             input(id="password", type="password", name="password")
                             label(for="password") Password
                             span.helper-text.red-text#errorText(style="visibility: hidden") That user already exists. Please try again.
-                        div.input-field.col.s4.offset-s4.right-align
-                            a.btn.waves-effect.waves-light.indigo(onclick="register()") Create Account
+            div.row
+                a.col.s5.l3.offset-l6.offset-s7.waves-effect.waves-light.btn.indigo(onclick="register()") Create Account
         script(type='text/javascript', src='js/materialize.min.js')
         script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js")
         script(src="js/formHandler.js")
