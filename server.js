@@ -66,10 +66,20 @@ app.post('/complete', (req, res) => {
         .then(function (result) {
             console.log("Number updated: " + result.affectedRows)
         }).catch((err) => {
-        console.log(err)
+        console.log(err);
     })
     res.sendStatus(200);
 });
+
+app.post('/deleteAssignment', (req, res) => {
+    dbManager.deleteAssignment(req.body.item)
+        .then(function (result) {
+            console.log("Number updated: " + result.affectedRows)
+        }).catch((err) => {
+            console.log(err);
+    })
+    res.sendStatus(200);
+})
 
 app.post('/newcourse', (req, res) => {
     dbManager.createCourse(req.session.userid, req.body.courseName, req.body.colour)
@@ -80,6 +90,16 @@ app.post('/newcourse', (req, res) => {
             console.log(err);
             res.sendStatus(500);
     })
+})
+
+app.post('/deleteCourse', (req, res) => {
+    dbManager.deleteCourse(req.body.item)
+        .then(function (result) {
+        console.log("Number of records inserted: " + result.affectedRows);
+    }).catch((err) => {
+        console.log(err);
+    })
+    res.sendStatus(200);
 })
 
 app.post('/newitem', (req, res) => {

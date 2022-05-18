@@ -24,7 +24,7 @@ con.connect(function (err) {
         // console.log("Login table created/exists");
     })
 
-    con.query("CREATE TABLE IF NOT EXISTS courses (userid VARCHAR(255), name VARCHAR(255), colour VARCHAR(7), FOREIGN KEY (userid) REFERENCES logins(userid));\n", function (err, result) {
+    con.query("CREATE TABLE IF NOT EXISTS courses (userid VARCHAR(255), id VARCHAR(255), name VARCHAR(255), colour VARCHAR(7), FOREIGN KEY (userid) REFERENCES logins(userid));\n", function (err, result) {
         if (err) throw err;
         // console.log("Courses table created/exists");
     })
@@ -58,7 +58,12 @@ exports.getCourses = function (userid) {
 
 exports.createCourse = function (userid, name, colour) {
     console.log(userid, name, colour);
-    return makeReq("INSERT INTO courses (userid, name, colour) VALUES (?)", [[userid, name, colour]]);
+    return makeReq("INSERT INTO courses (userid, id, name, colour) VALUES (?)", [[userid, uuid.v4(), name, colour]]);
+}
+
+exports.deleteCourse = function (id) {
+    //TODO: Courses should be based on their ID and should have foreign keys to their assignments but i cant be bothered rn
+    return makeReq("DELETE FROM courses WHERE id = ?", [id]);
 }
 
 exports.getAssignments = function (userid) {
@@ -67,6 +72,10 @@ exports.getAssignments = function (userid) {
 
 exports.createAssignment = function (userid, name, course, due, done) {
     return makeReq("INSERT INTO assignments (id, userid, name, course, due, done) VALUES (?)", [[uuid.v4(), userid, name, course, due, done]]);
+}
+
+exports.deleteAssignment = function (assignmentID) {
+    return makeReq("DELETE FROM assignments WHERE id = ?", [assignmentID]);
 }
 
 exports.markComplete = function (done, assignmentID) {

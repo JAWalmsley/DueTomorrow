@@ -1,38 +1,63 @@
 extends loggedin.pug
 block all
     div.container
-        div.col.s12
-            table.highlight
-                thead
-                    tr
-                        th Course
-                        th Colour
-
-                    for curr_item in courses
-                        // TODO: Colour coding
+        div.row
+            div.col.s12
+                table.highlight
+                    thead
                         tr
-                            td #{curr_item.name}
-                            td #{curr_item.colour}
-        div.card
-            div.card-content
-                span.card-title Add New Course
-                div.row
-                    form.col.s12(id="newitemform")
-                        div.input-field.col.s4
-                            input(placeholder="Course Name",name="courseName", type="text", class="validate")
-                            label(for="title") Course Name
-                        div.input-field.col.s4
-                            input.autocomplete(id="colour", name="colour" type="color", class="validate")
-                        div.card-action
-                            a(href="#", onclick="newitem()", id="submit").right.orange-text Add
+                            th Course
+                            th Colour
+                        for curr_item in courses
+                            // TODO: Colour coding
+                            tr
+                                td(style="display:none;") #{curr_item.id}
+                                td #{curr_item.name}
+                                td
+                                    div(style="width: 32px; height: 32px; background-color: " + curr_item.colour)
+                                td.center
+                                    a.black-text(href="#", onclick='deleteCourse(this)') #[i.material-icons delete]
+                div(style="min-height: 50vh")
+        div.indigo.accent-2.white-text.container(style="position: fixed; bottom: 0; padding: 16px; margin: 8px; border-radius: 8px; z-index: 3000")
+            h5 Add New Item
+            form(id="newitemform", style="color: white")
+                div.input-field
+                    input(placeholder="Course",name="courseName", type="text", class="validate")
+                    label(for="course") Course
+                div.input-field
+                    label.pickerlabel
+                        input.autocomplete(id="colour", name="colour", type="color")
+                a.btn.right.black-text(href="#", onclick="newitem()", id="submit") Add
 
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js")
     script(type='text/javascript', src='js/materialize.min.js')
     script(src="js/formHandler.js")
+    style.
+        .input-field {
+            display: inline-block;
+            width: 30%;
+            padding-right: 16px;
+        }
+
+        .pickerlabel {
+            background-color: black;
+            width: 100%;
+        }
+
+        input[type=color] {
+            visibility: hidden;
+        }
     script(type='text/javascript').
         $(document).ready(function () {
             $(".dropdown-trigger").dropdown();
         })
+
+        //Colour Picker
+        $(document).on('change', 'input[type=color]', function () {
+            this.parentNode.style.backgroundColor = this.value;
+        });
+
+
         function newitem() {
             let empties = 0
             $(':input').each(function () {
@@ -52,19 +77,15 @@ block all
             });
         }
 
-        function sendCompleted(self) {
-            console.log()
-            let done = $(self).is(':checked')
-            let item = $(self).closest('tr').find('td:first').text()
-            let data = {item, done}
-            fetch("/complete", {
+        function deleteCourse(self) {
+            let item = $(self).closest('tr').find('td:first').text();
+            console.log(item)
+            fetch("/deleteCourse", {
                 method: "POST",
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
-            }).then(res => {
-                // console.log("Request complete! response:", res);
+                body: JSON.stringify({item: item})
             });
-            $(self).closest('tr')[0].classList.replace(done ? 'white' : 'grey', done ? 'grey' : 'white');
+            $(self).closest('tr')[0].remove();
         }
 
 

@@ -20,31 +20,34 @@ block all
                                 - var dateopts = {weekday: "long", year: "numeric", month: "long", day: "numeric"}
                                 td #{new Date(curr_item.due).toLocaleString("en-US", dateopts)}
                                 td.center
-                                    label
-                                        input(type='checkbox', id=curr_item.id, checked=curr_item.done == 1, onclick=`sendCompleted(this)`)
-                                        span
+                                    input(type='checkbox', id=curr_item.id, checked=curr_item.done == 1, onclick=`sendCompleted(this)`)
+                                    span
+                                td.center
+                                    a.black-text(href="#", onclick='deleteAssignment(this)') #[i.material-icons delete]
                 div(style="min-height: 50vh")
         div.indigo.accent-2.white-text.container(style="position: fixed; bottom: 0; padding: 16px; margin: 8px; border-radius: 8px; z-index: 3000")
             h5 Add New Item
             form(id="newitemform", style="color: white")
-                div.input-field(style="display: inline; width: 30%")
+                div.input-field
                     input(placeholder="Title",name="title", type="text", class="validate")
                     label(for="title") Title
-                div.input-field(style="display: inline; width: 30%")
+                div.input-field
                     input.autocomplete(placeholder="Course", id="course", name="course", type="text", class="validate")
                     label(for="course") Course
-                div.input-field(style="display: inline; width: 30%")
+                div.input-field
                     input(placeholder="Due Date", id="date", name="due", type="date", class="validate", max="2999-12-31")
                     label(for="due") Due Date
-                div.card-action
                 a.btn.right.black-text(href="#", onclick="newitem()", id="submit") Add
-
-
-
 
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js")
     script(type='text/javascript', src='js/materialize.min.js')
     script(src="js/formHandler.js")
+    style.
+        .input-field {
+            display: inline-block;
+            width: 30%;
+            padding-right: 16px;
+        }
     script(type='text/javascript').
         $(document).ready(function () {
             $(".dropdown-trigger").dropdown();
@@ -89,7 +92,6 @@ block all
         }
 
         function sendCompleted(self) {
-            console.log()
             let done = $(self).is(':checked')
             let item = $(self).closest('tr').find('td:first').text()
             let data = {item, done}
@@ -97,10 +99,18 @@ block all
                 method: "POST",
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
-            }).then(res => {
-                // console.log("Request complete! response:", res);
-            });
+            })
             $(self).closest('tr')[0].classList.replace(done ? 'white' : 'grey', done ? 'grey' : 'white');
+        }
+
+        function deleteAssignment(self) {
+            let item = $(self).closest('tr').find('td:first').text();
+            fetch("/deleteAssignment", {
+                method: "POST",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({item: item})
+            });
+            $(self).closest('tr')[0].remove();
         }
 
 
