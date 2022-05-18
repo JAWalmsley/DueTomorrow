@@ -1,46 +1,43 @@
 extends loggedin.pug
 block all
     div.container
-        div.col.s12
-            table.highlight
-                thead
-                    tr
-                        th Item
-                        th Course
-                        th Due Date
-                        th(style="width: 16px") Completed
+        div.row
+            div.col.s12
+                table.highlight
+                    thead
+                        tr
+                            th Item
+                            th Course
+                            th Due Date
+                            th(style="width: 16px") Completed
 
-                    for curr_item in assignments
-                        // TODO: Colour coding
-                        tr(class=curr_item.done == 1 ? 'grey' : 'white')
-                            td(style="display:none;") #{curr_item.id}
-                            td #{curr_item.name}
-                            td #{curr_item.course}
-                            - var dateopts = {weekday: "long", year: "numeric", month: "long", day: "numeric"}
-                            td #{new Date(curr_item.due).toLocaleString("en-US", dateopts)}
-                            td.center
-                                label
-                                    input(type='checkbox', id=curr_item.id, checked=curr_item.done == 1, onclick=`sendCompleted(this)`)
-                                    span
-            div(style="min-height: 400px")
-
-
-        div.white-text(style="z-index: 3000")
-            div.indigo.accent-2(style="position: fixed; bottom:0; right: 15vw; width: 70vw; padding: 16px; border-radius: 8px")
-                div.row
-                    h5 Add New Item
-                    form(id="newitemform", style="color: white")
-                        div.input-field.col.s4
-                            input(placeholder="Title",name="title", type="text", class="validate")
-                            label(for="title") Title
-                        div.input-field.col.s4
-                            input.autocomplete(placeholder="Course", id="course", name="course", type="text", class="validate")
-                            label(for="course") Course
-                        div.input-field.col.s4
-                            input(placeholder="Due Date", id="date", name="due", type="date", class="validate", max="2999-12-31")
-                            label(for="due") Due Date
-                        div.card-action
-                            a.btn.right.black-text(href="#", onclick="newitem()", id="submit") Add
+                        for curr_item in assignments
+                            // TODO: Colour coding
+                            tr(class=curr_item.done == 1 ? 'grey' : 'white')
+                                td(style="display:none;") #{curr_item.id}
+                                td #{curr_item.name}
+                                td #{curr_item.course}
+                                - var dateopts = {weekday: "long", year: "numeric", month: "long", day: "numeric"}
+                                td #{new Date(curr_item.due).toLocaleString("en-US", dateopts)}
+                                td.center
+                                    label
+                                        input(type='checkbox', id=curr_item.id, checked=curr_item.done == 1, onclick=`sendCompleted(this)`)
+                                        span
+                div(style="min-height: 50vh")
+        div.indigo.accent-2.white-text.container(style="position: fixed; bottom: 0; padding: 16px; margin: 8px; border-radius: 8px; z-index: 3000")
+            h5 Add New Item
+            form(id="newitemform", style="color: white")
+                div.input-field(style="display: inline; width: 30%")
+                    input(placeholder="Title",name="title", type="text", class="validate")
+                    label(for="title") Title
+                div.input-field(style="display: inline; width: 30%")
+                    input.autocomplete(placeholder="Course", id="course", name="course", type="text", class="validate")
+                    label(for="course") Course
+                div.input-field(style="display: inline; width: 30%")
+                    input(placeholder="Due Date", id="date", name="due", type="date", class="validate", max="2999-12-31")
+                    label(for="due") Due Date
+                div.card-action
+                a.btn.right.black-text(href="#", onclick="newitem()", id="submit") Add
 
 
 
