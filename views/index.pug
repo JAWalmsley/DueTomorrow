@@ -20,8 +20,9 @@ block all
                                 - var dateopts = {weekday: "long", year: "numeric", month: "long", day: "numeric"}
                                 td #{new Date(curr_item.due).toLocaleString("en-US", dateopts)}
                                 td.center
-                                    input(type='checkbox', id=curr_item.id, checked=curr_item.done == 1, onclick=`sendCompleted(this)`)
-                                    span
+                                    label
+                                        input(type='checkbox', id=curr_item.id, checked=curr_item.done == 1, onclick=`sendCompleted(this)`)
+                                        span
                                 td.center
                                     a.black-text(href="#", onclick='deleteAssignment(this)') #[i.material-icons delete]
                 div(style="min-height: 50vh")
@@ -49,7 +50,6 @@ block all
             padding-right: 16px;
         }
     script(type='text/javascript').
-
         // The object gets passed in the request with &quot; format so we need to do this crap
         let c = JSON.parse("#{courses}".replaceAll("&quot;", "\""))
         let autocompleteData = {};
