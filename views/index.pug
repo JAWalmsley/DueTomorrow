@@ -49,21 +49,18 @@ block all
             padding-right: 16px;
         }
     script(type='text/javascript').
+
+        // The object gets passed in the request with &quot; format so we need to do this crap
+        let c = JSON.parse("#{courses}".replaceAll("&quot;", "\""))
+        let autocompleteData = {};
+        for (let course of c) {
+            autocompleteData[course.name] = null;
+        }
         $(document).ready(function () {
             $(".dropdown-trigger").dropdown();
-        })
-        let options = {
-            data: {
-                "ENGINEER 1P13B": null,
-                "MATH 1ZC3": null,
-                "MATH 1ZB3": null,
-                "PHYSICS 1E03": null
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            var elems = document.querySelectorAll('.autocomplete');
-            var instances = M.Autocomplete.init(elems, options);
+            $('input.autocomplete').autocomplete({
+                data: autocompleteData
+            });
         });
 
         $('#date').keyup(function (e) {

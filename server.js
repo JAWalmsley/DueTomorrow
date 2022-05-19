@@ -31,9 +31,13 @@ app.get('/', (req, res) => {
         res.redirect('/login');
         return;
     }
-    dbManager.getAssignments(req.session.userid)
-        .then(function (result) {
-            res.render('index', {username: req.session.username, assignments: result})
+    let assig = dbManager.getAssignments(req.session.userid);
+    let cour = dbManager.getCourses(req.session.userid);
+
+    Promise.all([assig, cour])
+        .then(function ([a, c]) {
+            console.log(JSON.stringify(c));
+            res.render('index', {username: req.session.username, assignments: a, courses: JSON.stringify(c)});
         }).catch((err) => {
         console.log(err)
     })
