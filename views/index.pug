@@ -3,7 +3,7 @@ block all
     div.container
         div.row
             div.col.s12
-                table.highlight
+                table.highlight#assignmentTable
                     thead
                         tr
                             th Item
@@ -13,10 +13,10 @@ block all
 
                         for curr_item in assignments
                             // TODO: Colour coding
-                            tr(class=curr_item.done == 1 ? 'grey' : 'white')
+                            tr()
                                 td(style="display:none;") #{curr_item.id}
                                 td #{curr_item.name}
-                                td #{curr_item.course}
+                                td.courseCell #{curr_item.course}
                                 - var dateopts = {weekday: "long", year: "numeric", month: "long", day: "numeric"}
                                 td #{new Date(curr_item.due).toLocaleString("en-US", dateopts)}
                                 td.center
@@ -50,10 +50,13 @@ block all
             padding-right: 16px;
         }
     script(type='text/javascript').
+
+
+
         // The object gets passed in the request with &quot; format so we need to do this crap
-        let c = JSON.parse("#{courses}".replaceAll("&quot;", "\""))
+        let courseList = JSON.parse("#{courses}".replaceAll("&quot;", "\""))
         let autocompleteData = {};
-        for (let course of c) {
+        for (let course of courseList) {
             autocompleteData[course.name] = null;
         }
         $(document).ready(function () {
@@ -61,6 +64,7 @@ block all
             $('input.autocomplete').autocomplete({
                 data: autocompleteData
             });
+            colourRows();
         });
 
         $('#date').keyup(function (e) {
@@ -68,6 +72,35 @@ block all
                 newitem();
             }
         })
+
+        function colourRows() {
+            /**
+            *   Updates the colours of every row in the table
+            */
+            const doneColour = "#999";
+            $('#assignmentTable tr').each(function(index, tr) {
+                // Ignore header row
+                if (index == 0) {
+                    return;
+                }
+                let row = $(tr)
+                let isDone = row.find('input[type=checkbox]').is(':checked');
+                if (isDone) {
+                    row.css("background-color", doneColour);
+                    return;
+                }
+
+                let courseObj = courseList.filter(course => {
+                    return course.name == row.find(".courseCell").text()
+                })[0]
+                if(courseObj) {
+                    row.css("background-color", courseObj.colour);
+                    return;
+                }
+                row.css("background-color", "white")
+            })
+
+        }
 
         function newitem() {
             let empties = 0
@@ -97,7 +130,7 @@ block all
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
             })
-            $(self).closest('tr')[0].classList.replace(done ? 'white' : 'grey', done ? 'grey' : 'white');
+            colourRows();
         }
 
         function deleteAssignment(self) {

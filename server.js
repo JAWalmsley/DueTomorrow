@@ -68,7 +68,7 @@ app.post('/complete', (req, res) => {
     console.log(req.body);
     dbManager.markComplete(req.body.done, req.body.item)
         .then(function (result) {
-            console.log("Number updated: " + result.affectedRows)
+            // console.log("Number updated: " + result.affectedRows)
         }).catch((err) => {
         console.log(err);
     })
@@ -78,7 +78,7 @@ app.post('/complete', (req, res) => {
 app.post('/deleteAssignment', (req, res) => {
     dbManager.deleteAssignment(req.body.item)
         .then(function (result) {
-            console.log("Number updated: " + result.affectedRows)
+            // console.log("Number updated: " + result.affectedRows)
         }).catch((err) => {
             console.log(err);
     })
@@ -88,7 +88,7 @@ app.post('/deleteAssignment', (req, res) => {
 app.post('/newcourse', (req, res) => {
     dbManager.createCourse(req.session.userid, req.body.courseName, req.body.colour)
         .then(function (result) {
-            console.log("Number of records inserted: " + result.affectedRows);
+            // console.log("Number of records inserted: " + result.affectedRows);
             res.sendStatus(200);
         }).catch((err) => {
             console.log(err);
@@ -99,7 +99,7 @@ app.post('/newcourse', (req, res) => {
 app.post('/deleteCourse', (req, res) => {
     dbManager.deleteCourse(req.body.item)
         .then(function (result) {
-        console.log("Number of records inserted: " + result.affectedRows);
+        // console.log("Number of records inserted: " + result.affectedRows);
     }).catch((err) => {
         console.log(err);
     })
@@ -110,7 +110,7 @@ app.post('/newitem', (req, res) => {
     console.log(req.body);
     dbManager.createAssignment(req.session.userid, req.body.title, req.body.course, req.body.due, false)
         .then(function (result) {
-            console.log("Number of records inserted: " + result.affectedRows);
+            // console.log("Number of records inserted: " + result.affectedRows);
         }).catch((err) => {
         console.log(err)
     })

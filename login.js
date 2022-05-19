@@ -4,7 +4,6 @@ const bcrypt = require("bcrypt");
 
 
 exports.login = function (req, res) {
-    console.log(req.body)
     const {username, password} = req.body;
     if (!username || !password) {
         res.sendStatus(400)
