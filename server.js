@@ -61,7 +61,6 @@ app.get('/courses', (req, res) => {
                 res.render('courses', {username: req.session.username, courses: result});
             }
         )
-
 })
 
 app.post('/complete', (req, res) => {
