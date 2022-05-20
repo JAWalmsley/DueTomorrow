@@ -1,10 +1,10 @@
 const express = require('express')
 const session = require('express-session');
-const uuid = require("uuid");
+const uuid = require('uuid')
 
 const login = require("./login")
 const register = require("./register")
-const dbManager = require("./dbManager");
+const dbManager = require("./dbManager")("BTE");
 
 const config = require("./config.json")
 
@@ -36,7 +36,6 @@ app.get('/', (req, res) => {
 
     Promise.all([assig, cour])
         .then(function ([a, c]) {
-            console.log(JSON.stringify(c));
             res.render('index', {username: req.session.username, assignments: a, courses: JSON.stringify(c)});
         }).catch((err) => {
         console.log(err)
@@ -85,7 +84,7 @@ app.post('/deleteAssignment', (req, res) => {
 })
 
 app.post('/newcourse', (req, res) => {
-    dbManager.createCourse(req.session.userid, req.body.courseName, req.body.colour)
+    dbManager.createCourse(req.session.userid, uuid.v4(), req.body.courseName, req.body.colour)
         .then(function (result) {
             // console.log("Number of records inserted: " + result.affectedRows);
             res.sendStatus(200);
@@ -107,7 +106,7 @@ app.post('/deleteCourse', (req, res) => {
 
 app.post('/newitem', (req, res) => {
     console.log(req.body);
-    dbManager.createAssignment(req.session.userid, req.body.title, req.body.course, req.body.due, false)
+    dbManager.createAssignment(uuid.v4(), req.session.userid, req.body.title, req.body.course, req.body.due, false)
         .then(function (result) {
             // console.log("Number of records inserted: " + result.affectedRows);
         }).catch((err) => {

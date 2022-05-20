@@ -1,14 +1,94 @@
-var assert = require('assert')
-var dbManager = require('../dbManager')
+const chai = require('chai')
+const uuid = require('uuid')
+const chaiHttp = require('chai-http')
+const dbManager = require('../dbManager')("TESTDB")
 
-beforeEach(function() {
+let expect = chai.expect;
 
-})
-
-describe("dbManager", function() {
-    describe("getCourses", function() {
-        it("should return list of courses belonging to me", function(done) {
-            dbManager.getCourses("85dc03ce-426e-4263-9087-8044eed8da62").then(r => done(r))
+before(async function () {
+    await dbManager.clearDb();
+});
+describe("dbManager", function () {
+    describe("Users", function () {
+        it("should create a user in the database with no error", function (done) {
+            // test password is output of bcrypt.hash("0", 10)
+            dbManager.createUser(uuid.NIL, "username", "$2a$10$gG.8k/RY7F4LENWStnBifep4rBrX/aL7yWi.S2FeAiEA9x4wWJzki")
+                .then(() => {
+                    done();
+                }).catch(err => done(err));
+        });
+        it("should find one user in the database", function (done) {
+            dbManager.getUsers("username")
+                .then((res) => {
+                    if (res.length == 1) {
+                        done()
+                    } else {
+                        done(Error("wrong length: " + res.length))
+                    }
+                }).catch(err => done(err));
+        });
+    });
+    describe("Courses", function() {
+        it("should create a course in the database with no error", function(done) {
+            dbManager.createCourse(uuid.NIL, uuid.NIL, "courseName", "#000000")
+                .then(() => {
+                    done()
+                })
+                .catch(err => done(err))
+        });
+        it("should find one course in the database", function(done) {
+            dbManager.getCourses(uuid.NIL)
+                .then((res) => {
+                    expect(res.length).to.equal(1)
+                    done()
+                })
+                .catch(err => done(err))
+        });
+        it("should delete the course with no error", function(done) {
+            dbManager.deleteCourse(uuid.NIL)
+                .then(() => {
+                    done()
+                })
+                .catch(err => done(err))
+        });
+        it("should find zero courses in the database", function(done) {
+            dbManager.getCourses(uuid.NIL)
+                .then((res) => {
+                    expect(res.length).to.equal(0)
+                    done()
+                })
+                .catch(err => done(err))
         })
-    })
-})
+    });
+    describe("Assignments", function() {
+        it("should create an assignment with no error", function(done) {
+            dbManager.createAssignment(uuid.NIL, uuid.NIL, "assignmentName", "courseName", "0000-00-00", false)
+                .then((res) => {
+                    done()
+                })
+                .catch(err => done(err))
+        });
+        it("should find one assignment in the database", function(done) {
+            dbManager.getAssignments(uuid.NIL)
+                .then((res) => {
+                    expect(res.length).to.equal(1)
+                    done()
+                }).catch(err => done(err))
+        });
+        it("should delete an assignment with no error", function(done) {
+            dbManager.deleteAssignment(uuid.NIL)
+                .then((res => {
+                    done()
+                }))
+                .catch(err => done(err))
+        });
+        it("should find zero assignments in the database", function(done) {
+            dbManager.getAssignments(uuid.NIL)
+                .then((res) => {
+                    expect(res.length).to.equal(0);
+                    done()
+                })
+                .catch(err => done(err))
+        })
+    });
+});
