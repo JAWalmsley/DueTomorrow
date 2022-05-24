@@ -1,5 +1,4 @@
 const dbManager = require("./dbManager")("BTE")
-const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt");
 
 
