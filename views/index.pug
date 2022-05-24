@@ -30,15 +30,15 @@ block all
             h5 Add New Item
             form(id="newitemform", style="color: white")
                 div.input-field
-                    input(placeholder="Title",name="title", type="text", class="validate")
+                    input(placeholder="Title",name="title", type="text", class="validate").white-text
                     label(for="title") Title
                 div.input-field
-                    input.autocomplete(placeholder="Course", id="course", name="course", type="text", class="validate")
+                    input.autocomplete(placeholder="Course", id="course", name="course", type="text", class="validate").white-text
                     label(for="course") Course
                 div.input-field
-                    input(placeholder="Due Date", id="date", name="due", type="date", class="validate", max="2999-12-31")
+                    input(placeholder="Due Date", id="date", name="due", type="date", class="validate", max="2999-12-31").white-text
                     label(for="due") Due Date
-                a.btn.right.black-text(href="#", onclick="newitem()", id="submit") Add
+                a.btn.right.black-text(href="#", onclick="newitem()", id="submit").indigo-text Add
 
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js")
     script(type='text/javascript', src='js/materialize.min.js')
