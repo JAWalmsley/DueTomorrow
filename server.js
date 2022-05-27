@@ -4,7 +4,7 @@ const uuid = require('uuid');
 
 const login = require('./login');
 const register = require('./register');
-const dbManager = require('./dbManager')('BTE');
+const dbManager = require('./dbManager');
 
 const config = require('./config.json');
 

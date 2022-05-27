@@ -2,7 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const uuid = require('uuid');
 
-const dbManager = require('../dbManager')('TESTDB');
+const dbManager = require('../dbManager');
 const server = require('../server');
 
 chai.use(chaiHttp);
@@ -120,13 +120,21 @@ describe('dbManager', function () {
         });
     });
 });
+
+before(async function () {
+    await dbManager.createUser(
+        uuid.NIL,
+        'username',
+        '$2b$10$wXch61ldyyTrqH/Ozc/mGe8LJ/aMK3FqHATwnReKu8QcqVaIc7/T.'
+    );
+});
 describe('Routes', function () {
     describe('Login', function () {
         it('should return the login page', function (done) {
             chai.request(server)
                 .get('/login')
                 .end(function (err, res) {
-                    if(err) {
+                    if (err) {
                         done(err);
                     }
                     expect(res).to.have.status(200);
@@ -138,9 +146,9 @@ describe('Routes', function () {
             chai.request(server)
                 .post('/login')
                 .set('content-type', 'application/json')
-                .send({ 'username': 'username', 'password': '0' })
+                .send({ username: 'username', password: '0' })
                 .end(function (err, res, bod) {
-                    if(err) {
+                    if (err) {
                         done(err);
                         return;
                     }
