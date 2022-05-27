@@ -36,7 +36,7 @@ block all
                     input.autocomplete(placeholder="Course", id="course", name="course", type="text", class="validate").white-text
                     label(for="course") Course
                 div.input-field
-                    input(placeholder="Due Date", id="date", name="due", type="date", class="validate", max="2999-12-31").white-text
+                    input(placeholder="Due Date", id="date", name="due", type="text", class="validate", max="2999-12-31").white-text
                     label(for="due") Due Date
                 a.btn.right.black-text(href="#", onclick="newitem()", id="submit").indigo-text Add
 
@@ -50,98 +50,12 @@ block all
             padding-right: 16px;
         }
     script(type='text/javascript').
-
-
-
-        // The object gets passed in the request with &quot; format so we need to do this crap
         let courseList = JSON.parse("#{courses}".replaceAll("&quot;", "\""))
         let autocompleteData = {};
         for (let course of courseList) {
             autocompleteData[course.name] = null;
         }
-        $(document).ready(function () {
-            $(".dropdown-trigger").dropdown();
-            $('input.autocomplete').autocomplete({
-                data: autocompleteData
-            });
-            colourRows();
-        });
-
-        $('#date').keyup(function (e) {
-            if (e.keyCode === 13) {
-                newitem();
-            }
-        })
-
-        function colourRows() {
-            /**
-            *   Updates the colours of every row in the table
-            */
-            const doneColour = "#999";
-            $('#assignmentTable tr').each(function(index, tr) {
-                // Ignore header row
-                if (index == 0) {
-                    return;
-                }
-                let row = $(tr)
-                let isDone = row.find('input[type=checkbox]').is(':checked');
-                if (isDone) {
-                    row.css("background-color", doneColour);
-                    return;
-                }
-
-                let courseObj = courseList.filter(course => {
-                    return course.name == row.find(".courseCell").text()
-                })[0]
-                if(courseObj) {
-                    row.css("background-color", courseObj.colour);
-                    return;
-                }
-                row.css("background-color", "white")
-            })
-
-        }
-
-        function newitem() {
-            let empties = 0
-            $(':input').each(function () {
-                if ($(this).val() == "") {
-                    empties++;
-                }
-            })
-            if (empties > 0) {
-                return
-            }
-            fetch("/newitem", {
-                method: "POST",
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(objectifyForm($('#newitemform').serializeArray()))
-            }).then(res => {
-                location.reload()
-            });
-        }
-
-        function sendCompleted(self) {
-            let done = $(self).is(':checked')
-            let item = $(self).closest('tr').find('td:first').text()
-            let data = {item, done}
-            fetch("/complete", {
-                method: "POST",
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
-            })
-            colourRows();
-        }
-
-        function deleteAssignment(self) {
-            let item = $(self).closest('tr').find('td:first').text();
-            fetch("/deleteAssignment", {
-                method: "POST",
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({item: item})
-            });
-            $(self).closest('tr')[0].remove();
-        }
+    script(src="js/index.js")
 
 
 
