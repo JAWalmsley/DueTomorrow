@@ -1,4 +1,4 @@
-const dbManager = require('./dbManager')('BTE');
+const dbManager = require('./dbManager')
 const uuid = require('uuid');
 const bcrypt = require('bcryptjs');
 

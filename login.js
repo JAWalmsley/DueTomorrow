@@ -1,4 +1,4 @@
-const dbManager = require('./dbManager')('BTE');
+const dbManager = require('./dbManager')
 const bcrypt = require('bcrypt');
 
 exports.login = function (req, res) {

@@ -9,10 +9,12 @@ chai.use(chaiHttp);
 
 let expect = chai.expect;
 
-before(async function () {
-    await dbManager.clearDb();
-});
+let agent = chai.request.agent(server);
+
 describe('dbManager', function () {
+    before(async function () {
+        await dbManager.clearDb();
+    });
     describe('Users', function () {
         it('should create a user in the database with no error', function (done) {
             // test password is output of bcrypt.hash("0", 10)
@@ -121,29 +123,28 @@ describe('dbManager', function () {
     });
 });
 
-before(async function () {
-    await dbManager.createUser(
-        uuid.NIL,
-        'username',
-        '$2b$10$wXch61ldyyTrqH/Ozc/mGe8LJ/aMK3FqHATwnReKu8QcqVaIc7/T.'
-    );
-});
 describe('Routes', function () {
+    before(async function () {
+        await dbManager.clearDb();
+        await dbManager.createUser(
+            uuid.NIL,
+            'username',
+            '$2b$10$wXch61ldyyTrqH/Ozc/mGe8LJ/aMK3FqHATwnReKu8QcqVaIc7/T.'
+        );
+    });
     describe('Login', function () {
         it('should return the login page', function (done) {
-            chai.request(server)
-                .get('/login')
-                .end(function (err, res) {
-                    if (err) {
-                        done(err);
-                    }
-                    expect(res).to.have.status(200);
-                    expect(res.text).to.contain('BetterThanExcel');
-                    done();
-                });
+            agent.get('/login').end(function (err, res) {
+                if (err) {
+                    done(err);
+                }
+                expect(res).to.have.status(200);
+                expect(res.text).to.contain('BetterThanExcel');
+                done();
+            });
         });
         it('should log in with previously created user', function (done) {
-            chai.request(server)
+            agent
                 .post('/login')
                 .set('content-type', 'application/json')
                 .send({ username: 'username', password: '0' })
@@ -156,5 +157,63 @@ describe('Routes', function () {
                     done();
                 });
         });
+        it('should reject the incorrect password for the user', function (done) {
+            agent
+                .post('/login')
+                .set('content-type', 'application/json')
+                .send({ username: 'username', password: 'wrongpassword' })
+                .end(function (err, res, bod) {
+                    if (err) {
+                        done(err);
+                        return;
+                    }
+                    expect(res).to.have.status(401);
+                    done();
+                });
+        });
+    });
+    describe('Index', function () {
+        it('should return the index page as we are logged in', function (done) {
+            agent.get('/').end(function (err, res) {
+                if (err) {
+                    done(err);
+                }
+                expect(res).to.have.status(200);
+                expect(res.text).to.contain('Courses');
+                done();
+            });
+        });
+    });
+    describe('Register', function () {
+        it('should return the register page', function (done) {
+            agent.get('/register').end(function (err, res) {
+                if (err) {
+                    done(err);
+                }
+                expect(res).to.have.status(200);
+                expect(res.text).to.contain('BetterThanExcel');
+                done();
+            });
+        });
+        it('should fail to create a duplicate user', function (done) {
+            agent
+                .post('/register')
+                .set('content-type', 'application/json')
+                .send({ username: 'username', password: 'wrongpassword' })
+                .end(function (err, res, bod) {
+                    if (err) {
+                        done(err);
+                        return;
+                    }
+                    expect(res).to.have.status(401);
+                    done();
+                });
+        });
+    });
+});
+
+after(function () {
+    server.close(function () {
+        console.log('Testing Done!');
     });
 });
