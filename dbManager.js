@@ -51,7 +51,7 @@ con.query(
 );
 
 con.query(
-    'CREATE TABLE IF NOT EXISTS courses (id VARCHAR(255) PRIMARY KEY, userid VARCHAR(255), name VARCHAR(255), colour VARCHAR(7), FOREIGN KEY (userid) REFERENCES logins(id));',
+    'CREATE TABLE IF NOT EXISTS courses (id VARCHAR(255) PRIMARY KEY, userid VARCHAR(255), name VARCHAR(255), colour VARCHAR(7), FOREIGN KEY (userid) REFERENCES logins(id) ON DELETE CASCADE);',
     function (err, result) {
         if (err) throw err;
         // console.log("Courses table created/exists");
@@ -59,7 +59,7 @@ con.query(
 );
 
 con.query(
-    'CREATE TABLE IF NOT EXISTS assignments (id VARCHAR(255) PRIMARY KEY, userid VARCHAR(255), courseid VARCHAR(255), name VARCHAR(255),  due DATE, done BOOLEAN, weight INTEGER, grade INTEGER, FOREIGN KEY (userid) REFERENCES logins(id), FOREIGN KEY (courseid) REFERENCES courses(id));',
+    'CREATE TABLE IF NOT EXISTS assignments (id VARCHAR(255) PRIMARY KEY, userid VARCHAR(255), courseid VARCHAR(255), name VARCHAR(255),  due DATE, done BOOLEAN, weight INTEGER, grade INTEGER, FOREIGN KEY (userid) REFERENCES logins(id) ON DELETE CASCADE, FOREIGN KEY (courseid) REFERENCES courses(id) ON DELETE CASCADE);',
     function (err, result) {
         if (err) throw err;
         // console.log("Assignment table created/exists");
