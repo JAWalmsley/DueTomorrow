@@ -57,6 +57,10 @@ app.get('/register', (req, res) => {
     res.render('register');
 });
 
+app.get('/gpa', (req, res) => {
+    res.render('gpa')
+})
+
 app.get('/courses', (req, res) => {
     if (!req.session.loggedin) {
         res.redirect('/login');

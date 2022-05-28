@@ -43,7 +43,7 @@ con.query('USE ?;'.replace('?', dbName), function (err, result) {
 });
 
 con.query(
-    'CREATE TABLE IF NOT EXISTS logins (userid VARCHAR(255) primary key, username VARCHAR(255), password VARCHAR(255));',
+    'CREATE TABLE IF NOT EXISTS logins (id VARCHAR(255) PRIMARY KEY, username VARCHAR(255), password VARCHAR(255));',
     function (err, result) {
         if (err) throw err;
         // console.log("Login table created/exists");
@@ -51,7 +51,7 @@ con.query(
 );
 
 con.query(
-    'CREATE TABLE IF NOT EXISTS courses (userid VARCHAR(255), id VARCHAR(255), name VARCHAR(255), colour VARCHAR(7), FOREIGN KEY (userid) REFERENCES logins(userid));\n',
+    'CREATE TABLE IF NOT EXISTS courses (id VARCHAR(255) PRIMARY KEY, userid VARCHAR(255), name VARCHAR(255), colour VARCHAR(7), FOREIGN KEY (userid) REFERENCES logins(id));',
     function (err, result) {
         if (err) throw err;
         // console.log("Courses table created/exists");
@@ -59,7 +59,7 @@ con.query(
 );
 
 con.query(
-    'CREATE TABLE IF NOT EXISTS assignments (userid VARCHAR(255), id VARCHAR(255) PRIMARY KEY,  name VARCHAR(255), course VARCHAR(255), due DATE, done BOOLEAN, FOREIGN KEY (userid) REFERENCES logins(userid));',
+    'CREATE TABLE IF NOT EXISTS assignments (id VARCHAR(255) PRIMARY KEY, userid VARCHAR(255), courseid VARCHAR(255), name VARCHAR(255),  due DATE, done BOOLEAN, weight INTEGER, grade INTEGER, FOREIGN KEY (userid) REFERENCES logins(id), FOREIGN KEY (courseid) REFERENCES courses(id));',
     function (err, result) {
         if (err) throw err;
         // console.log("Assignment table created/exists");
@@ -68,14 +68,13 @@ con.query(
 
 // FUNCTIONS
 
-
 exports.getCourses = function (userid) {
     return makeReq('SELECT * FROM courses WHERE userid = ?', [userid]);
 };
 
 exports.createCourse = function (userid, courseid, name, colour) {
     return makeReq(
-        'INSERT INTO courses (userid, id, name, colour) VALUES (?)',
+        'INSERT INTO courses (id, userid, name, colour) VALUES (?)',
         [[userid, courseid, name, colour]]
     );
 };
@@ -135,4 +134,3 @@ exports.clearDb = function () {
 
     return Promise.all([logins, courses, assignments]);
 };
-

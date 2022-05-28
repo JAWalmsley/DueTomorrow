@@ -11,20 +11,20 @@ block all
                             th Due Date
                             th(style="width: 16px") Completed
 
-                        for curr_item in assignments
-                            // TODO: Colour coding
-                            tr()
-                                td(style="display:none;") #{curr_item.id}
-                                td #{curr_item.name}
-                                td.courseCell #{curr_item.course}
-                                - var dateopts = {weekday: "long", year: "numeric", month: "long", day: "numeric"}
-                                td #{new Date(curr_item.due).toLocaleString("en-US", dateopts)}
-                                td.center
-                                    label
-                                        input(type='checkbox', id=curr_item.id, checked=curr_item.done == 1, onclick=`sendCompleted(this)`)
-                                        span
-                                td.center
-                                    a.black-text(href="#", onclick='deleteAssignment(this)') #[i.material-icons delete]
+                    for curr_item in assignments
+                        // TODO: Colour coding
+                        tr()
+                            td(style="display:none;") #{curr_item.id}
+                            td #{curr_item.name}
+                            td.courseCell #{curr_item.course}
+                            - var dateopts = {weekday: "long", year: "numeric", month: "long", day: "numeric"}
+                            td #{new Date(curr_item.due).toLocaleString("en-US", dateopts)}
+                            td.center
+                                label
+                                    input(type='checkbox', id=curr_item.id, checked=curr_item.done == 1, onclick=`sendCompleted(this)`)
+                                    span
+                            td.center
+                                a.black-text(href="#", onclick='deleteAssignment(this)') #[i.material-icons delete]
                 div(style="min-height: 50vh")
         div.indigo.accent-2.white-text.container(style="position: fixed; bottom: 0; padding: 16px; margin: 8px; border-radius: 8px; z-index: 3000")
             h5 Add New Item
