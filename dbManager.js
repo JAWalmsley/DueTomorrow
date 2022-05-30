@@ -67,13 +67,13 @@ con.query(
 );
 
 exports.User = class {
-    /** 
-    * Create a user
-    * @param {String} id - User'd UUID (use uuid.v4())
-    * @param {String} username - User's username
-    * @param {String} password - Hash of user's password
-    * @return {ReturnValueDataTypeHere} Brief description of the returning value here.
-    */
+    /**
+     * Create a user
+     * @param {String} id - User'd UUID (use uuid.v4())
+     * @param {String} username - User's username
+     * @param {String} password - Hash of user's password
+     * @returns {Promise} mySQL query Promise
+     */
     static create(id, username, password) {
         return makeReq(
             'INSERT INTO logins (id, username, password) VALUES (?)',
@@ -81,6 +81,11 @@ exports.User = class {
         );
     }
 
+    /**
+     * Gets a user by username
+     * @param {String} username - The username to search by
+     * @returns {Object} The first result in the results (should be the only result)
+     */
     static getByUsername(username) {
         return makeReq('SELECT * FROM logins WHERE username = ?', [
             username,
@@ -91,6 +96,15 @@ exports.User = class {
 };
 
 exports.Course = class {
+    /**
+     * Create a course
+     * @param {String} id - The id of the course
+     * @param {String} userid - The id of the user this course belongs to
+     * @param {String} name - The name of the course
+     * @param {String} colour - The colour of the course
+     * @param {Int} credits - The amount of credits this course is worth
+     * @returns {Promise} mySQL query Promise
+     */
     static create(id, userid, name, colour, credits) {
         return makeReq(
             'INSERT INTO courses (id, userid, name, colour, credits) VALUES (?)',
@@ -98,16 +112,38 @@ exports.Course = class {
         );
     }
 
+    /**
+     * Gets all courses belonging to a user
+     * @param {String} userid - The id to search by
+     * @returns {Promise} mySQL query Promise
+     */
     static getByUserID(userid) {
         return makeReq('SELECT * FROM courses WHERE userid = ?', [userid]);
     }
 
+    /**
+     * Delete a given course
+     * @param {String} id - The id of the course to delete
+     * @returns {Promise} mySQL query Promise
+     */
     static delete(id) {
         return makeReq('DELETE FROM courses WHERE id = ?', [id]);
     }
 };
 
 exports.Assignment = class {
+    /**
+     * Create an assignment
+     * @param {String} id
+     * @param {String} userid
+     * @param {String} courseid
+     * @param {String} name
+     * @param {String} due
+     * @param {Boolean} done
+     * @param {Int} weight
+     * @param {Int} grade
+     * @returns {Promise} mySQL query Promise
+     */
     static create(id, userid, courseid, name, due, done, weight, grade) {
         return makeReq(
             'INSERT INTO assignments (id, userid, courseid, name, due, done, weight, grade) VALUES (?)',
@@ -115,15 +151,29 @@ exports.Assignment = class {
         );
     }
 
+    /**
+     * Get all assignments owned by given user
+     * @param {String} userID
+     * @returns {Promise} mySQL query Promise
+     */
     static getByUserID(userID) {
         return makeReq('SELECT * FROM assignments WHERE userid = ?', [userID]);
     }
 
+    /**
+     * Delete an assignment
+     * @param {String} id 
+     * @returns {Promise} mySQL query Promise
+     */
     static delete(id) {
         return makeReq('DELETE FROM assignments WHERE id = ?', [id]);
     }
 };
 
+/**
+ * Clears all tables in DB
+ * @returns {Promise} mySQL query Promise
+ */
 exports.clearDb = function () {
     let assignments = makeReq('DELETE FROM assignments');
     let courses = makeReq('DELETE FROM courses');
