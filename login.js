@@ -10,7 +10,7 @@ exports.login = function (req, res) {
     let passwordCompare = userSearch
         .then(function (user) {
             if (user == undefined) {
-                return;
+                throw Error('User not exist');
             }
             return bcrypt.compare(password, user.password);
         })
@@ -21,7 +21,7 @@ exports.login = function (req, res) {
     ]) {
         if (passwordCorrect) {
             req.session.loggedin = true;
-            req.session.userid = user.userid;
+            req.session.userid = user.id;
             req.session.username = user.username;
             res.sendStatus(200);
         } else {

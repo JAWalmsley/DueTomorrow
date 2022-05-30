@@ -26,7 +26,7 @@ exports.register = function (req, res, callback) {
         })
         .then(function (user) {
             req.session.loggedin = true;
-            req.session.userid = user.userid;
+            req.session.userid = user.id;
             req.session.username = user.username;
             res.sendStatus(200);
         });

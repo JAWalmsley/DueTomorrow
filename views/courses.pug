@@ -8,39 +8,39 @@ block all
                         tr
                             th Course
                             th Colour
+                            th Credits
                         for curr_item in courses
                             tr
                                 td(style="display:none;") #{curr_item.id}
                                 td #{curr_item.name}
-                                td
+                                td.center-align
                                     div(style="width: 32px; height: 32px; background-color: " + curr_item.colour)
-                                td.center
-                                    a.black-text(href="#", onclick='deleteCourse(this)') #[i.material-icons delete]
+                                td.center-align #{curr_item.credits}
+                                td
+                                    a.center-align.black-text(href="#", onclick='deleteCourse(this)') #[i.material-icons delete]
                 div(style="min-height: 50vh")
         div.indigo.accent-2.white-text.container(style="position: fixed; bottom: 0; padding: 16px; margin: 8px; border-radius: 8px; z-index: 3000")
             h5 Add New Item
             form(id="newitemform", style="color: white")
-                div.input-field
-                    input(placeholder="Course",name="courseName", type="text", class="validate")
-                    label(for="course") Course
-                div.input-field
-                    label.pickerlabel
-                        input.autocomplete(id="colour", name="colour", type="color")
-                a.btn.right.black-text(href="#", onclick="newitem()", id="submit") Add
+                    div.row
+                        div.input-field.col.s3
+                            input(placeholder="Course",name="courseName", type="text", class="validate").white-text
+                            label(for="courseName") Course
+                        div.input-field.col.s3
+                            label.pickerlabel
+                                input.autocomplete(id="colour", name="colour", type="color").white-text
+                        div.input-field.col.s3
+                            input(placeholder="Credits",name="credits", type="number", class="validate").white-text
+                            label(for="credits") Credits
+                        a.btn.right.black-text(href="#", onclick="newitem()", id="submit") Add
 
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js")
     script(type='text/javascript', src='js/materialize.min.js')
     script(src="js/formHandler.js")
     style.
-        .input-field {
-            display: inline-block;
-            width: 30%;
-            padding-right: 16px;
-        }
-
         .pickerlabel {
             background-color: black;
-            width: 100%;
+            width: 90%;
         }
 
         input[type=color] {
@@ -86,6 +86,9 @@ block all
             });
             $(self).closest('tr')[0].remove();
         }
-
+    style.
+        td {
+            border-radius: 0px;
+        }
 
 

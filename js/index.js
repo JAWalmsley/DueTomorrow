@@ -5,15 +5,31 @@ $(document).ready(function () {
     $('input.autocomplete').autocomplete({
         data: autocompleteData
     });
+    courseNameFill();
     colourRows();
 });
 
 $('#date').keyup(function (e) {
     if (e.keyCode === 13) {
-        $('#date').val(dateStringParse($('#date').val()))
         newitem();
     }
 })
+
+function courseNameFill() {
+    $('#assignmentTable tr').each(function(index, tr) {
+        // Ignore header row
+        if (index == 0) {
+            return;
+        }
+        let row = $(tr);
+        let courseCell = row.find(".courseCell");
+        courseList.forEach(function(c) {
+            if(c.id == courseCell.text()) {
+                courseCell.text(c.name)
+            };
+        });
+    });
+}
 
 function colourRows() {
     /**
@@ -45,6 +61,7 @@ function colourRows() {
 }
 
 function newitem() {
+    $('#date').val(dateStringParse($('#date').val()))
     let empties = 0
     $(':input').each(function () {
         if ($(this).val() == "") {
@@ -54,10 +71,17 @@ function newitem() {
     if (empties > 0) {
         return
     }
+    let data = objectifyForm($('#newitemform').serializeArray());
+    courseList.forEach(function(c) {
+        if(c.name == data.course) {
+            data.course = c.id;
+        };
+    });
+    console.log(data)
     fetch("/newitem", {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(objectifyForm($('#newitemform').serializeArray()))
+        body: JSON.stringify(data)
     }).then(res => {
         location.reload()
     });

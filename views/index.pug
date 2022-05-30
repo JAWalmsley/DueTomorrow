@@ -9,17 +9,19 @@ block all
                             th Item
                             th Course
                             th Due Date
+                            th Weight
                             th(style="width: 16px") Completed
 
                     for curr_item in assignments
-                        // TODO: Colour coding
+                        -console.log(curr_item)
                         tr()
-                            td(style="display:none;") #{curr_item.id}
-                            td #{curr_item.name}
-                            td.courseCell #{curr_item.course}
+                            td(style="display:none;").center-align #{curr_item.id}
+                            td.center-align #{curr_item.name} 
+                            td.courseCell #{curr_item.courseid}
                             - var dateopts = {weekday: "long", year: "numeric", month: "long", day: "numeric"}
                             td #{new Date(curr_item.due).toLocaleString("en-US", dateopts)}
-                            td.center
+                            td #{curr_item.weight}
+                            td.center-align
                                 label
                                     input(type='checkbox', id=curr_item.id, checked=curr_item.done == 1, onclick=`sendCompleted(this)`)
                                     span
@@ -29,26 +31,25 @@ block all
         div.indigo.accent-2.white-text.container(style="position: fixed; bottom: 0; padding: 16px; margin: 8px; border-radius: 8px; z-index: 3000")
             h5 Add New Item
             form(id="newitemform", style="color: white")
-                div.input-field
-                    input(placeholder="Title",name="title", type="text", class="validate").white-text
-                    label(for="title") Title
-                div.input-field
-                    input.autocomplete(placeholder="Course", id="course", name="course", type="text", class="validate").white-text
-                    label(for="course") Course
-                div.input-field
-                    input(placeholder="Due Date", id="date", name="due", type="text", class="validate", max="2999-12-31").white-text
-                    label(for="due") Due Date
-                a.btn.right.black-text(href="#", onclick="newitem()", id="submit").indigo-text Add
+                div.row
+                    div.input-field.col.s3
+                        input(placeholder="Title",name="title", type="text", class="validate").white-text
+                        label(for="title") Title
+                    div.input-field.col.s3
+                        input.autocomplete(placeholder="Course", id="course", name="course", type="text", class="validate").white-text
+                        label(for="course") Course
+                    div.input-field.col.s3
+                        input(placeholder="Due Date", id="date", name="due", type="text", class="validate", max="2999-12-31").white-text
+                        label(for="due") Due Date
+                    div.input-field.col.s3
+                        input(placeholder="Weight", id="weight", name="weight", type="number", class="validate").white-text
+                        label(for="weight") Weight
+                div.row
+                    a.btn.right.white-text(href="#", onclick="newitem()", id="submit") Add
 
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js")
     script(type='text/javascript', src='js/materialize.min.js')
     script(src="js/formHandler.js")
-    style.
-        .input-field {
-            display: inline-block;
-            width: 30%;
-            padding-right: 16px;
-        }
     script(type='text/javascript').
         let courseList = JSON.parse("#{courses}".replaceAll("&quot;", "\""))
         let autocompleteData = {};
@@ -56,6 +57,10 @@ block all
             autocompleteData[course.name] = null;
         }
     script(src="js/index.js")
+    style.
+        td {
+            border-radius: 0px;
+        }
 
 
 

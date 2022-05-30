@@ -75,7 +75,6 @@ app.get('/courses', (req, res) => {
 });
 
 app.post('/complete', (req, res) => {
-    console.log(req.body);
     dbManager.Assignment.setComplete(req.body.item, req.body.done)
         .then(function (result) {
             // console.log("Number updated: " + result.affectedRows)
@@ -127,7 +126,6 @@ app.post('/deleteCourse', (req, res) => {
 });
 
 app.post('/newitem', (req, res) => {
-    console.log(req.body);
     dbManager.Assignment.create(
         uuid.v4(),
         req.session.userid,
