@@ -13,7 +13,6 @@ block all
                             th(style="width: 16px") Completed
 
                     for curr_item in assignments
-                        -console.log(curr_item)
                         tr()
                             td(style="display:none;").center-align #{curr_item.id}
                             td.center-align #{curr_item.name} 
@@ -51,7 +50,7 @@ block all
     script(type='text/javascript', src='js/materialize.min.js')
     script(src="js/formHandler.js")
     script(type='text/javascript').
-        let courseList = JSON.parse("#{courses}".replaceAll("&quot;", "\""))
+        let courseList = !{JSON.stringify(courses)};
         let autocompleteData = {};
         for (let course of courseList) {
             autocompleteData[course.name] = null;

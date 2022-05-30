@@ -41,7 +41,7 @@ app.get('/', (req, res) => {
             res.render('index', {
                 username: req.session.username,
                 assignments: a,
-                courses: JSON.stringify(c),
+                courses: c,
             });
         })
         .catch((err) => {
@@ -58,7 +58,24 @@ app.get('/register', (req, res) => {
 });
 
 app.get('/gpa', (req, res) => {
-    res.render('gpa');
+    if (!req.session.loggedin) {
+        res.redirect('/login');
+        return;
+    }
+    let assig = dbManager.Assignment.getByUserID(req.session.userid);
+    let cour = dbManager.Course.getByUserID(req.session.userid);
+
+    Promise.all([assig, cour])
+        .then(function ([a, c]) {
+            res.render('gpa', {
+                username: req.session.username,
+                assignments: a,
+                courses: c
+            });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 });
 
 app.get('/courses', (req, res) => {

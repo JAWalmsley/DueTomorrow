@@ -1,88 +1,20 @@
 extends loggedin.pug
 block all
     div.container
-        div.row
+        for curr_course in courses
             div.col.s5
                 div.course
-                    table
+                - console.log(curr_course)
+                    table.courseTable
                         thead
                             tr
-                                th ENGINEER 1P13B
+                                th #{curr_course.name}
                                 th
                                 th 100%
                             tr
                                 th Assignment
                                 th Weight
                                 th Grade
-                        tr
-                            td Assignment Name 1
-                            td 50%
-                            td 100%
-                        tr
-                            td Assignment Name 2
-                            td 50%
-                            td 100%
-            div.col.s5
-                div.course
-                    table
-                        thead
-                            tr
-                                th ENGINEER 1P13B
-                                th
-                                th 100%
-                            tr
-                                th Assignment
-                                th Weight
-                                th Grade
-                        tr
-                            td Assignment Name 1
-                            td 50%
-                            td 100%
-                        tr
-                            td Assignment Name 2
-                            td 50%
-                            td 100%
-        div.row
-            div.col.s5
-                div.course
-                    table
-                        thead
-                            tr
-                                th ENGINEER 1P13B
-                                th
-                                th 100%
-                            tr
-                                th Assignment
-                                th Weight
-                                th Grade
-                        tr
-                            td Assignment Name 1
-                            td 50%
-                            td 100%
-                        tr
-                            td Assignment Name 2
-                            td 50%
-                            td 100%
-            div.col.s5
-                div.course
-                    table
-                        thead
-                            tr
-                                th ENGINEER 1P13B
-                                th
-                                th 100%
-                            tr
-                                th Assignment
-                                th Weight
-                                th Grade
-                        tr
-                            td Assignment Name 1
-                            td 50%
-                            td 100%
-                        tr
-                            td Assignment Name 2
-                            td 50%
-                            td 100%
     style.
         table {
             border: 2px solid;
@@ -91,3 +23,9 @@ block all
         tr {
             line-height: 0px;
         }
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js")
+    script(type='text/javascript').
+        let courseList = !{JSON.stringify(courses)};
+        console.log(courseList);
+    script(src="js/gpa.js")
+    
