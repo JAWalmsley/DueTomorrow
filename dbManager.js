@@ -51,7 +51,7 @@ con.query(
 );
 
 con.query(
-    'CREATE TABLE IF NOT EXISTS courses (id VARCHAR(255) PRIMARY KEY, userid VARCHAR(255), name VARCHAR(255), colour VARCHAR(7), FOREIGN KEY (userid) REFERENCES logins(id) ON DELETE CASCADE);',
+    'CREATE TABLE IF NOT EXISTS courses (id VARCHAR(255) PRIMARY KEY, userid VARCHAR(255), name VARCHAR(255), colour VARCHAR(7), credits INTEGER, FOREIGN KEY (userid) REFERENCES logins(id) ON DELETE CASCADE);',
     function (err, result) {
         if (err) throw err;
         // console.log("Courses table created/exists");
@@ -66,65 +66,62 @@ con.query(
     }
 );
 
-// FUNCTIONS
+exports.User = class {
+    /** 
+    * Create a user
+    * @param {String} id - User'd UUID (use uuid.v4())
+    * @param {String} username - User's username
+    * @param {String} password - Hash of user's password
+    * @return {ReturnValueDataTypeHere} Brief description of the returning value here.
+    */
+    static create(id, username, password) {
+        return makeReq(
+            'INSERT INTO logins (id, username, password) VALUES (?)',
+            [id, username, password]
+        );
+    }
 
-exports.getCourses = function (userid) {
-    return makeReq('SELECT * FROM courses WHERE userid = ?', [userid]);
+    static getByUsername(username) {
+        return makeReq('SELECT * FROM logins WHERE username = ?', [
+            username,
+        ]).then(function (result) {
+            return result[0];
+        });
+    }
 };
 
-exports.createCourse = function (userid, courseid, name, colour) {
-    return makeReq(
-        'INSERT INTO courses (id, userid, name, colour) VALUES (?)',
-        [[userid, courseid, name, colour]]
-    );
+exports.Course = class {
+    static create(id, userid, name, colour, credits) {
+        return makeReq(
+            'INSERT INTO courses (id, userid, name, colour, credits) VALUES (?)',
+            [id, userid, name, colour, credits]
+        );
+    }
+
+    static getByUserID(userid) {
+        return makeReq('SELECT * FROM courses WHERE userid = ?', [userid]);
+    }
+
+    static delete(id) {
+        return makeReq('DELETE FROM courses WHERE id = ?', [id]);
+    }
 };
 
-exports.deleteCourse = function (id) {
-    //TODO: Courses should be based on their ID and should have foreign keys to their assignments but i cant be bothered rn
-    return makeReq('DELETE FROM courses WHERE id = ?', [id]);
-};
+exports.Assignment = class {
+    static create(id, userid, courseid, name, due, done, weight, grade) {
+        return makeReq(
+            'INSERT INTO assignments (id, userid, courseid, name, due, done, weight, grade) VALUES (?)',
+            [id, userid, courseid, name, due, done, weight, grade]
+        );
+    }
 
-exports.getAssignments = function (userid) {
-    return makeReq(
-        'select * from assignments where userid = ? order by done, due',
-        [userid]
-    );
-};
+    static getByUserID(userID) {
+        return makeReq('SELECT * FROM assignments WHERE userid = ?', [userID]);
+    }
 
-exports.createAssignment = function (
-    assignmentid,
-    userid,
-    name,
-    course,
-    due,
-    done
-) {
-    return makeReq(
-        'INSERT INTO assignments (id, userid, name, course, due, done) VALUES (?)',
-        [[assignmentid, userid, name, course, due, done]]
-    );
-};
-
-exports.deleteAssignment = function (assignmentID) {
-    return makeReq('DELETE FROM assignments WHERE id = ?', [assignmentID]);
-};
-
-exports.markComplete = function (done, assignmentID) {
-    return makeReq('UPDATE assignments SET done = ? WHERE id = ?', [
-        done,
-        assignmentID,
-    ]);
-};
-
-exports.getUsers = function (username) {
-    return makeReq('SELECT * FROM logins WHERE username = ?', [username]);
-};
-
-exports.createUser = function (userid, username, hash) {
-    return makeReq(
-        'INSERT INTO logins (userid, username, password) VALUES (?)',
-        [[userid, username, hash]]
-    );
+    static delete(id) {
+        return makeReq('DELETE FROM assignments WHERE id = ?', [id]);
+    }
 };
 
 exports.clearDb = function () {
