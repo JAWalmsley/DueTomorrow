@@ -18,25 +18,23 @@ describe('dbManager', function () {
     describe('Users', function () {
         it('should create a user in the database with no error', function (done) {
             // test password is output of bcrypt.hash("0", 10)
-            dbManager
-                .createUser(
-                    uuid.NIL,
-                    'username',
-                    '$2b$10$wXch61ldyyTrqH/Ozc/mGe8LJ/aMK3FqHATwnReKu8QcqVaIc7/T.'
-                )
+            dbManager.User.create(
+                uuid.NIL,
+                'username',
+                '$2b$10$wXch61ldyyTrqH/Ozc/mGe8LJ/aMK3FqHATwnReKu8QcqVaIc7/T.'
+            )
                 .then(() => {
                     done();
                 })
                 .catch((err) => done(err));
         });
         it('should find one user in the database', function (done) {
-            dbManager
-                .getUsers('username')
+            dbManager.User.getByUsername('username')
                 .then((res) => {
-                    if (res.length == 1) {
+                    if (res != undefined) {
                         done();
                     } else {
-                        done(Error('wrong length: ' + res.length));
+                        done(Error('Couldnt find user: ' + res));
                     }
                 })
                 .catch((err) => done(err));
@@ -44,16 +42,20 @@ describe('dbManager', function () {
     });
     describe('Courses', function () {
         it('should create a course in the database with no error', function (done) {
-            dbManager
-                .createCourse(uuid.NIL, uuid.NIL, 'courseName', '#000000')
+            dbManager.Course.create(
+                uuid.NIL,
+                uuid.NIL,
+                'courseName',
+                '#000000',
+                3
+            )
                 .then(() => {
                     done();
                 })
                 .catch((err) => done(err));
         });
         it('should find one course in the database', function (done) {
-            dbManager
-                .getCourses(uuid.NIL)
+            dbManager.Course.getByUserID(uuid.NIL)
                 .then((res) => {
                     expect(res.length).to.equal(1);
                     done();
@@ -61,16 +63,14 @@ describe('dbManager', function () {
                 .catch((err) => done(err));
         });
         it('should delete the course with no error', function (done) {
-            dbManager
-                .deleteCourse(uuid.NIL)
+            dbManager.Course.delete(uuid.NIL)
                 .then(() => {
                     done();
                 })
                 .catch((err) => done(err));
         });
         it('should find zero courses in the database', function (done) {
-            dbManager
-                .getCourses(uuid.NIL)
+            dbManager.Course.getByUserID(uuid.NIL)
                 .then((res) => {
                     expect(res.length).to.equal(0);
                     done();
@@ -79,24 +79,33 @@ describe('dbManager', function () {
         });
     });
     describe('Assignments', function () {
+        before(async function () {
+            await dbManager.Course.create(
+                uuid.NIL,
+                uuid.NIL,
+                'courseName',
+                '#000000',
+                3
+            )
+        });
         it('should create an assignment with no error', function (done) {
-            dbManager
-                .createAssignment(
-                    uuid.NIL,
-                    uuid.NIL,
-                    'assignmentName',
-                    'courseName',
-                    '0000-00-00',
-                    false
-                )
+            dbManager.Assignment.create(
+                uuid.NIL,
+                uuid.NIL,
+                uuid.NIL,
+                'assignmentName',
+                '0000-00-00',
+                false,
+                100,
+                50
+            )
                 .then((res) => {
                     done();
                 })
                 .catch((err) => done(err));
         });
         it('should find one assignment in the database', function (done) {
-            dbManager
-                .getAssignments(uuid.NIL)
+            dbManager.Assignment.getByUserID(uuid.NIL)
                 .then((res) => {
                     expect(res.length).to.equal(1);
                     done();
@@ -104,16 +113,14 @@ describe('dbManager', function () {
                 .catch((err) => done(err));
         });
         it('should delete an assignment with no error', function (done) {
-            dbManager
-                .deleteAssignment(uuid.NIL)
+            dbManager.Assignment.delete(uuid.NIL)
                 .then((res) => {
                     done();
                 })
                 .catch((err) => done(err));
         });
         it('should find zero assignments in the database', function (done) {
-            dbManager
-                .getAssignments(uuid.NIL)
+            dbManager.Assignment.getByUserID(uuid.NIL)
                 .then((res) => {
                     expect(res.length).to.equal(0);
                     done();
@@ -126,11 +133,13 @@ describe('dbManager', function () {
 describe('Routes', function () {
     before(async function () {
         await dbManager.clearDb();
-        await dbManager.createUser(
+        await dbManager.User.create(
             uuid.NIL,
             'username',
             '$2b$10$wXch61ldyyTrqH/Ozc/mGe8LJ/aMK3FqHATwnReKu8QcqVaIc7/T.'
-        );
+        ).catch((e) => {
+            console.log(e);
+        });
     });
     describe('Login', function () {
         it('should return the login page', function (done) {
