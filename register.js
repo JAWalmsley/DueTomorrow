@@ -6,12 +6,12 @@ exports.register = function (req, res, callback) {
     const { username, password } = req.body;
     let userExists = false;
     dbManager
-        .getUsers(username)
+        .User.getByUsername(username)
         .then(function (result) {
-            if (result.length > 0) {
+            if (result != undefined) {
                 console.log('already exists');
                 res.sendStatus(401);
-                throw 'Already exists';
+                return;
             }
             return bcrypt.hash(password, 10);
         })
@@ -19,13 +19,12 @@ exports.register = function (req, res, callback) {
             console.log(err);
         })
         .then(function (hash) {
-            return dbManager.createUser(uuid.v4(), username, hash);
+            return dbManager.User.create(uuid.v4(), username, hash);
         })
         .then(function (result) {
-            return dbManager.getUsers(username);
+            return dbManager.User.getByUsername(username);
         })
-        .then(function (result) {
-            let user = result[0];
+        .then(function (user) {
             req.session.loggedin = true;
             req.session.userid = user.userid;
             req.session.username = user.username;

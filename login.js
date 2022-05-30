@@ -6,22 +6,20 @@ exports.login = function (req, res) {
     if (!username || !password) {
         res.sendStatus(400);
     }
-    let userSearch = dbManager.getUsers(username);
+    let userSearch = dbManager.User.getByUsername(username);
     let passwordCompare = userSearch
-        .then(function (result) {
-            if (result[0] == undefined) {
+        .then(function (user) {
+            if (user == undefined) {
                 return;
             }
-            let user = result[0];
             return bcrypt.compare(password, user.password);
         })
         .catch((err) => console.log(err));
     Promise.all([userSearch, passwordCompare]).then(function ([
-        users,
+        user,
         passwordCorrect,
     ]) {
         if (passwordCorrect) {
-            let user = users[0];
             req.session.loggedin = true;
             req.session.userid = user.userid;
             req.session.username = user.username;

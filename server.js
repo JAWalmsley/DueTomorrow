@@ -33,8 +33,8 @@ app.get('/', (req, res) => {
         res.redirect('/login');
         return;
     }
-    let assig = dbManager.getAssignments(req.session.userid);
-    let cour = dbManager.getCourses(req.session.userid);
+    let assig = dbManager.Assignment.getByUserID(req.session.userid);
+    let cour = dbManager.Course.getByUserID(req.session.userid);
 
     Promise.all([assig, cour])
         .then(function ([a, c]) {
@@ -58,15 +58,15 @@ app.get('/register', (req, res) => {
 });
 
 app.get('/gpa', (req, res) => {
-    res.render('gpa')
-})
+    res.render('gpa');
+});
 
 app.get('/courses', (req, res) => {
     if (!req.session.loggedin) {
         res.redirect('/login');
         return;
     }
-    dbManager.getCourses(req.session.userid).then(function (result) {
+    dbManager.Course.getByUserID(req.session.userid).then(function (result) {
         res.render('courses', {
             username: req.session.username,
             courses: result,
@@ -76,8 +76,7 @@ app.get('/courses', (req, res) => {
 
 app.post('/complete', (req, res) => {
     console.log(req.body);
-    dbManager
-        .markComplete(req.body.done, req.body.item)
+    dbManager.Assignment.setComplete(req.body.item, req.body.done)
         .then(function (result) {
             // console.log("Number updated: " + result.affectedRows)
         })
@@ -88,8 +87,7 @@ app.post('/complete', (req, res) => {
 });
 
 app.post('/deleteAssignment', (req, res) => {
-    dbManager
-        .deleteAssignment(req.body.item)
+    dbManager.Assignment.delete(req.body.item)
         .then(function (result) {
             // console.log("Number updated: " + result.affectedRows)
         })
@@ -100,13 +98,13 @@ app.post('/deleteAssignment', (req, res) => {
 });
 
 app.post('/newcourse', (req, res) => {
-    dbManager
-        .createCourse(
-            req.session.userid,
-            uuid.v4(),
-            req.body.courseName,
-            req.body.colour
-        )
+    dbManager.Course.create(
+        uuid.v4(),
+        req.session.userid,
+        req.body.courseName,
+        req.body.colour,
+        req.body.credits
+    )
         .then(function (result) {
             // console.log("Number of records inserted: " + result.affectedRows);
             res.sendStatus(200);
@@ -118,8 +116,7 @@ app.post('/newcourse', (req, res) => {
 });
 
 app.post('/deleteCourse', (req, res) => {
-    dbManager
-        .deleteCourse(req.body.item)
+    dbManager.Course.delete(req.body.item)
         .then(function (result) {
             // console.log("Number of records inserted: " + result.affectedRows);
         })
@@ -131,15 +128,16 @@ app.post('/deleteCourse', (req, res) => {
 
 app.post('/newitem', (req, res) => {
     console.log(req.body);
-    dbManager
-        .createAssignment(
-            uuid.v4(),
-            req.session.userid,
-            req.body.title,
-            req.body.course,
-            req.body.due,
-            false
-        )
+    dbManager.Assignment.create(
+        uuid.v4(),
+        req.session.userid,
+        req.body.course,
+        req.body.title,
+        req.body.due,
+        false,
+        req.body.weight,
+        0
+    )
         .then(function (result) {
             // console.log("Number of records inserted: " + result.affectedRows);
         })
@@ -160,5 +158,3 @@ app.post('/register', (req, res) => {
 module.exports = app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });
-
-

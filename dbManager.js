@@ -77,14 +77,14 @@ exports.User = class {
     static create(id, username, password) {
         return makeReq(
             'INSERT INTO logins (id, username, password) VALUES (?)',
-            [id, username, password]
+            [[id, username, password]]
         );
     }
 
     /**
      * Gets a user by username
      * @param {String} username - The username to search by
-     * @returns {Object} The first result in the results (should be the only result)
+     * @returns {Promise<Object>} The first result in the results (should be the only result)
      */
     static getByUsername(username) {
         return makeReq('SELECT * FROM logins WHERE username = ?', [
@@ -108,7 +108,7 @@ exports.Course = class {
     static create(id, userid, name, colour, credits) {
         return makeReq(
             'INSERT INTO courses (id, userid, name, colour, credits) VALUES (?)',
-            [id, userid, name, colour, credits]
+            [[id, userid, name, colour, credits]]
         );
     }
 
@@ -147,7 +147,7 @@ exports.Assignment = class {
     static create(id, userid, courseid, name, due, done, weight, grade) {
         return makeReq(
             'INSERT INTO assignments (id, userid, courseid, name, due, done, weight, grade) VALUES (?)',
-            [id, userid, courseid, name, due, done, weight, grade]
+            [[id, userid, courseid, name, due, done, weight, grade]]
         );
     }
 
@@ -158,6 +158,16 @@ exports.Assignment = class {
      */
     static getByUserID(userID) {
         return makeReq('SELECT * FROM assignments WHERE userid = ?', [userID]);
+    }
+
+    /**
+     * Set the complete status of an assignment
+     * @param {String} id 
+     * @param {Boolean} done 
+     * @returns {Promise} mySQL query Promise
+     */
+    static setComplete(id, done) {
+        return makeReq('UPDATE assignments SET done = ? WHERE id = ?', [done, id]);
     }
 
     /**
