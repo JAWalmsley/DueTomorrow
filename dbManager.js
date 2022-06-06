@@ -171,6 +171,16 @@ exports.Assignment = class {
     }
 
     /**
+     * Sets the grade of an assignment
+     * @param {String} id
+     * @param {Int} grade
+     * @returns {Promise} mySQL query Promise
+     */
+    static setGrade(id, grade) {
+        return makeReq('UPDATE assignments SET grade = ? WHERE id = ?', [grade, id]);
+    }
+
+    /**
      * Delete an assignment
      * @param {String} id 
      * @returns {Promise} mySQL query Promise

@@ -95,11 +95,23 @@ app.post('/complete', (req, res) => {
     dbManager.Assignment.setComplete(req.body.item, req.body.done)
         .then(function (result) {
             // console.log("Number updated: " + result.affectedRows)
+            res.sendStatus(200);
         })
         .catch((err) => {
             console.log(err);
         });
-    res.sendStatus(200);
+    
+});
+
+app.post('/setGrade', (req, res) => {
+    dbManager.Assignment.setGrade(req.body.id, req.body.grade)
+    .then(function(result) {
+        res.sendStatus(200);
+    })
+    .catch((err) => {
+        console.log(err);
+        res.sendStatus(500);
+    });
 });
 
 app.post('/deleteAssignment', (req, res) => {
@@ -109,6 +121,7 @@ app.post('/deleteAssignment', (req, res) => {
         })
         .catch((err) => {
             console.log(err);
+            res.sendStatus(500);
         });
     res.sendStatus(200);
 });
@@ -138,6 +151,7 @@ app.post('/deleteCourse', (req, res) => {
         })
         .catch((err) => {
             console.log(err);
+            res.sendStatus(500);
         });
     res.sendStatus(200);
 });
@@ -158,6 +172,7 @@ app.post('/newitem', (req, res) => {
         })
         .catch((err) => {
             console.log(err);
+            res.sendStatus(500);
         });
     res.sendStatus(200);
 });

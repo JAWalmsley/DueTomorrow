@@ -4,9 +4,8 @@ block all
         for curr_course in courses
             div.col.s5
                 div.course
-                - console.log(curr_course)
                     table.courseTable
-                        thead
+                        thead(style=`background-color:${curr_course.colour}`)
                             tr
                                 th #{curr_course.name}
                                 th
@@ -15,10 +14,20 @@ block all
                                 th Assignment
                                 th Weight
                                 th Grade
+                        - let currAssignmentList = assignments.filter(elem => elem.courseid = curr_course.id)
+                        for assig in currAssignmentList
+                            tr
+                                td(style="display:none;") #{assig.id}
+                                td #{assig.name}
+                                td #{assig.weight}
+                                td
+                                    input.grade(type="text", value=assig.grade) 
+                            
+
+                            
     style.
         table {
             border: 2px solid;
-            background-color: #f55
         }
         tr {
             line-height: 0px;
@@ -26,6 +35,5 @@ block all
 block scripts
     script(type='text/javascript').
         let courseList = !{JSON.stringify(courses)};
-        console.log(courseList);
     script(src="js/gpa.js")
     
