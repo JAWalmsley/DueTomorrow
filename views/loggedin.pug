@@ -7,14 +7,18 @@ html
     body
         ul#dropdown.dropdown-content
             li
-                a(href="/courses") Courses
                 a(href="/login") Log Out
-
         nav
             div.nav-wrapper
                 div.container
                     a(href="/", class="brand-logo", style="padding-left: 10px;") BetterThanExcel
                     ul.right
+                        li
+                            a(href="/") Home
+                        li
+                            a(href="/gpa") GPA
+                        li
+                            a(href="/courses") Courses
                         li
                             a(data-target="dropdown").dropdown-trigger #{username}
 block all
