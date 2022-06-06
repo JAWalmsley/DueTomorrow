@@ -1,27 +1,48 @@
 extends loggedin.pug
 block all
     div.container
-        for curr_course in courses
-            div.col.s5
-                div.course
-                    table.courseTable
-                        thead(style=`background-color:${curr_course.colour}`)
-                            tr
-                                th #{curr_course.name}
-                                th
-                                th 100%
-                            tr
-                                th Assignment
-                                th Weight
-                                th Grade
-                        - let currAssignmentList = assignments.filter(elem => elem.courseid = curr_course.id)
-                        for assig in currAssignmentList
-                            tr
-                                td(style="display:none;") #{assig.id}
-                                td #{assig.name}
-                                td #{assig.weight}
-                                td
-                                    input.grade(type="text", value=assig.grade) 
+        div.row
+            div.col.s8
+                for curr_course in courses
+                    div.col.s12
+                        div.course.row
+                            table.courseTable
+                                thead(style=`background-color:${curr_course.colour}`)
+                                    tr
+                                        th(style="display:none;") #{curr_course.id}
+                                        th #{curr_course.name}
+                                        th #{curr_course.credits} Credits
+                                        th.average 0%
+                                    tr
+                                        td Assignment
+                                        td Weight
+                                        td Grade
+                                - let currAssignmentList = assignments.filter(elem => elem.courseid == curr_course.id)
+                                for assig in currAssignmentList
+                                    tr
+                                            td(style="display:none;") #{assig.id}
+                                            td #{assig.name}
+                                            td #{assig.weight}
+                                            td
+                                                input.grade(type="text", value=assig.grade) 
+            div.col.s4
+                table
+                    thead
+                        tr
+                            th Course
+                            th Credits
+                            th Grade
+                    for course in courses
+                        tr
+                            td(style="display:none;") #{course.id}
+                            td #{course.name}
+                            td #{course.credits}
+                            td.average 0%
+                    tr
+                     td()
+                        b Total
+                     td
+                     td#total 0%
                             
 
                             
@@ -30,10 +51,19 @@ block all
             border: 2px solid;
         }
         tr {
-            line-height: 0px;
+            line-height: 1.5;
+        }
+        td {
+            padding: 2px;
+            width: 33%;
+        }
+        input.grade {
+            height: 90% !important;
+            margin: 0px !important;
         }
 block scripts
     script(type='text/javascript').
         let courseList = !{JSON.stringify(courses)};
+        let assignmentList = !{JSON.stringify(assignments)};
     script(src="js/gpa.js")
     

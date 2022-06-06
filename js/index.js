@@ -9,7 +9,7 @@ $(document).ready(function () {
     colourRows();
 });
 
-$('#date').keyup(function (e) {
+$('#weight').keyup(function (e) {
     if (e.keyCode === 13) {
         newitem();
     }
