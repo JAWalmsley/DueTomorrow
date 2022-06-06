@@ -171,5 +171,5 @@ app.post('/register', (req, res) => {
 });
 
 module.exports = app.listen(port, () => {
-    console.log(`Listening on port ${port}`);
+    console.log(`Listening at http://localhost:${port}`);
 });
