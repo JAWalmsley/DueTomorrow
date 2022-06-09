@@ -2,6 +2,7 @@ html
     head
         title BetterThanExcel
         link(rel='stylesheet', href='css/materialize.css', type='text/css')
+        link(rel='stylesheet', href='css/styles.css', type='text/css')
         link(href='https://fonts.googleapis.com/icon?family=Material+Icons', rel='stylesheet')
         meta(name='viewport', content='width=device-width, initial-scale=1.0')
     body
@@ -11,8 +12,10 @@ html
         nav
             div.nav-wrapper
                 div.container
+                    a(href="#", data-target="mobile-nav").sidenav-trigger()
+                        i.material-icons menu
                     a(href="/", class="brand-logo", style="padding-left: 10px;") BetterThanExcel
-                    ul.right
+                    ul.right.hide-on-med-and-down
                         li
                             a(href="/") Home
                         li
@@ -21,8 +24,22 @@ html
                             a(href="/courses") Courses
                         li
                             a(data-target="dropdown").dropdown-trigger #{username}
+                    ul#mobile-nav.sidenav
+                        li
+                            a(href="/") Home
+                        li
+                            a(href="/gpa") GPA
+                        li
+                            a(href="/courses") Courses
+                        li
+                            a(href="/login") Log Out
+
 block all
 script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js")
 script(type='text/javascript', src='js/materialize.min.js')
+script.
+    $(document).ready(function(){
+        $('.sidenav').sidenav();
+    });
 
 block scripts

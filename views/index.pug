@@ -3,31 +3,33 @@ block all
     div.container
         div.row
             div.col.s12
-                table.highlight#assignmentTable
+                table.highlight#assignmentTable.col.s12
                     thead
                         tr
-                            th Item
-                            th Course
-                            th Due Date
-                            th Weight
-                            th(style="width: 16px") Completed
-
+                            th.center-align Item
+                            th.center-align Course
+                            th.center-align Due Date
+                            th.center-align Weight
+                            th(style="width: 16px").center-align Done
                     for curr_item in assignments
                         tr()
-                            td(style="display:none;").center-align #{curr_item.id}
+                            td(style="display:none;") #{curr_item.id}
                             td.center-align #{curr_item.name} 
-                            td.courseCell #{curr_item.courseid}
+                            td.courseCell.center-align #{curr_item.courseid}
                             - var dateopts = {weekday: "long", year: "numeric", month: "long", day: "numeric"}
-                            td #{new Date(curr_item.due).toLocaleString("en-US", dateopts)}
-                            td #{curr_item.weight}
-                            td.center-align
+                            td.center-align #{new Date(curr_item.due).toLocaleString("en-US", dateopts)}
+                            td.center-align #{curr_item.weight}
+                            td
                                 label
                                     input(type='checkbox', id=curr_item.id, checked=curr_item.done == 1, onclick=`sendCompleted(this)`)
                                     span
-                            td.center
-                                a.black-text(href="#", onclick='deleteAssignment(this)') #[i.material-icons delete]
-                div(style="min-height: 50vh")
-        div.indigo.accent-2.white-text.container(style="position: fixed; bottom: 0; padding: 16px; margin: 8px; border-radius: 8px; z-index: 3000")
+                            td
+                                a.black-text.right(href="#", onclick='deleteAssignment(this)') #[i.material-icons delete]
+            div.row
+                div.col.s12(style="min-height: 50vh")
+
+
+        div.indigo.accent-2.white-text.container(style="position: fixed; bottom: 0; padding: 16px; margin: 8px; border-radius: 8px")
             h5 Add New Item
             form(id="newitemform", style="color: white")
                 div.row
@@ -55,10 +57,3 @@ block scripts
             autocompleteData[course.name] = null;
         }
     script(src="js/index.js")
-    style.
-        td {
-            border-radius: 0px;
-        }
-
-
-

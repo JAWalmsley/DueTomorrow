@@ -1,0 +1,7 @@
+td {
+    border-radius: 0px;
+    overflow-wrap: break-word;
+}
+table {
+    table-layout: fixed;
+}
