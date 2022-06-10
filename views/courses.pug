@@ -6,16 +6,16 @@ block all
                 table.highlight
                     thead
                         tr
-                            th Course
-                            th Colour
-                            th Credits
+                            th.center-align Course
+                            th.center-align Colour
+                            th.center-align Credits
                         for curr_item in courses
                             tr
                                 td(style="display:none;") #{curr_item.id}
-                                td #{curr_item.name}
-                                td
-                                    div(style="width: 32px; height: 32px; background-color: " + curr_item.colour)
-                                td #{curr_item.credits}
+                                td.center-align #{curr_item.name}
+                                td.center-align
+                                    div(style="margin: 0 auto; width: 32px; height: 32px; background-color: " + curr_item.colour)
+                                td.center-align #{curr_item.credits}
                                 td
                                     a.right.black-text(href="#", onclick='deleteCourse(this)') #[i.material-icons delete]
                 div(style="min-height: 50vh")
@@ -26,7 +26,7 @@ block all
                         div.input-field.col.s3
                             input(placeholder="Course",name="courseName", type="text", class="validate").white-text
                             label(for="courseName") Course
-                        div.input-field.col.s5
+                        div.input-field.col.s3
                             for curr_colour in ["ff8888", "ffff88", "88ff88", "88ffff", "8888ff",  "ff88ff"]
                                 div(style="margin: 2px; width: 32px; height: 48px; background-color: " + curr_colour).col.colourPicker
                         input(id="colour", name="colour", style="visibility: hidden; display: none;")

@@ -157,7 +157,7 @@ exports.Assignment = class {
      * @returns {Promise} mySQL query Promise
      */
     static getByUserID(userID) {
-        return makeReq('SELECT * FROM assignments WHERE userid = ? ORDER BY done, due, weight', [userID]);
+        return makeReq('SELECT * FROM assignments WHERE userid = ? ORDER BY done, due, weight DESC', [userID]);
     }
 
     /**
