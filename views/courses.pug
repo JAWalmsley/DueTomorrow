@@ -26,9 +26,10 @@ block all
                         div.input-field.col.s3
                             input(placeholder="Course",name="courseName", type="text", class="validate").white-text
                             label(for="courseName") Course
-                        div.input-field.col.s3
-                            label.pickerlabel
-                                input.autocomplete(id="colour", name="colour", type="color").white-text
+                        div.input-field.col.s5
+                            for curr_colour in ["ff8888", "ffff88", "88ff88", "88ffff", "8888ff",  "ff88ff"]
+                                div(style="margin: 2px; width: 32px; height: 48px; background-color: " + curr_colour).col.colourPicker
+                        input(id="colour", name="colour", style="visibility: hidden; display: none;")
                         div.input-field.col.s3
                             input(placeholder="Credits",name="credits", type="number", class="validate").white-text
                             label(for="credits") Credits
@@ -36,23 +37,15 @@ block all
 block scripts
     script(src="js/formHandler.js")
     style.
-        .pickerlabel {
-            background-color: black;
-            width: 90%;
-        }
-
         input[type=color] {
             visibility: hidden;
         }
     script(type='text/javascript').
+        const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
+
         $(document).ready(function () {
             $(".dropdown-trigger").dropdown();
         })
-
-        //Colour Picker
-        $(document).on('change', 'input[type=color]', function () {
-            this.parentNode.style.backgroundColor = this.value;
-        });
 
 
         function newitem() {
@@ -84,7 +77,20 @@ block scripts
             });
             $(self).closest('tr')[0].remove();
         }
+
+        $(".colourPicker").click(function() {
+            $(this).parent().children().each(function() {
+                $(this).removeClass("selectedColour");
+            })
+            $(this).addClass("selectedColour");
+            $("#colour").val(rgb2hex($(this).css("background-color")))
+        })
+
     style.
+        .selectedColour {
+            border: 2px solid black;
+        }
+        
         td {
             border-radius: 0px;
         }
