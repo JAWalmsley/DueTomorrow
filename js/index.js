@@ -7,6 +7,7 @@ $(document).ready(function () {
     });
     courseNameFill();
     colourRows();
+    $("#title").focus()
 });
 
 $('#weight').keyup(function (e) {
