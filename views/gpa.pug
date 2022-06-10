@@ -31,28 +31,21 @@ block all
                         tr
                             th Course
                             th Credits
-                            th Grade
+                            th 12pt Grade
+                            th 4pt Grade
                     for course in courses
                         tr
                             td(style="display:none;") #{course.id}
                             td #{course.name}
                             td #{course.credits}
-                            td.average 0%
+                            td.12pt.average 0%
+                            td.4pt.average 0%
                     tr
                         td()
                             b Total
                         td
-                        td#total 0%
-                    tr
-                        td()
-                            b 12-Point GPA
-                        td
-                        td#12pt 0
-                    tr
-                        td()
-                            b 4-Point GPA
-                        td
-                        td#4pt 0
+                        td#12pt 0%
+                        td#4pt 0%
                             
 
                             

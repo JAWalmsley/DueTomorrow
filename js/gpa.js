@@ -48,7 +48,8 @@ function fillGrades() {
         85:4,
         90:4.3
     }
-    let grades = [];
+    let fourPointGrades = [];
+    let twelvePointGrades = [];
     let credits = [];
     $(".average").each(function() {
         let id = $(this).closest("tr").find(':first').text();
@@ -57,14 +58,21 @@ function fillGrades() {
             return elem.courseid == course.id;
         });
         let avg = weightedAverage(assignments.map(a => a.grade), assignments.map(a => a.weight));
-        grades.push(avg);
+        let fourpt = GPAScale(avg, fourPointScale);
+        let twelvept = GPAScale(avg, twelvePointScale);
+        fourPointGrades.push(fourpt);
+        twelvePointGrades.push(twelvept);
         credits.push(course.credits);
-        $(this).closest("tr").find(".average").text(avg.toPrecision(4) + "%");
+        if ($(this).hasClass("4pt")) {
+            $(this).text(fourpt);
+        }
+        else if ($(this).hasClass("12pt")) {
+            $(this).text(twelvept);
+        }
     });
-    let gpaPercent = weightedAverage(grades, credits).toPrecision(4)
-    $("#total").text(gpaPercent + "%");
-    $("#12pt").text(GPAScale(gpaPercent, twelvePointScale));
-    $("#4pt").text(GPAScale(gpaPercent, fourPointScale));
+
+    $("#12pt").text(weightedAverage(twelvePointGrades, credits).toFixed(1));
+    $("#4pt").text(weightedAverage(fourPointGrades, credits).toFixed(1));
 }
 
 $(document).ready(function () {
