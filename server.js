@@ -8,7 +8,7 @@ const dbManager = require('./dbManager');
 
 const config = require('./config.json');
 
-const port = 3000;
+const port = 80;
 
 const app = express();
 
