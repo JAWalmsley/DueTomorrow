@@ -1,15 +1,12 @@
 const mysql = require('mysql2');
 const config = require('./config.json');
 
-let con = mysql.createConnection({
+let con = mysql.createPool({
+    connectionLimit: 10,
     host: 'localhost',
     user: config.username,
     password: config.password,
-});
-
-con.connect(function (err) {
-    if (err) throw err;
-    // console.log("Connected!")
+    database: config.database
 });
 
 // con.query("USE BTE;", function (err, result) {
@@ -28,19 +25,6 @@ makeReq = function (cmd, vals) {
 
 // SET UP
 let dbName = config.database;
-
-// This string substitution is horrible, but dbName isn't user facing and shouldn't be injectable so we good?
-// If you use the sql ? substitution it'll add quotes around the db name and that doesn't work for this command
-con.query(
-    'CREATE DATABASE IF NOT EXISTS ?;'.replace('?', dbName),
-    function (err, result) {
-        if (err) throw err;
-    }
-);
-con.query('USE ?;'.replace('?', dbName), function (err, result) {
-    if (err) throw err;
-    // console.log("Database connected");
-});
 
 con.query(
     'CREATE TABLE IF NOT EXISTS logins (id VARCHAR(255) PRIMARY KEY, username VARCHAR(255), password VARCHAR(255));',
