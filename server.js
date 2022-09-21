@@ -1,7 +1,8 @@
 const express = require('express');
-const router = express.Router({mergeParams: true})
-const bodyParser = require('body-parser');
+const session = require('express-session');
+const router = express.Router({mergeParams: true});
 const cors = require('cors');
+const helmet = require('helmet');
 
 const app = express();
 const config = require('./config.json');
@@ -9,11 +10,19 @@ const port = 80;
 
 const users = require('./routes/users.js');
 const assignments = require('./routes/assignments');
-const courses = require('./routes/courses')
+const courses = require('./routes/courses');
 
 app.use(cors())
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
+app.use(helmet())
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
+app.use(session({
+    secret: config.jwtSecret,
+    resave: true,
+    saveUninitialized: true,
+    rolling: true,
+    cookie: {maxAge: 2628000000} // One year
+}));
 
 app.use('/css', express.static(__dirname + '/css'));
 app.use('/js', express.static(__dirname + '/js'));

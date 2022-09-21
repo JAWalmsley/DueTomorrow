@@ -77,6 +77,30 @@ exports.User = class {
             return result[0];
         });
     }
+
+    /**
+     * Gets a user by userid
+     * @param {String} userid - The userid to search by
+     * @returns {Promise<Object>} The first result in the results (should be the only result)
+     */
+    static getByUserID(userid) {
+        return makeReq('SELECT * FROM logins WHERE id = ?', [
+            userid,
+        ]).then(function(result) {
+            return result[0];
+        })
+    }
+
+    /**
+     * Updates a user
+     * @param userid - The id to update
+     * @param data - The new data to replace
+     */
+    static updateUser(userid, data) {
+        return makeReq('UPDATE logins SET ? WHERE id = ?', [
+            data, userid
+        ])
+    }
 };
 
 exports.Course = class {

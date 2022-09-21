@@ -27,6 +27,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.3",
     "express-session": "^1.17.3",
+    "helmet": "^6.0.0",
     "jsdom": "^19.0.0",
     "jsdom-quokka-plugin": "^1.0.16",
     "jsonwebtoken": "^8.5.1",
