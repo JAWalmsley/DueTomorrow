@@ -96,7 +96,7 @@ exports.User = class {
      * @param userid - The id to update
      * @param data - The new data to replace
      */
-    static updateUser(userid, data) {
+    static update(userid, data) {
         return makeReq('UPDATE logins SET ? WHERE id = ?', [
             data, userid
         ])
