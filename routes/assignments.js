@@ -5,8 +5,8 @@ router.post('/', (req, res) => {
     res.send("you created an assignment for user " + req.params.user);
 });
 
-router.get('/:asig', (req, res) => {
-    res.send("you got assignment " + req.params.id);
+router.get('/:assig', (req, res) => {
+    res.send("you got assignment " + req.params.assig + " for user " + req.params.user);
 });
 
 router.put('/:assig', (req, res) => {

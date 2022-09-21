@@ -9,6 +9,7 @@ const port = 80;
 
 const users = require('./routes/users.js');
 const assignments = require('./routes/assignments');
+const courses = require('./routes/courses')
 
 app.use(cors())
 app.use(bodyParser.urlencoded({extended: false}));
@@ -19,6 +20,7 @@ app.use('/js', express.static(__dirname + '/js'));
 
 app.use('/users', users);
 app.use('/users/:user/assignments', assignments)
+app.use('/users/:user/courses', courses)
 
 app.get('/', (req, res) => {
     res.send("hiiiii")
