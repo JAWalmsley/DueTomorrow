@@ -73,7 +73,7 @@ router.put('/:userid', (req, res) => {
     if (req.body.password) {
         data.password = bcrypt.hash(req.body.password, 10)
     }
-    dbManager.User.getByUsername(req.body.username)
+    dbManager.User.getByUsername(data.username)
         .then((usr) => {
             if (usr) {
                 throw 'Already exists';
@@ -82,12 +82,13 @@ router.put('/:userid', (req, res) => {
                     .then(() => {
                         res.status(200).send('Successfully updated')
                     })
-                    .catch((err) => {
-                        res.status(400).send(err);
-                    })
+
             }
+        })
+        .catch((err) => {
+            res.status(400).send(err);
         });
-}
+});
 
 router.delete('/:user', (req, res) => {
     if (!req.params.userid) {
