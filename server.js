@@ -35,6 +35,6 @@ app.get('/', (req, res) => {
     res.send("hiiiii")
 })
 
-app.listen(port, () => {
+module.exports = app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}`);
 });
