@@ -1,8 +1,15 @@
 const express = require('express')
 const router = express.Router({mergeParams: true})
+const uuid = require('uuid')
 
-router.post('/', (req, res) => {
-    res.send("you created an assignment for user " + req.params.user);
+const dbManager = require('../dbManager');
+const {isUserAuthorized} = require("./userAuth");
+
+router.post('/', isUserAuthorized, (req, res) => {
+    let newid = uuid.v4();
+    dbManager.Assignment.create(newid, req.params.userid, req.body.courseid, req.body.name, req.body.due, false, req.body.weight, 0)
+        .then(() => res.status(200).send(newid))
+        .catch((err) => res.status(400).send(err));
 });
 
 router.get('/:assignmentid', (req, res) => {
