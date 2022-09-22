@@ -139,6 +139,7 @@ describe('Routes', function () {
                     expect(res.body[0]).to.have.property('name');
                     expect(res.body[0]).to.have.property('due');
                     expect(res.body[0]).to.have.property('weight');
+                    console.log(res.body)
                     done();
                 })
         });

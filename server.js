@@ -27,11 +27,11 @@ app.use(session({
 app.use('/css', express.static(__dirname + '/css'));
 app.use('/js', express.static(__dirname + '/js'));
 
-app.use('/login', login);
+app.use('/api/login', login);
 
-app.use('/users', users);
-app.use('/users/:userid/assignments', assignments)
-app.use('/users/:userid/courses', courses)
+app.use('/api/users', users);
+app.use('/api/users/:userid/assignments', assignments)
+app.use('/api/users/:userid/courses', courses)
 
 app.get('/', (req, res) => {
     res.send("hiiiii")
