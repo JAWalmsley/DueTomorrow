@@ -131,8 +131,8 @@ exports.Course = class {
 
     /**
      * Updates a course
-     * @param id - The id to update
-     * @param data - The new data to replace
+     * @param id {String} - The id to update
+     * @param data {Object} - The new data to replace
      */
     static update(id, data) {
         return makeReq('UPDATE courses SET ? WHERE id = ?', [
@@ -180,23 +180,14 @@ exports.Assignment = class {
     }
 
     /**
-     * Set the complete status of an assignment
-     * @param {String} id 
-     * @param {Boolean} done 
-     * @returns {Promise} mySQL query Promise
+     * Update an assignment
+     * @param id {String} - id of assignment to update
+     * @param data {Object} - data to update
      */
-    static setComplete(id, done) {
-        return makeReq('UPDATE assignments SET done = ? WHERE id = ?', [done, id]);
-    }
-
-    /**
-     * Sets the grade of an assignment
-     * @param {String} id
-     * @param {Int} grade
-     * @returns {Promise} mySQL query Promise
-     */
-    static setGrade(id, grade) {
-        return makeReq('UPDATE assignments SET grade = ? WHERE id = ?', [grade, id]);
+    static update(id, data) {
+        return makeReq('UPDATE assignments SET ? WHERE id = ?', [
+            data, id
+        ]);
     }
 
     /**

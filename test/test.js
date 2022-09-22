@@ -63,7 +63,6 @@ describe('Routes', function () {
                     if (err) {
                         done(err);
                     }
-                    console.log(res.text)
                     expect(res).to.have.status(200);
                     expect(res.text).to.match(uuidRegex);
                     courseid = res.text;
