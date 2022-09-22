@@ -1,10 +1,13 @@
-const dbManager = require('./dbManager')
+const express = require('express')
+const router = express.Router({mergeParams: true})
+
+const dbManager = require('../dbManager')
 const bcrypt = require('bcrypt');
 
-exports.login = function (req, res) {
+router.post('/', (req, res) => {
     const { username, password } = req.body;
     if (!username || !password) {
-        res.sendStatus(400);
+        res.status(400).send('Insufficient data');
     }
     let userSearch = dbManager.User.getByUsername(username);
     let passwordCompare = userSearch
@@ -28,4 +31,6 @@ exports.login = function (req, res) {
             res.sendStatus(401);
         }
     });
-};
+});
+
+module.exports = router;

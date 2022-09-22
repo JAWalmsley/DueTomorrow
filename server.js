@@ -1,6 +1,5 @@
 const express = require('express');
 const session = require('express-session');
-const router = express.Router({mergeParams: true});
 const cors = require('cors');
 const helmet = require('helmet');
 
@@ -11,6 +10,7 @@ const port = 80;
 const users = require('./routes/users.js');
 const assignments = require('./routes/assignments');
 const courses = require('./routes/courses');
+const login = require('./routes/login')
 
 app.use(cors())
 app.use(helmet())
@@ -26,6 +26,8 @@ app.use(session({
 
 app.use('/css', express.static(__dirname + '/css'));
 app.use('/js', express.static(__dirname + '/js'));
+
+app.use('/login', login);
 
 app.use('/users', users);
 app.use('/users/:userid/assignments', assignments)
