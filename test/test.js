@@ -105,7 +105,7 @@ describe('Routes', function () {
         })
     });
     describe('Assignment', function () {
-        before(function(done) {
+        before(function (done) {
             agent.post(`/users/${userid}/courses`)
                 .set('content-type', 'application/json')
                 .send({name: 'coursename', colour: '#ffffff', credits: 3})
@@ -163,6 +163,27 @@ describe('Routes', function () {
                             expect(res.body).to.have.lengthOf(0);
                             done();
                         })
+                })
+        })
+    })
+    describe('Login', function () {
+        it('should log in successfully', function (done) {
+            agent.post('/login')
+                .set('content-type', 'application/json')
+                .send({username: "newusername", password: "0"})
+                .end((err, res) => {
+                    expect(res).to.have.status(200);
+                    expect(res).to.have.cookie('connect.sid');
+                    done()
+                })
+        });
+        it('should fail to log in with bad password', function(done) {
+            agent.post('/login')
+                .set('content-type', 'application/json')
+                .send({username: "newusername", password: "badpassword"})
+                .end((err, res) => {
+                    expect(res).to.have.status(401);
+                    done();
                 })
         })
     })
