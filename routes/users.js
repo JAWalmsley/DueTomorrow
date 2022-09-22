@@ -15,8 +15,11 @@ router.post('/', (req, res) => {
                 if (usr) {
                     throw 'Already exists';
                 } else {
-                    dbManager.User.create(newid, req.body.username, bcrypt.hash(req.body.password, 10))
+                    return bcrypt.hash(req.body.password, 10);
                 }
+            })
+            .then((hash) => {
+                return dbManager.User.create(newid, req.body.username, hash)
             })
             .then(() => {
                 req.session.loggedin = true;
