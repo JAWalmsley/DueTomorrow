@@ -96,9 +96,9 @@ exports.User = class {
      * @param userid - The id to update
      * @param data - The new data to replace
      */
-    static update(userid, data) {
+    static update(id, data) {
         return makeReq('UPDATE logins SET ? WHERE id = ?', [
-            data, userid
+            data, id
         ])
     }
 };
@@ -127,6 +127,17 @@ exports.Course = class {
      */
     static getByUserID(userid) {
         return makeReq('SELECT * FROM courses WHERE userid = ?', [userid]);
+    }
+
+    /**
+     * Updates a course
+     * @param id - The id to update
+     * @param data - The new data to replace
+     */
+    static update(id, data) {
+        return makeReq('UPDATE courses SET ? WHERE id = ?', [
+            data, id
+        ]);
     }
 
     /**

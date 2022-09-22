@@ -28,8 +28,8 @@ app.use('/css', express.static(__dirname + '/css'));
 app.use('/js', express.static(__dirname + '/js'));
 
 app.use('/users', users);
-app.use('/users/:user/assignments', assignments)
-app.use('/users/:user/courses', courses)
+app.use('/users/:userid/assignments', assignments)
+app.use('/users/:userid/courses', courses)
 
 app.get('/', (req, res) => {
     res.send("hiiiii")

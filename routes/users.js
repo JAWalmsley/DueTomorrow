@@ -1,16 +1,14 @@
-const express = require('express')
-const uuid = require('uuid')
+const express = require('express');
+const uuid = require('uuid');
 const bcrypt = require('bcryptjs');
 
-const dbManager = require('../dbManager')
+const dbManager = require('../dbManager');
+const {isUserAuthorized} = require("./userAuth");
 
 const router = express.Router({mergeParams: true})
 
 router.post('/', (req, res) => {
-        if (!(req.body.username && req.body.password)) {
-            res.status(400).send('No data given');
-            return;
-        }
+        if (!(req.body.username && req.body.password)) return res.status(400).send('No data given');
         let newid = uuid.v4();
         dbManager.User.getByUsername(req.body.username)
             .then((usr) => {
@@ -32,15 +30,7 @@ router.post('/', (req, res) => {
 )
 ;
 
-router.get('/:userid', (req, res) => {
-    if (!req.params.userid) {
-        res.status(400).send('No userid given');
-        return;
-    }
-    if (!(req.session.userid === req.params.userid)) {
-        res.status(400).send('No permission');
-        return;
-    }
+router.get('/:userid', isUserAuthorized, (req, res) => {
     dbManager.User.getByUserID(req.params.userid)
         .then((usr) => {
             if (!usr) {
@@ -53,52 +43,37 @@ router.get('/:userid', (req, res) => {
         .catch((err) => res.status(400).send(err))
 });
 
-router.put('/:userid', (req, res) => {
-    if (!req.params.userid) {
-        res.status(400).send('No userid given');
-        return;
-    }
-    if (!(req.session.userid === req.params.userid)) {
-        res.status(400).send('No permission');
-        return;
-    }
-    if (!req.body) {
-        res.status(400).send('No data given');
-        return;
-    }
+router.put('/:userid', isUserAuthorized, (req, res) => {
+    if (!req.body) return res.status(400).send('No data given');
+    let waiting;
     let data = {};
     if (req.body.username) {
         data.username = req.body.username;
+        waiting = Promise.resolve('')
     }
     if (req.body.password) {
-        data.password = bcrypt.hash(req.body.password, 10)
+        waiting = bcrypt.hash(req.body.password, 10)
     }
-    dbManager.User.getByUsername(data.username)
+    waiting
+        .then((pw) => {
+            if (pw) data.password = pw;
+        })
+        .then(() => dbManager.User.getByUsername(data.username))
         .then((usr) => {
             if (usr) {
                 throw 'Already exists';
-            } else {
-                dbManager.User.update(req.params.userid, data)
-                    .then(() => {
-                        res.status(200).send('Successfully updated')
-                    })
-
             }
+            return dbManager.User.update(req.params.userid, data);
+        })
+        .then(() => {
+            res.status(200).send('Successfully updated')
         })
         .catch((err) => {
             res.status(400).send(err);
         });
 });
 
-router.delete('/:user', (req, res) => {
-    if (!req.params.userid) {
-        res.status(400).send('No userid given');
-        return;
-    }
-    if (!(req.session.userid === req.params.userid)) {
-        res.status(400).send('No permission');
-        return;
-    }
+router.delete('/:user', isUserAuthorized, (req, res) => {
     res.send("you deleted user " + req.params.user);
 });
 
