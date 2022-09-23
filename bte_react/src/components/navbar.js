@@ -1,7 +1,13 @@
 import React from 'react';
-import './css/materialize.css';
+import '../css/materialize.css';
+import M from 'materialize-css';
+import $ from 'jquery';
 
 export class Navbar extends React.Component {
+    componentDidMount() {
+        M.Sidenav.init($('.sidenav'));
+    }
+
     render() {
         const username = this.props.username;
         return (
@@ -28,6 +34,6 @@ export class Navbar extends React.Component {
                     </div>
                 </div>
             </nav>
-        )
+        );
     }
 }

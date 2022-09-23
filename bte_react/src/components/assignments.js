@@ -13,7 +13,7 @@ export class AssignmentRow extends React.Component {
                 <td>{weight}</td>
                 <td>
                     <label>
-                        <input type="checkbox" id={id}/>
+                        <input type="checkbox" id={id} value={done}/>
                     </label>
                 </td>
                 <td><a className="black-text right"><i className="material-icons">delete</i></a></td>

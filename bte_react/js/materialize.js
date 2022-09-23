@@ -3179,7 +3179,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         Modal._modalsOpen++;
         this._nthModalOpened = Modal._modalsOpen;
 
-        // Set Z-Index based on number of currently open modals
+        // Set Z-Home based on number of currently open modals
         this.$overlay[0].style.zIndex = 1000 + Modal._modalsOpen * 2;
         this.el.style.zIndex = 1000 + Modal._modalsOpen * 2 + 1;
 
