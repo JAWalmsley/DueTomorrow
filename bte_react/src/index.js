@@ -1,5 +1,6 @@
 /* existing imports */
 import Home from "./routes/home";
+import GPAPage from "./routes/gpaPage";
 import ErrorPage from "./routes/error-page";
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -13,7 +14,7 @@ import {
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Home />,
+        element: <GPAPage />,
         errorElement: <ErrorPage />,
     },
 ]);
