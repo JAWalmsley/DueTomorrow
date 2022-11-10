@@ -14,7 +14,7 @@ import {
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <GPAPage />,
+        element: <Home />,
         errorElement: <ErrorPage />,
     },
 ]);
