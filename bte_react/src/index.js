@@ -5,6 +5,8 @@ import ErrorPage from "./routes/error-page";
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
+
+
 import {
     createBrowserRouter,
     RouterProvider,
@@ -18,6 +20,8 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
     },
 ]);
+
+
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>

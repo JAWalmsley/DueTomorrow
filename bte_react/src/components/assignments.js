@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { DataGrid } from '@mui/x-data-grid';
-import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -10,23 +8,13 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
 import { Delete } from '@mui/icons-material';
+import Button from '@mui/material/Button';
 
 /**
  * Row of one assignment
  * @param {Object} assignment
  */
 export class AssignmentRow extends React.Component {
-    constructor() {
-        super();
-        this.state = { snapsToGrid: false };
-    }
-    snapsToGridChecked(event, checked) {
-        console.log('checkeddd');
-        this.setState({
-            snapsToGrid: checked,
-        });
-    }
-
     render() {
         const assignment = this.props.assignment;
         let { colour, id, name, course, due, weight, done } = assignment;
@@ -38,6 +26,12 @@ export class AssignmentRow extends React.Component {
             day: 'numeric',
         });
 
+        function handleChange(e) {
+            console.log(e.target.checked);
+            done = e.target.checked;
+        }
+
+
         return (
             <>
                 <TableRow key={id} sx={{ backgroundColor: colour }}>
@@ -47,14 +41,14 @@ export class AssignmentRow extends React.Component {
                     <TableCell>{weight}</TableCell>
                     <TableCell>
                         <Checkbox
-                            label="Snap to grid"
-                            checked={this.state.snapsToGrid}
-                            onChange={this.snapsToGridChecked.bind(this)}
+                            key={Math.random()}
+                            defaultChecked={!!done}
+                            onChange={handleChange}
+                            inputProps={{ 'aria-label': 'controlled' }}
                         />
                     </TableCell>
-
                     <TableCell>
-                        <Delete />
+                        <Button><Delete /></Button>
                     </TableCell>
                 </TableRow>
             </>
@@ -98,7 +92,7 @@ export class AssignmentTable extends React.Component {
                         <col style={{ width: '20%' }} />
                         <col style={{ width: '30%' }} />
                         <col style={{ width: '10%' }} />
-                        <col style={{ width: '10%' }} />={' '}
+                        <col style={{ width: '10%' }} />
                     </colgroup>
                     <HeaderRow
                         columns={[

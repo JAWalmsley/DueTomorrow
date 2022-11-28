@@ -1,7 +1,6 @@
 import { CourseList } from '../components/gpa.js';
 import { Navbar } from '../components/navbar.js';
 
-import '../css/materialize.css';
 import '../css/styles.css';
 
 const ASSIGNMENTS = [

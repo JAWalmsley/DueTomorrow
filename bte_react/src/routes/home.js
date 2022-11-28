@@ -1,13 +1,15 @@
 import { AssignmentTable } from '../components/assignments.js';
 import { Navbar } from '../components/navbar.js';
-
-import Checkbox from '@mui/material/Checkbox';
-
+import Grid from '@mui/material/Grid';
+import Container from '@mui/material/Container';
 import '../css/styles.css';
+
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 
 const ASSIGNMENTS = [
     {
-        colour: '#ff00ff',
+        colour: '#ffaaff',
         course: 'ENGINEER 1P13B',
         id: '5675675675678',
         name: 'assignmentname',
@@ -17,29 +19,40 @@ const ASSIGNMENTS = [
         grade: 0,
     },
     {
-        colour: '#ff00ff',
+        colour: '#ffaaff',
         course: 'ENGINEER 1P13B',
         id: '5675675621111',
         name: 'assignmentname2',
         due: '2003-10-30T04:00:00.000Z',
-        done: 0,
+        done: 1,
         weight: 75,
         grade: 0,
     },
 ];
 const USERNAME = 'Jack';
 
+const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#5c6bc0',
+      },
+      secondary: {
+        main: '#4db6ac',
+      },
+    },
+  });
+
 export default function Home() {
     return (
-        <>
+        <ThemeProvider theme={theme}>
             <Navbar username={USERNAME} />
-            <div className="container">
-                <div className="row">
-                    <div className="col s12">
+            <Container>
+                <Grid container>
+                    <Grid item xs={12}>
                         <AssignmentTable assignments={ASSIGNMENTS} />
-                    </div>
-                </div>
-            </div>
-        </>
+                    </Grid>
+                </Grid>
+            </Container>
+        </ThemeProvider>
     );
 }
