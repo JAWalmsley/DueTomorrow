@@ -4,7 +4,6 @@ import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import '../css/styles.css';
 
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
 const ASSIGNMENTS = [
@@ -31,21 +30,12 @@ const ASSIGNMENTS = [
 ];
 const USERNAME = 'Jack';
 
-const theme = createTheme({
-    palette: {
-      primary: {
-        main: '#5c6bc0',
-      },
-      secondary: {
-        main: '#4db6ac',
-      },
-    },
-  });
+
 
 export default function Home() {
     return (
-        <ThemeProvider theme={theme}>
-            <Navbar username={USERNAME} />
+        <>
+        <Navbar username={USERNAME} />
             <Container>
                 <Grid container>
                     <Grid item xs={12}>
@@ -53,6 +43,7 @@ export default function Home() {
                     </Grid>
                 </Grid>
             </Container>
-        </ThemeProvider>
+        </>
+           
     );
 }

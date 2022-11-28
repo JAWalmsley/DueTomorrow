@@ -15,10 +15,10 @@ export class Navbar extends React.Component {
                         >
                             BTE
                         </Typography>
-                        <Button color="inherit">
+                        <Button color="inherit" href="/">
                             Assignments
                         </Button>
-                        <Button color="inherit">
+                        <Button color="inherit" href="/gpa">
                             GPA
                         </Button>
                         <Button color="inherit">Log Out</Button>
