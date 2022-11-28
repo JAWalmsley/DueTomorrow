@@ -9,6 +9,15 @@ import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
 import { Delete } from '@mui/icons-material';
 import Button from '@mui/material/Button';
+import {
+    Autocomplete,
+    Card,
+    CardActions,
+    CardContent,
+    Grid,
+    TextField,
+    Typography,
+} from '@mui/material';
 
 /**
  * Row of one assignment
@@ -31,7 +40,6 @@ export class AssignmentRow extends React.Component {
             done = e.target.checked;
         }
 
-
         return (
             <>
                 <TableRow key={id} sx={{ backgroundColor: colour }}>
@@ -48,9 +56,67 @@ export class AssignmentRow extends React.Component {
                         />
                     </TableCell>
                     <TableCell>
-                        <Button><Delete /></Button>
+                        <Button>
+                            <Delete />
+                        </Button>
                     </TableCell>
                 </TableRow>
+            </>
+        );
+    }
+}
+
+/**
+ * Row for entering a new assignment
+ * @param courses
+ */
+export class EntryRow extends React.Component {
+    render() {
+        return (
+            <>
+                <Card variant="outlined">
+                    <CardContent>
+                        <Typography
+                            sx={{ fontSize: 14 }}
+                            color="text.secondary"
+                            gutterBottom
+                        >
+                            New Assignment
+                        </Typography>
+                        <Grid container spacing={2}>
+                            <Grid item sm={3}>
+                                <TextField autoFocus color="secondary" fullWidth label="Name" variant="standard" />
+                            </Grid>
+                            <Grid item sm={4}>
+                                <Autocomplete
+                                    disablePortal
+                                    id="combo-box-demo"
+                                    options={this.props.courses.map(a => a.name)}
+                                    renderInput={(params) => (
+                                        <TextField {...params} color="secondary" fullWidth label="Course" variant="standard" />
+                                    )}
+                                />
+                            </Grid>
+                            <Grid item sm={3}>
+                                <TextField color="secondary" fullWidth label=" " variant="standard" type="date"/>
+                            </Grid>
+                            <Grid item sm={2}>
+                                <TextField color="secondary" fullWidth label="Weight" variant="standard" type="number" />
+                            </Grid>
+                        </Grid>
+                    </CardContent>
+                    <CardActions>
+                        <Grid container justifyContent="flex-end">
+                            <Button
+                                size="large"
+                                variant="outlined"
+                                color="secondary"
+                            >
+                                Add
+                            </Button>
+                        </Grid>
+                    </CardActions>
+                </Card>
             </>
         );
     }
@@ -85,28 +151,31 @@ export class AssignmentTable extends React.Component {
             rows.push(<AssignmentRow assignment={assignment}></AssignmentRow>);
         });
         return (
-            <TableContainer className="center">
-                <Table size="small">
-                    <colgroup>
-                        <col style={{ width: '20%' }} />
-                        <col style={{ width: '20%' }} />
-                        <col style={{ width: '30%' }} />
-                        <col style={{ width: '10%' }} />
-                        <col style={{ width: '10%' }} />
-                    </colgroup>
-                    <HeaderRow
-                        columns={[
-                            'Name',
-                            'Course',
-                            'Due',
-                            'Weight',
-                            'Done',
-                            'Delete',
-                        ]}
-                    />
-                    <TableBody>{rows}</TableBody>
-                </Table>
-            </TableContainer>
+            <>
+                <EntryRow courses={this.props.courses}/>
+                <TableContainer className="center">
+                    <Table size="small">
+                        <colgroup>
+                            <col style={{ width: '20%' }} />
+                            <col style={{ width: '20%' }} />
+                            <col style={{ width: '30%' }} />
+                            <col style={{ width: '10%' }} />
+                            <col style={{ width: '10%' }} />
+                        </colgroup>
+                        <HeaderRow
+                            columns={[
+                                'Name',
+                                'Course',
+                                'Due',
+                                'Weight',
+                                'Done',
+                                'Delete',
+                            ]}
+                        />
+                        <TableBody>{rows}</TableBody>
+                    </Table>
+                </TableContainer>
+            </>
         );
     }
 }

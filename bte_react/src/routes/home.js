@@ -29,7 +29,22 @@ const ASSIGNMENTS = [
     },
 ];
 const USERNAME = 'Jack';
-
+const COURSES = [
+    {
+        "name": "Balls",
+        "colour": '#ffff00',
+        "assignments": ASSIGNMENTS,
+        "id": 55389202839382,
+        "credits": 3
+    },
+    {
+        "name": "Balls Course 2",
+        "colour": "#0000ff",
+        "assignments": ASSIGNMENTS,
+        "id": 92821201821,
+        "credits": 6
+    }
+]
 
 
 export default function Home() {
@@ -39,7 +54,7 @@ export default function Home() {
             <Container>
                 <Grid container>
                     <Grid item xs={12}>
-                        <AssignmentTable assignments={ASSIGNMENTS} />
+                        <AssignmentTable assignments={ASSIGNMENTS} courses={COURSES}/>
                     </Grid>
                 </Grid>
             </Container>
