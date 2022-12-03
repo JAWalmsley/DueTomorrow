@@ -14,6 +14,15 @@ const ASSIGNMENTS = [
         weight: 50,
         grade: 100,
     },
+    {
+        course: 'ENGINEER 1P13B',
+        id: '56756754vdf78',
+        name: 'assignmentname2',
+        due: '2003-09-30T04:00:00.000Z',
+        done: 1,
+        weight: 50,
+        grade: 100,
+    },
 ];
 const COURSES = [
     {
@@ -26,6 +35,13 @@ const COURSES = [
     {
         name: 'Balls Course 2',
         colour: '#aaaaff',
+        assignments: ASSIGNMENTS,
+        id: 92821201821,
+        credits: 6,
+    },
+    {
+        name: 'Balls Course 3',
+        colour: '#ffaaff',
         assignments: ASSIGNMENTS,
         id: 92821201821,
         credits: 6,

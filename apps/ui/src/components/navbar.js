@@ -1,10 +1,9 @@
 import React from 'react';
-import { AppBar, Box, Toolbar, Typography, Button } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 
 export class Navbar extends React.Component {
     render() {
         return (
-            <Box>
                 <AppBar position="static">
                     <Toolbar>
                         <Typography
@@ -23,7 +22,6 @@ export class Navbar extends React.Component {
                         <Button color="inherit">Log Out</Button>
                     </Toolbar>
                 </AppBar>
-            </Box>
         );
     }
 }

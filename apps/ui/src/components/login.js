@@ -13,7 +13,6 @@ export class LoginBox extends React.Component {
         return (
             <Grid
                 container
-                alignItems="center"
                 justifyContent="center"
                 rowSpacing={2}
             >
