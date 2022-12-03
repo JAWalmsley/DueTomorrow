@@ -19,7 +19,7 @@ import React from 'react';
 export class GradeRow extends React.Component {
     render() {
         const assignment = this.props.assignment;
-        const { id, name, due, weight, done, grade } = assignment;
+        const { id, name, weight, done, grade } = assignment;
         let gradeCell = <td></td>;
         if (done) {
             gradeCell = (

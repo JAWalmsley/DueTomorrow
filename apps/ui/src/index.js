@@ -1,7 +1,7 @@
 /* existing imports */
 import Home from './routes/home';
 import GPAPage from './routes/gpaPage';
-import ErrorPage from './routes/error-page';
+import LoginPage from './routes/loginPage';
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -27,6 +27,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/gpa" element={<GPAPage />} />
+                <Route path="/login" element={<LoginPage />} />
             </Routes>
         </Router>
     </ThemeProvider>

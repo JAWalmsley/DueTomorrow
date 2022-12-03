@@ -3,7 +3,6 @@ import { AppBar, Box, Toolbar, Typography, Button } from '@mui/material';
 
 export class Navbar extends React.Component {
     render() {
-        const username = this.props.username;
         return (
             <Box>
                 <AppBar position="static">
