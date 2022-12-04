@@ -2,12 +2,6 @@ import { Button, Grid, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 
-export class LoginFields extends React.Component {
-    render() {
-        return <></>;
-    }
-}
-
 export class LoginBox extends React.Component {
     render() {
         return (
@@ -46,11 +40,11 @@ export class LoginBox extends React.Component {
                 {/*force new row */}
                 <Box width="100%"></Box>
                 <Grid container item justifyContent="center">
-                    <Grid container item justifyContent="left" xs={2}>
-                        <Button variant="contained">New Account</Button>
+                    <Grid container item justifyContent="left" xs={3}>
+                        <Button variant="contained" size="large">New Account</Button>
                     </Grid>
                     <Grid container item justifyContent="right" xs={2}>
-                        <Button variant="contained">Login</Button>
+                        <Button variant="contained" size="large">Login</Button>
                     </Grid>
                 </Grid>
             </Grid>
