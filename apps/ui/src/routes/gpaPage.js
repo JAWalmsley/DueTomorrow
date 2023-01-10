@@ -47,12 +47,11 @@ const COURSES = [
         credits: 6,
     },
 ];
-const USERNAME = 'Jack';
 
 export default function GPAPage() {
     return (
         <>
-            <Navbar username={USERNAME} />
+            <Navbar />
             <Container>
                 <Grid container spacing={2} padding={1}>
                     <Grid item xs={7}>

@@ -17,22 +17,23 @@ import React from 'react';
  * @param {Object} assignment
  */
 export class GradeRow extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {assignment: this.props.assignment};
+    }
+    updateGrade = (e) => {
+        this.setState({assignment:{grade:e.target.value}});
+    }
     render() {
         const assignment = this.props.assignment;
-        const { id, name, weight, done, grade } = assignment;
-        let gradeCell = <td></td>;
-        if (done) {
-            gradeCell = (
-                <TableCell className="center">
-                    <TextField size="small" label="Grade" value={grade} variant="standard"/>
-                </TableCell>
-            );
-        }
+        const { id, name, weight, grade } = assignment;
         return (
             <TableRow key={id}>
                 <TableCell>{name}</TableCell>
                 <TableCell>{weight}</TableCell>
-                {gradeCell}
+                <TableCell className="center">
+                    <TextField size="small" label="Grade" defaultValue={grade} variant="standard" onChange={this.updateGrade}/>
+                </TableCell>
             </TableRow>
         );
     }
@@ -44,6 +45,13 @@ export class GradeRow extends React.Component {
  * @param {Object} course
  */
 export class CourseHeader extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {average: 404};
+    }
+    updateAverage = (newAvg) => {
+        this.setState({average: newAvg});
+    }
     render() {
         return (
             <TableRow>
@@ -53,7 +61,7 @@ export class CourseHeader extends React.Component {
                 <TableCell className="center">
                     {this.props.course.credits} Credits
                 </TableCell>
-                <TableCell className="center">40%</TableCell>
+                <TableCell className="center">{this.state.average}</TableCell>
             </TableRow>
         );
     }
