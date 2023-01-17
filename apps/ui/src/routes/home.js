@@ -3,8 +3,7 @@ import { Navbar } from '../components/navbar.js';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import '../css/styles.css';
-
-
+import { APIassignmentsGet } from '../api.js';
 
 const ASSIGNMENTS = [
     {
@@ -31,34 +30,43 @@ const ASSIGNMENTS = [
 const USERNAME = 'Jack';
 const COURSES = [
     {
-        "name": "Balls",
-        "colour": '#ffff00',
-        "assignments": ASSIGNMENTS,
-        "id": 55389202839382,
-        "credits": 3
+        name: 'Balls',
+        colour: '#ffff00',
+        assignments: ASSIGNMENTS,
+        id: 55389202839382,
+        credits: 3,
     },
     {
-        "name": "Balls Course 2",
-        "colour": "#0000ff",
-        "assignments": ASSIGNMENTS,
-        "id": 92821201821,
-        "credits": 6
-    }
-]
-
+        name: 'Balls Course 2',
+        colour: '#0000ff',
+        assignments: ASSIGNMENTS,
+        id: 92821201821,
+        credits: 6,
+    },
+];
 
 export default function Home() {
+    let userid = localStorage.getItem('userid');
+    let assignments;
+    if (!userid) {
+        window.location.replace('/login');
+    }
+    APIassignmentsGet(userid)
+        .then((e) => e.json())
+        .then((data) => assignments = data);
     return (
         <>
-        <Navbar username={USERNAME} />
+            <Navbar username={USERNAME} />
             <Container>
                 <Grid container>
                     <Grid item xs={12}>
-                        <AssignmentTable assignments={ASSIGNMENTS} courses={COURSES}/>
+                        <AssignmentTable
+                            assignments={assignments}
+                            courses={COURSES}
+                        />
                     </Grid>
                 </Grid>
             </Container>
         </>
-           
     );
 }
