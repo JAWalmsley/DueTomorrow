@@ -13,23 +13,13 @@ export class LoginBox extends React.Component {
     }
     login() {
         APIlogin(this.state)
-            .then((res) => {
-                if (res.status === 200) {
-                    return res.text();
-                }
-                console.log('bad');
-            })
-            .then((uid) => localStorage.setItem('userid', uid));
+            .then((uid) => localStorage.setItem('userid', uid))
+            .then(() => window.location.replace('/'));
     }
     register() {
         APIregister(this.state)
-            .then((res) => {
-                if (res.status === 200) {
-                    return res.text();
-                }
-                console.log('bad');
-            })
-            .then((uid) => localStorage.setItem('userid', uid));
+            .then((uid) => localStorage.setItem('userid', uid))
+            .then(() => window.location.replace('/'));
     }
     render() {
         return (

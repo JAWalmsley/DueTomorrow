@@ -10,6 +10,12 @@ export function APIlogin (data) {
         credentials: 'include',
         body: JSON.stringify(data),
     })
+    .then((res) => {
+        if (res.status === 200) {
+            return res.text();
+        }
+        throw new Error('bad');
+    })
 }
 
 export function APIregister (data) {
@@ -19,6 +25,24 @@ export function APIregister (data) {
         headers: {
             'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify(data),
+    })
+    .then((res) => {
+        if (res.status === 200) {
+            return res.text();
+        }
+        throw new Error('bad');
+    })
+}
+
+export function APIassignmentsGet (userid) {
+    return fetch(config.endpoint + 'users/' + userid + '/assignments' , {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
     })
 }
