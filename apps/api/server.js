@@ -12,7 +12,10 @@ const assignments = require('./routes/assignments');
 const courses = require('./routes/courses');
 const login = require('./routes/login')
 
-app.use(cors())
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+}))
 app.use(helmet())
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());

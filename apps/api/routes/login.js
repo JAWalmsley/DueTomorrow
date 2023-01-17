@@ -8,6 +8,7 @@ router.post('/', (req, res) => {
     const { username, password } = req.body;
     if (!username || !password) {
         res.status(400).send('Insufficient data');
+        return;
     }
     let userSearch = dbManager.User.getByUsername(username);
     let passwordCompare = userSearch
@@ -26,7 +27,7 @@ router.post('/', (req, res) => {
             req.session.loggedin = true;
             req.session.userid = user.id;
             req.session.username = user.username;
-            res.sendStatus(200);
+            res.status(200).send(user.id);
         } else {
             res.sendStatus(401);
         }
