@@ -71,6 +71,18 @@ export class AssignmentRow extends React.Component {
  * @param courses
  */
 export class EntryRow extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: '',
+            course: '',
+            date: '',
+            weight: '',
+        };
+    }
+    newAssignment() {
+        console.log(this.state);
+    }    
     render() {
         return (
             <>
@@ -85,23 +97,57 @@ export class EntryRow extends React.Component {
                         </Typography>
                         <Grid container spacing={2}>
                             <Grid item sm={3}>
-                                <TextField autoFocus color="secondary" fullWidth label="Name" variant="standard" />
+                                <TextField
+                                    autoFocus
+                                    color="secondary"
+                                    fullWidth
+                                    label="Name"
+                                    variant="standard"
+                                    value={this.state.name}
+                                    onChange={(e) => {this.setState({name: e.target.value})}}
+                                />
                             </Grid>
                             <Grid item sm={4}>
                                 <Autocomplete
                                     disablePortal
                                     id="combo-box-demo"
-                                    options={this.props.courses.map(a => a.name)}
+                                    options={this.props.courses.map(
+                                        (a) => a.name
+                                    )}
                                     renderInput={(params) => (
-                                        <TextField {...params} color="secondary" fullWidth label="Course" variant="standard" />
+                                        <TextField
+                                            {...params}
+                                            color="secondary"
+                                            fullWidth
+                                            label="Course"
+                                            variant="standard"
+                                            value={this.state.course}
+                                            onChange={(e) => {this.setState({course: e.target.value})}}
+                                        />
                                     )}
                                 />
                             </Grid>
                             <Grid item sm={3}>
-                                <TextField color="secondary" fullWidth label=" " variant="standard" type="date"/>
+                                <TextField
+                                    color="secondary"
+                                    fullWidth
+                                    label=" "
+                                    variant="standard"
+                                    type="date"
+                                    value={this.state.date}
+                                    onChange={(e) => {this.setState({date: e.target.value})}}
+                                />
                             </Grid>
                             <Grid item sm={2}>
-                                <TextField color="secondary" fullWidth label="Weight" variant="standard" type="number" />
+                                <TextField
+                                    color="secondary"
+                                    fullWidth
+                                    label="Weight"
+                                    variant="standard"
+                                    type="number"
+                                    value={this.state.weight}
+                                    onChange={(e) => {this.setState({weight: e.target.value})}}
+                                />
                             </Grid>
                         </Grid>
                     </CardContent>
@@ -111,6 +157,7 @@ export class EntryRow extends React.Component {
                                 size="large"
                                 variant="outlined"
                                 color="secondary"
+                                onClick={this.newAssignment.bind(this)}
                             >
                                 Add
                             </Button>
@@ -148,11 +195,11 @@ export class AssignmentTable extends React.Component {
     render() {
         let rows = [];
         this.props.assignments.forEach((assignment) => {
-            rows.push(<AssignmentRow assignment={assignment}></AssignmentRow>);
+            rows.push(<AssignmentRow key={rows.length} assignment={assignment}></AssignmentRow>);
         });
         return (
             <>
-                <EntryRow courses={this.props.courses}/>
+                <EntryRow courses={this.props.courses} />
                 <TableContainer className="center">
                     <Table size="small">
                         <colgroup>
