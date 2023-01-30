@@ -78,7 +78,7 @@ export class EntryRow extends React.Component {
             name: '',
             course: this.props.courses[0].name,
             courseInput: this.props.courses[0].id.toString(),
-            courseid: '',
+            courseid: this.props.courses[0].id,
             due: '',
             weight: '',
             id: '',
@@ -130,7 +130,7 @@ export class EntryRow extends React.Component {
                                         let id = this.props.courses.find(
                                             (c) => c.name === newValue
                                         ).id;
-                                        console.log(id)
+                                        console.log("setting id", id);
                                         this.setState({
                                             courseid: id,
                                         });
