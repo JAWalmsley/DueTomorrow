@@ -6,7 +6,8 @@ let con = mysql.createPool({
     host: 'localhost',
     user: config.username,
     password: config.password,
-    database: config.database
+    database: config.database,
+    dateStrings: true,
 });
 
 // con.query("USE BTE;", function (err, result) {

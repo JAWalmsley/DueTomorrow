@@ -24,40 +24,47 @@ import {
  * @param {Object} assignment
  */
 export class AssignmentRow extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            ...this.props.assignment,
+        };
+    }
+    handleChange(e) {
+        console.log(e.target.checked);
+        this.setState({ done: e.target.checked });
+        this.props.updateAssignmentCallback({...this.state, done: e.target.checked});
+    }
+    // eslint-disable-next-line
+    handleChange = this.handleChange.bind(this);
     render() {
-        const assignment = this.props.assignment;
-        let { colour, id, name, course, due, weight, done } = assignment;
-        let dueDate = new Date(due);
+        
+        let dueDate = new Date(this.state.due);
         let dueString = dueDate.toLocaleDateString('en-GB', {
             weekday: 'long',
             year: 'numeric',
             month: 'long',
             day: 'numeric',
         });
-
-        function handleChange(e) {
-            console.log(e.target.checked);
-            done = e.target.checked;
-        }
-
+  
         return (
             <>
-                <TableRow key={id} sx={{ backgroundColor: colour }}>
-                    <TableCell>{name}</TableCell>
-                    <TableCell>{course}</TableCell>
+                <TableRow key={this.state.id} sx={{ backgroundColor: this.state.colour }}>
+                    <TableCell>{this.state.name}</TableCell>
+                    <TableCell>{this.state.course}</TableCell>
                     <TableCell>{dueString}</TableCell>
-                    <TableCell>{weight}</TableCell>
+                    <TableCell>{this.state.weight}</TableCell>
                     <TableCell>
                         <Checkbox
                             key={Math.random()}
-                            defaultChecked={!!done}
-                            onChange={handleChange}
+                            defaultChecked={!!this.state.done}
+                            onChange={this.handleChange}
                             inputProps={{ 'aria-label': 'controlled' }}
                         />
                     </TableCell>
                     <TableCell>
                         <Button>
-                            <Delete />
+                            <Delete  />
                         </Button>
                     </TableCell>
                 </TableRow>
@@ -236,6 +243,7 @@ export class AssignmentTable extends React.Component {
                     <AssignmentRow
                         key={rows.length}
                         assignment={assignment}
+                        updateAssignmentCallback={this.props.updateAssignmentCallback}
                     ></AssignmentRow>
                 );
             });

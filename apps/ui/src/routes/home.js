@@ -8,6 +8,7 @@ import {
     APIAssignmentPost,
     APICoursesGet,
     APIUsernameGet,
+    APIAssignmentModify,
 } from '../api.js';
 import React from 'react';
 
@@ -47,9 +48,28 @@ export class Home extends React.Component {
             })
             .then((data) => {
                 this.setState({ assignments: data, loadedAssignments: true });
+                console.log(data[0].due)
                 console.log('recieved assignments', data);
             });
     }
+
+    updateAssignment(data) {
+        console.log("Updating with userid", this.userid);
+        APIAssignmentModify({...data, userid: this.userid})
+        .then(() => {
+            let newAssignments = this.state.assignments.map(a => {
+                if(a.id === data.assignmentid) {
+                    for(let key in data) {
+                        a[key] = data[key] ?? a[key];
+                    }
+                }
+                return a;
+            });
+            this.setState({assignments: newAssignments});
+
+        })
+    }
+    updateAssignment = this.updateAssignment.bind(this);
 
     setCourses() {
         APICoursesGet(this.userid)
@@ -107,6 +127,7 @@ export class Home extends React.Component {
                             <AssignmentTable
                                 assignments={this.state.assignments}
                                 newAssignmentCallback={this.createAssignment}
+                                updateAssignmentCallback={this.updateAssignment}
                                 courses={this.state.courses}
                             />
                         </Grid>
