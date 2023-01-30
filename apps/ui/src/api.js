@@ -46,3 +46,21 @@ export function APIassignmentsGet (userid) {
         credentials: 'include',
     })
 }
+
+export function APIassignmentPost (data) {
+    return fetch(config.endpoint + 'users/' + data.userid + '/assignments/', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(data),
+    })
+    .then((res) => {
+        if (res.status === 200) {
+            return res.text();
+        }
+        throw new Error(res.statusText);
+    })
+}

@@ -3,7 +3,8 @@ import { Navbar } from '../components/navbar.js';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import '../css/styles.css';
-import { APIassignmentsGet } from '../api.js';
+import { APIassignmentsGet, APIassignmentPost } from '../api.js';
+import React from 'react';
 
 const ASSIGNMENTS = [
     {
@@ -45,28 +46,67 @@ const COURSES = [
     },
 ];
 
-export default function Home() {
-    let userid = localStorage.getItem('userid');
-    let assignments;
-    if (!userid) {
-        window.location.replace('/login');
+export class Home extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            assignments: [],
+            loaded: false,
+        };
     }
-    APIassignmentsGet(userid)
-        .then((e) => e.json())
-        .then((data) => assignments = data);
-    return (
-        <>
-            <Navbar username={USERNAME} />
-            <Container>
-                <Grid container>
-                    <Grid item xs={12}>
-                        <AssignmentTable
-                            assignments={assignments}
-                            courses={COURSES}
-                        />
+
+    createAssignment(assig) {
+        let userid = localStorage.getItem('userid');
+        console.log("Creating assignment for user " + userid);
+        console.log(assig);
+        APIassignmentPost({...assig, userid: userid}).then((newid) => {
+            this.setState({assignments: [...this.state.assignments,assig]});
+        });
+    }
+
+    getAssignments(){
+        let userid = localStorage.getItem('userid');
+        APIassignmentsGet(userid)
+            .then((e) => {
+                if(e.status === 200){
+                    return e.json()
+                }
+                window.location.replace('/login');
+                throw new Error("Not logged in");
+            } )
+            .then((data) => {
+                this.setState({ assignments: data, loaded: true });
+                console.log("recieved", data)
+            });
+    }
+
+    componentDidMount() {
+        this.getAssignments();
+    }
+
+    render() {
+        // if (this.userid == null) {
+        //     window.location.replace('/login');
+        // }
+        if(!this.state.loaded){
+            return(<>Loading...</>)
+        }
+        return (
+            <>
+                <Navbar username={USERNAME} />
+                <Container>
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <AssignmentTable
+                                assignments={this.state.assignments}
+                                newAssignmentCallback={this.createAssignment}
+                                courses={COURSES}
+                            />
+                        </Grid>
                     </Grid>
-                </Grid>
-            </Container>
-        </>
-    );
+                </Container>
+            </>
+        );
+    }
 }

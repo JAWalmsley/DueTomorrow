@@ -1,5 +1,5 @@
 /* existing imports */
-import Home from './routes/home';
+import { Home } from './routes/home';
 import GPAPage from './routes/gpaPage';
 import LoginPage from './routes/loginPage';
 

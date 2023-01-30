@@ -69,20 +69,22 @@ export class AssignmentRow extends React.Component {
 /**
  * Row for entering a new assignment
  * @param courses
+ * @param newAssignmentCallback
  */
 export class EntryRow extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             name: '',
-            course: '',
-            date: '',
+            course: this.props.courses[0].name,
+            courseInput: this.props.courses[0].id.toString(),
+            courseid: '',
+            due: '',
             weight: '',
+            id: '',
         };
     }
-    newAssignment() {
-        console.log(this.state);
-    }    
+
     render() {
         return (
             <>
@@ -95,7 +97,9 @@ export class EntryRow extends React.Component {
                         >
                             New Assignment
                         </Typography>
+
                         <Grid container spacing={2}>
+                            {/* Name */}
                             <Grid item sm={3}>
                                 <TextField
                                     autoFocus
@@ -104,9 +108,12 @@ export class EntryRow extends React.Component {
                                     label="Name"
                                     variant="standard"
                                     value={this.state.name}
-                                    onChange={(e) => {this.setState({name: e.target.value})}}
+                                    onChange={(e) => {
+                                        this.setState({ name: e.target.value });
+                                    }}
                                 />
                             </Grid>
+                            {/* Course */}
                             <Grid item sm={4}>
                                 <Autocomplete
                                     disablePortal
@@ -114,6 +121,26 @@ export class EntryRow extends React.Component {
                                     options={this.props.courses.map(
                                         (a) => a.name
                                     )}
+                                    value={this.state.course}
+                                    onChange={(_, newValue) => {
+                                        this.setState({
+                                            course: newValue,
+                                        });
+
+                                        let id = this.props.courses.find(
+                                            (c) => c.name === newValue
+                                        ).id;
+                                        console.log(id)
+                                        this.setState({
+                                            courseid: id,
+                                        });
+                                    }}
+                                    inputValue={this.state.courseInput}
+                                    onInputChange={(_, newValue) => {
+                                        this.setState({
+                                            courseInput: newValue,
+                                        });
+                                    }}
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}
@@ -121,12 +148,11 @@ export class EntryRow extends React.Component {
                                             fullWidth
                                             label="Course"
                                             variant="standard"
-                                            value={this.state.course}
-                                            onChange={(e) => {this.setState({course: e.target.value})}}
                                         />
                                     )}
                                 />
                             </Grid>
+                            {/* Date */}
                             <Grid item sm={3}>
                                 <TextField
                                     color="secondary"
@@ -134,10 +160,13 @@ export class EntryRow extends React.Component {
                                     label=" "
                                     variant="standard"
                                     type="date"
-                                    value={this.state.date}
-                                    onChange={(e) => {this.setState({date: e.target.value})}}
+                                    value={this.state.due}
+                                    onChange={(e) => {
+                                        this.setState({ due: e.target.value });
+                                    }}
                                 />
                             </Grid>
+                            {/* Weight */}
                             <Grid item sm={2}>
                                 <TextField
                                     color="secondary"
@@ -146,7 +175,12 @@ export class EntryRow extends React.Component {
                                     variant="standard"
                                     type="number"
                                     value={this.state.weight}
-                                    onChange={(e) => {this.setState({weight: e.target.value})}}
+                                    onChange={(e) => {
+                                        this.setState({
+                                            weight: e.target.value,
+                                        });
+                                        console.log(this.state);
+                                    }}
                                 />
                             </Grid>
                         </Grid>
@@ -157,7 +191,9 @@ export class EntryRow extends React.Component {
                                 size="large"
                                 variant="outlined"
                                 color="secondary"
-                                onClick={this.newAssignment.bind(this)}
+                                onClick={() =>
+                                    this.props.newAssignmentCallback(this.state)
+                                }
                             >
                                 Add
                             </Button>
@@ -194,12 +230,23 @@ export class HeaderRow extends React.Component {
 export class AssignmentTable extends React.Component {
     render() {
         let rows = [];
-        this.props.assignments.forEach((assignment) => {
-            rows.push(<AssignmentRow key={rows.length} assignment={assignment}></AssignmentRow>);
-        });
+        if (this.props.assignments !== undefined) {
+            this.props.assignments.forEach((assignment) => {
+                rows.push(
+                    <AssignmentRow
+                        key={rows.length}
+                        assignment={assignment}
+                    ></AssignmentRow>
+                );
+            });
+        }
+
         return (
             <>
-                <EntryRow courses={this.props.courses} />
+                <EntryRow
+                    courses={this.props.courses}
+                    newAssignmentCallback={this.props.newAssignmentCallback}
+                />
                 <TableContainer className="center">
                     <Table size="small">
                         <colgroup>
