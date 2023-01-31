@@ -28,6 +28,8 @@ export class AssignmentRow extends React.Component {
         super(props);
         this.state = {
             ...this.props.assignment,
+            colour: this.props.course.colour,
+            course: this.props.course.name,
         };
     }
     handleChange(e) {
@@ -35,10 +37,10 @@ export class AssignmentRow extends React.Component {
         this.setState({ done: e.target.checked });
         this.props.updateAssignmentCallback({...this.state, done: e.target.checked});
     }
+    
     // eslint-disable-next-line
     handleChange = this.handleChange.bind(this);
-    render() {
-        
+    render() {        
         let dueDate = new Date(this.state.due);
         let dueString = dueDate.toLocaleDateString('en-GB', {
             weekday: 'long',
@@ -244,6 +246,9 @@ export class AssignmentTable extends React.Component {
                         key={rows.length}
                         assignment={assignment}
                         updateAssignmentCallback={this.props.updateAssignmentCallback}
+                        course={this.props.courses.find(
+                            (c) => c.id === assignment.courseid
+                        )}
                     ></AssignmentRow>
                 );
             });
