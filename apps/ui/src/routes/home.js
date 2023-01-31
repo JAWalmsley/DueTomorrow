@@ -69,6 +69,7 @@ export class Home extends React.Component {
 
         })
     }
+    // eslint-disable-next-line
     updateAssignment = this.updateAssignment.bind(this);
 
     setCourses() {
