@@ -16,6 +16,32 @@ function getAssignmentsByCourse(a, course) {
     return assignments.filter((a) => a.courseid === course.id);
 }
 
+function weightedAverage(items, weights) {
+    let weightedTotal = 0;
+    let weightSum = 0;
+    for (let i = 0; i < weights.length; i++) {
+        console.log('item is', items[i]);
+        if (items[i] == null) {
+            continue;
+        }
+        console.log(Number(weights[i]));
+        weightSum += Number(weights[i]);
+        weightedTotal += Number(weights[i]) * Number(items[i]);
+    }
+    weightSum = Math.min(weightSum, 100);
+    console.log('it is', weightedTotal, weightSum, weightedTotal / weightSum);
+    return weightedTotal / weightSum;
+}
+
+function getCourseAverage(course, assignments) {
+    let assigs = getAssignmentsByCourse(assignments, course);
+    let avg = weightedAverage(
+        assigs.map((a) => a.grade),
+        assigs.map((a) => a.weight)
+    );
+    return avg;
+}
+
 /**
  * A row containing one assignment
  *
@@ -28,7 +54,7 @@ export class GradeRow extends React.Component {
     }
 
     updateGrade = (e) => {
-        let grade = e.target.value !== "" ? e.target.value : null;
+        let grade = e.target.value !== '' ? e.target.value : null;
         this.setState({ grade: grade });
         this.props.updateAssignmentCallback({
             id: this.state.id,
@@ -37,7 +63,7 @@ export class GradeRow extends React.Component {
     };
 
     updateWeight = (e) => {
-        let weight = e.target.value !== "" ? e.target.value : 0;
+        let weight = e.target.value !== '' ? e.target.value : 0;
         this.setState({ weight: weight });
         this.props.updateAssignmentCallback({
             id: this.state.id,
@@ -79,23 +105,16 @@ export class GradeRow extends React.Component {
  * @param {Object} course
  */
 export class CourseHeader extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { average: 404 };
-    }
-    updateAverage = (newAvg) => {
-        this.setState({ average: newAvg });
-    };
     render() {
         return (
             <TableRow>
                 <TableCell className="center">
                     {this.props.course.name}
                 </TableCell>
+                <TableCell />
                 <TableCell className="center">
                     {this.props.course.credits} Credits
                 </TableCell>
-                <TableCell className="center">{this.state.average}</TableCell>
             </TableRow>
         );
     }
@@ -205,28 +224,6 @@ export class GPATally extends React.Component {
             90: 4.3,
         };
 
-        function weightedAverage(items, weights) {
-            let weightedTotal = 0;
-            let weightSum = 0;
-            for (let i = 0; i < weights.length; i++) {
-                console.log("item is", items[i])
-                if (items[i] == null) {
-                    continue;
-                }
-                console.log(Number(weights[i]))
-                weightSum += Number(weights[i]);
-                weightedTotal += Number(weights[i]) * Number(items[i]);
-            }
-            weightSum = Math.min(weightSum, 100);
-            console.log(
-                'it is',
-                weightedTotal,
-                weightSum,
-                (weightedTotal / weightSum)
-            );
-            return (weightedTotal / weightSum);
-        }
-
         function GPAScale(grade, scale) {
             let GPA = 0;
             for (let [percent, number] of Object.entries(scale)) {
@@ -239,12 +236,7 @@ export class GPATally extends React.Component {
         let rows = [];
         let assignments = this.props.assignments;
         this.props.courses.forEach(function (course) {
-            let assigs = getAssignmentsByCourse(assignments, course);
-            console.log("assigs is", assigs)
-            let avg = weightedAverage(
-                assigs.map((a) => a.grade),
-                assigs.map((a) => a.weight)
-            );
+            let avg = getCourseAverage(course, assignments)
             let fourpt = GPAScale(avg, fourPointScale);
             let twelvept = GPAScale(avg, twelvePointScale);
             rows.push(
