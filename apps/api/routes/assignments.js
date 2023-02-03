@@ -23,7 +23,7 @@ router.put('/:assignmentid', isUserAuthorized, (req, res) => {
     if (!req.body) return res.status(400).send('No data given');
     let data = req.body;
     for (let propName in data) {
-        if (data[propName] === null || data[propName] === undefined) {
+        if (data[propName] === undefined) {
             delete data[propName];
         }
     }
