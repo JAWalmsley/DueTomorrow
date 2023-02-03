@@ -5,10 +5,8 @@ import Container from '@mui/material/Container';
 import '../css/styles.css';
 import {
     APIAssignmentsGet,
-    APIAssignmentPost,
     APICoursesGet,
     APIUsernameGet,
-    APIAssignmentModify,
 } from '../api.js';
 import React from 'react';
 

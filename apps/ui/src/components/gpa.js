@@ -11,6 +11,11 @@ import {
 } from '@mui/material';
 import React from 'react';
 
+function getAssignmentsByCourse(a, course) {
+    let assignments = [...a];
+    return assignments.filter((a) => a.courseid === course.id);
+}
+
 /**
  * A row containing one assignment
  *
@@ -19,11 +24,11 @@ import React from 'react';
 export class GradeRow extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {assignment: this.props.assignment};
+        this.state = { assignment: this.props.assignment };
     }
     updateGrade = (e) => {
-        this.setState({assignment:{grade:e.target.value}});
-    }
+        this.setState({ assignment: { grade: e.target.value } });
+    };
     render() {
         const assignment = this.props.assignment;
         const { id, name, weight, grade } = assignment;
@@ -32,7 +37,13 @@ export class GradeRow extends React.Component {
                 <TableCell>{name}</TableCell>
                 <TableCell>{weight}</TableCell>
                 <TableCell className="center">
-                    <TextField size="small" label="Grade" defaultValue={grade} variant="standard" onChange={this.updateGrade}/>
+                    <TextField
+                        size="small"
+                        label="Grade"
+                        defaultValue={grade}
+                        variant="standard"
+                        onChange={this.updateGrade}
+                    />
                 </TableCell>
             </TableRow>
         );
@@ -47,11 +58,11 @@ export class GradeRow extends React.Component {
 export class CourseHeader extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {average: 404};
+        this.state = { average: 404 };
     }
     updateAverage = (newAvg) => {
-        this.setState({average: newAvg});
-    }
+        this.setState({ average: newAvg });
+    };
     render() {
         return (
             <TableRow>
@@ -135,76 +146,87 @@ export class CourseBox extends React.Component {
 export class GPATally extends React.Component {
     render() {
         const twelvePointScale = {
-            0:0,
-            50:1,
-            53:2,
-            57:3,
-            60:4,
-            63:5,
-            67:6,
-            70:7,
-            73:8,
-            77:9,
-            80:10,
-            85:11,
-            90:12
-        }
+            0: 0,
+            50: 1,
+            53: 2,
+            57: 3,
+            60: 4,
+            63: 5,
+            67: 6,
+            70: 7,
+            73: 8,
+            77: 9,
+            80: 10,
+            85: 11,
+            90: 12,
+        };
         const fourPointScale = {
-            0:0,
-            50:0.7,
-            53:1,
-            57:1.3,
-            60:1.7,
-            63:2,
-            67:2.3,
-            70:2.7,
-            73:3,
-            77:3.3,
-            80:3.7,
-            85:4,
-            90:4.3
-        }
+            0: 0,
+            50: 0.7,
+            53: 1,
+            57: 1.3,
+            60: 1.7,
+            63: 2,
+            67: 2.3,
+            70: 2.7,
+            73: 3,
+            77: 3.3,
+            80: 3.7,
+            85: 4,
+            90: 4.3,
+        };
 
         function weightedAverage(items, weights) {
-            let weightSum = weights.reduce((partialSum, a) => partialSum + a, 0);
-            let weightedTotal = 0
-            for(let i = 0; i < weights.length; i++) {
+            let weightSum = weights.reduce(
+                (partialSum, a) => partialSum + a,
+                0
+            );
+            let weightedTotal = 0;
+            for (let i = 0; i < weights.length; i++) {
                 weightedTotal += weights[i] * items[i];
             }
             return weightedTotal / weightSum;
         }
-        
+
         function GPAScale(grade, scale) {
             let GPA = 0;
             for (let [percent, number] of Object.entries(scale)) {
-                if(grade >= percent) {
+                if (grade >= percent) {
                     GPA = number;
                 }
-            };
+            }
             return GPA;
         }
         let rows = [];
-        this.props.courses.forEach(function(course) {
-            let avg = weightedAverage(course.assignments.map(a => a.grade), course.assignments.map(a => a.weight));
+        let assignments = this.props.assignments;
+        this.props.courses.forEach(function (course) {
+            let assigs = getAssignmentsByCourse(assignments, course);
+            let avg = weightedAverage(
+                assigs.map((a) => a.grade),
+                assigs.map((a) => a.weight)
+            );
             let fourpt = GPAScale(avg, fourPointScale);
             let twelvept = GPAScale(avg, twelvePointScale);
-            rows.push(<TableRow>
-                <TableCell>{course.name}</TableCell>
-                <TableCell>{course.credits}</TableCell>
-                <TableCell>{twelvept}</TableCell>
-                <TableCell>{fourpt}</TableCell>
-            </TableRow>)
+            rows.push(
+                <TableRow>
+                    <TableCell>{course.name}</TableCell>
+                    <TableCell>{course.credits}</TableCell>
+                    <TableCell>{twelvept}</TableCell>
+                    <TableCell>{fourpt}</TableCell>
+                </TableRow>
+            );
         });
         return (
             <Card>
                 <CardContent>
                     <Table>
                         <TableHead>
-                            <HeaderRow columns={['Course', 'Credits', '12pt', '4pt']} colour="#fff"/>
+                            <HeaderRow
+                                columns={['Course', 'Credits', '12pt', '4pt']}
+                                colour="#fff"
+                            />
                         </TableHead>
-                        <TableBody>
-                            {rows}
-                        </TableBody>
+                        <TableBody>{rows}</TableBody>
                     </Table>
                 </CardContent>
             </Card>
@@ -224,12 +246,19 @@ export class CourseList extends React.Component {
             boxes.push(
                 <Grid item>
                     <CourseBox
-                        assignments={course.assignments}
+                        assignments={getAssignmentsByCourse(
+                            this.props.assignments,
+                            course
+                        )}
                         course={course}
                     />
-                    </Grid>
+                </Grid>
             );
         });
-        return <Grid container spacing={2}>{boxes}</Grid>;
+        return (
+            <Grid container spacing={2}>
+                {boxes}
+            </Grid>
+        );
     }
 }

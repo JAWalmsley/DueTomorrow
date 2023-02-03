@@ -1,67 +1,98 @@
 import { Container, Grid } from '@mui/material';
 import { CourseList, GPATally } from '../components/gpa.js';
 import { Navbar } from '../components/navbar.js';
-
+import React from 'react';
 import '../css/styles.css';
 
-const ASSIGNMENTS = [
-    {
-        course: 'ENGINEER 1P13B',
-        id: '5675675675678',
-        name: 'assignmentname',
-        due: '2003-09-30T04:00:00.000Z',
-        done: 1,
-        weight: 50,
-        grade: 100,
-    },
-    {
-        course: 'ENGINEER 1P13B',
-        id: '56756754vdf78',
-        name: 'assignmentname2',
-        due: '2003-09-30T04:00:00.000Z',
-        done: 1,
-        weight: 50,
-        grade: 100,
-    },
-];
-const COURSES = [
-    {
-        name: 'Balls',
-        colour: '#ffffaa',
-        assignments: ASSIGNMENTS,
-        id: 55389202839382,
-        credits: 3,
-    },
-    {
-        name: 'Balls Course 2',
-        colour: '#aaaaff',
-        assignments: ASSIGNMENTS,
-        id: 92821201821,
-        credits: 6,
-    },
-    {
-        name: 'Balls Course 3',
-        colour: '#ffaaff',
-        assignments: ASSIGNMENTS,
-        id: 92821201821,
-        credits: 6,
-    },
-];
+import { APIAssignmentsGet, APICoursesGet, APIUsernameGet } from '../api.js';
 
-export default function GPAPage() {
-    return (
-        <>
-            <Navbar />
-            <Container>
-                <Grid container spacing={2} padding={1}>
-                    <Grid item xs={7}>
-                        <CourseList courses={COURSES} />
+export default class GPAPage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            assignments: [],
+            courses: [],
+            username: '',
+            loadedCourses: false,
+            loadedAssignments: false,
+            loadedUsername: false,
+        };
+    }
+
+    setAssignments() {
+        APIAssignmentsGet(this.userid)
+            .then((e) => {
+                if (e.status === 200) {
+                    return e.json();
+                }
+                window.location.replace('/login');
+                throw new Error('Not logged in');
+            })
+            .then((data) => {
+                this.setState({ assignments: data, loadedAssignments: true });
+                console.log(data[0].due);
+                console.log('recieved assignments', data);
+            });
+    }
+
+    setCourses() {
+        APICoursesGet(this.userid)
+            .then((e) => {
+                if (e.status === 200) {
+                    return e.json();
+                }
+                window.location.replace('/login');
+                throw new Error('Not logged in');
+            })
+            .then((data) => {
+                this.setState({ courses: data, loadedCourses: true });
+                console.log('recieved courses', data);
+            });
+    }
+
+    setUsername() {
+        APIUsernameGet(this.userid)
+            .then((e) => {
+                if (e.status === 200) {
+                    return e.json();
+                }
+                window.location.replace('/login');
+                throw new Error('Not logged in');
+            })
+            .then((data) => {
+                this.setState({
+                    username: data.username,
+                    loadedUsername: true,
+                });
+                console.log('recieved username', data);
+            });
+    }
+
+    componentDidMount() {
+        this.userid = localStorage.getItem('userid');
+        this.setCourses();
+        this.setAssignments();
+        this.setUsername();
+    }
+
+    render() {
+        if (!(this.state.loadedCourses && this.state.loadedAssignments)) {
+            return <>Loading...</>;
+        }
+        return (
+            <>
+                <Navbar />
+                <Container>
+                    <Grid container spacing={2} padding={1}>
+                        <Grid item xs={7}>
+                            <CourseList courses={this.state.courses} assignments={this.state.assignments} />
+                        </Grid>
+                        <Grid item xs={5} spacing={2}>
+                            <GPATally courses={this.state.courses} assignments={this.state.assignments} />
+                        </Grid>
                     </Grid>
-                    <Grid item xs={5} spacing={2}>
-                        <GPATally courses={COURSES}/>
-                    </Grid>
-                </Grid>
-            </Container>
-        </>
-    );
+                </Container>
+            </>
+        );
+    }
 }
