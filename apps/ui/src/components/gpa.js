@@ -104,6 +104,11 @@ export class CourseBox extends React.Component {
             <Card>
                 <CardContent>
                     <Table id={this.props.course.id}>
+                        <colgroup>
+                            <col style={{ width: '50%' }} />
+                            <col style={{ width: '30%' }} />
+                            <col style={{ width: '20%' }} />
+                        </colgroup>
                         <TableHead
                             style={{
                                 backgroundColor: this.props.course.colour,
