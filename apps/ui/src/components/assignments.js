@@ -19,6 +19,8 @@ import {
     Typography,
 } from '@mui/material';
 
+import { APIAssignmentPost, APIAssignmentModify } from '../api.js';
+
 /**
  * Row of one assignment
  * @param {Object} assignment
@@ -33,14 +35,16 @@ export class AssignmentRow extends React.Component {
         };
     }
     handleChange(e) {
-        console.log(e.target.checked);
         this.setState({ done: e.target.checked });
-        this.props.updateAssignmentCallback({...this.state, done: e.target.checked});
+        this.props.updateAssignmentCallback({
+            id: this.state.id,
+            done: e.target.checked,
+        });
     }
-    
+
     // eslint-disable-next-line
     handleChange = this.handleChange.bind(this);
-    render() {        
+    render() {
         let dueDate = new Date(this.state.due);
         let dueString = dueDate.toLocaleDateString('en-GB', {
             weekday: 'long',
@@ -48,10 +52,13 @@ export class AssignmentRow extends React.Component {
             month: 'long',
             day: 'numeric',
         });
-  
+
         return (
             <>
-                <TableRow key={this.state.id} sx={{ backgroundColor: this.state.colour }}>
+                <TableRow
+                    key={Math.random()}
+                    sx={{ backgroundColor: this.state.colour }}
+                >
                     <TableCell>{this.state.name}</TableCell>
                     <TableCell>{this.state.course}</TableCell>
                     <TableCell>{dueString}</TableCell>
@@ -66,7 +73,7 @@ export class AssignmentRow extends React.Component {
                     </TableCell>
                     <TableCell>
                         <Button>
-                            <Delete  />
+                            <Delete />
                         </Button>
                     </TableCell>
                 </TableRow>
@@ -139,7 +146,6 @@ export class EntryRow extends React.Component {
                                         let id = this.props.courses.find(
                                             (c) => c.name === newValue
                                         ).id;
-                                        console.log("setting id", id);
                                         this.setState({
                                             courseid: id,
                                         });
@@ -188,7 +194,6 @@ export class EntryRow extends React.Component {
                                         this.setState({
                                             weight: e.target.value,
                                         });
-                                        console.log(this.state);
                                     }}
                                 />
                             </Grid>
@@ -237,28 +242,60 @@ export class HeaderRow extends React.Component {
 }
 
 export class AssignmentTable extends React.Component {
-    render() {
-        let rows = [];
-        if (this.props.assignments !== undefined) {
-            this.props.assignments.forEach((assignment) => {
-                rows.push(
-                    <AssignmentRow
-                        key={rows.length}
-                        assignment={assignment}
-                        updateAssignmentCallback={this.props.updateAssignmentCallback}
-                        course={this.props.courses.find(
-                            (c) => c.id === assignment.courseid
-                        )}
-                    ></AssignmentRow>
-                );
+    constructor(props) {
+        super(props);
+        this.state = {
+            assignments: this.props.assignments,
+        };
+    }
+
+    createAssignment(assig) {
+        APIAssignmentPost({ ...assig, userid: this.props.userid }).then(
+            (newid) => {
+                assig.id = newid;
+                assig.userid = this.props.userid;
+                assig.done = false;
+                this.setState({
+                    assignments: [...this.state.assignments, assig],
+                });
+            }
+        );
+    }
+    // eslint-disable-next-line
+    createAssignment = this.createAssignment.bind(this);
+
+    updateAssignment(data) {
+        APIAssignmentModify({ ...data, userid: this.props.userid }).then(() => {
+            let newAssignments = [...this.state.assignments].map((a) => {
+                if (a.id === data.id) {
+                    for (let key in data) {
+                        a[key] = data[key] ?? a[key];
+                    }
+                }
+                return a;
             });
-        }
+            this.setState({ assignments: newAssignments });
+        });
+    }
+    // eslint-disable-next-line
+    updateAssignment = this.updateAssignment.bind(this);
+
+    render() {
+        let sortedAssignments = [...this.state.assignments];
+        sortedAssignments.sort((a, b) => {
+            let aDate = Date.parse(a.due);
+            let bDate = Date.parse(b.due);
+            if (a.done === b.done) {
+                return aDate - bDate;
+            }
+            return a.done ? 1 : -1;
+        });
 
         return (
             <>
                 <EntryRow
                     courses={this.props.courses}
-                    newAssignmentCallback={this.props.newAssignmentCallback}
+                    newAssignmentCallback={this.createAssignment}
                 />
                 <TableContainer className="center">
                     <Table size="small">
@@ -279,7 +316,22 @@ export class AssignmentTable extends React.Component {
                                 'Delete',
                             ]}
                         />
-                        <TableBody>{rows}</TableBody>
+                        <TableBody key={Math.random()}>
+                            {sortedAssignments.map((assignment, i) => {
+                                return (
+                                    <AssignmentRow
+                                        key={Math.random()}
+                                        assignment={assignment}
+                                        updateAssignmentCallback={
+                                            this.updateAssignment
+                                        }
+                                        course={this.props.courses.find(
+                                            (c) => c.id === assignment.courseid
+                                        )}
+                                    ></AssignmentRow>
+                                );
+                            })}
+                        </TableBody>
                     </Table>
                 </TableContainer>
             </>
