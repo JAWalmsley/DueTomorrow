@@ -252,6 +252,12 @@ export class GPATally extends React.Component {
             <Card>
                 <CardContent>
                     <Table>
+                    <colgroup>
+                            <col style={{ width: '55%' }} />
+                            <col style={{ width: '15%' }} />
+                            <col style={{ width: '15%' }} />
+                            <col style={{ width: '15%' }} />
+                        </colgroup>
                         <TableHead>
                             <HeaderRow
                                 columns={['Course', 'Credits', '12pt', '4pt']}
