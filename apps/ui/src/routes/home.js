@@ -36,7 +36,6 @@ export class Home extends React.Component {
             })
             .then((data) => {
                 this.setState({ assignments: data, loadedAssignments: true });
-                console.log(data[0].due);
                 console.log('recieved assignments', data);
             });
     }
@@ -82,9 +81,6 @@ export class Home extends React.Component {
     }
 
     render() {
-        // if (this.userid == null) {
-        //     window.location.replace('/login');
-        // }
         if (!(this.state.loadedAssignments && this.state.loadedCourses)) {
             return <>Loading...</>;
         }

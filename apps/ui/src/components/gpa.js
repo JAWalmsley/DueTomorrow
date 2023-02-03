@@ -24,10 +24,25 @@ function getAssignmentsByCourse(a, course) {
 export class GradeRow extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { assignment: this.props.assignment };
+        this.state = this.props.assignment;
     }
+
     updateGrade = (e) => {
-        this.setState({ assignment: { grade: e.target.value } });
+        let grade = e.target.value !== "" ? e.target.value : null;
+        this.setState({ grade: grade });
+        this.props.updateAssignmentCallback({
+            id: this.state.id,
+            grade: grade,
+        });
+    };
+
+    updateWeight = (e) => {
+        let weight = e.target.value !== "" ? e.target.value : 0;
+        this.setState({ weight: weight });
+        this.props.updateAssignmentCallback({
+            id: this.state.id,
+            weight: weight,
+        });
     };
     render() {
         const assignment = this.props.assignment;
@@ -35,7 +50,15 @@ export class GradeRow extends React.Component {
         return (
             <TableRow key={id}>
                 <TableCell>{name}</TableCell>
-                <TableCell>{weight}</TableCell>
+                <TableCell>
+                    <TextField
+                        size="small"
+                        label="Weight"
+                        defaultValue={weight}
+                        variant="standard"
+                        onChange={this.updateWeight}
+                    />
+                </TableCell>
                 <TableCell className="center">
                     <TextField
                         size="small"
@@ -108,7 +131,13 @@ export class CourseBox extends React.Component {
         const rows = [];
         this.props.assignments.forEach((assignment) => {
             rows.push(
-                <GradeRow key={assignment.name} assignment={assignment} />
+                <GradeRow
+                    key={assignment.id}
+                    assignment={assignment}
+                    updateAssignmentCallback={
+                        this.props.updateAssignmentCallback
+                    }
+                />
             );
         });
         return (
@@ -177,15 +206,25 @@ export class GPATally extends React.Component {
         };
 
         function weightedAverage(items, weights) {
-            let weightSum = weights.reduce(
-                (partialSum, a) => partialSum + a,
-                0
-            );
             let weightedTotal = 0;
+            let weightSum = 0;
             for (let i = 0; i < weights.length; i++) {
-                weightedTotal += weights[i] * items[i];
+                console.log("item is", items[i])
+                if (items[i] == null) {
+                    continue;
+                }
+                console.log(Number(weights[i]))
+                weightSum += Number(weights[i]);
+                weightedTotal += Number(weights[i]) * Number(items[i]);
             }
-            return weightedTotal / weightSum;
+            weightSum = Math.min(weightSum, 100);
+            console.log(
+                'it is',
+                weightedTotal,
+                weightSum,
+                (weightedTotal / weightSum)
+            );
+            return (weightedTotal / weightSum);
         }
 
         function GPAScale(grade, scale) {
@@ -201,6 +240,7 @@ export class GPATally extends React.Component {
         let assignments = this.props.assignments;
         this.props.courses.forEach(function (course) {
             let assigs = getAssignmentsByCourse(assignments, course);
+            console.log("assigs is", assigs)
             let avg = weightedAverage(
                 assigs.map((a) => a.grade),
                 assigs.map((a) => a.weight)
@@ -208,7 +248,7 @@ export class GPATally extends React.Component {
             let fourpt = GPAScale(avg, fourPointScale);
             let twelvept = GPAScale(avg, twelvePointScale);
             rows.push(
-                <TableRow>
+                <TableRow key={Math.random()}>
                     <TableCell>{course.name}</TableCell>
                     <TableCell>{course.credits}</TableCell>
                     <TableCell>{twelvept}</TableCell>
@@ -244,13 +284,16 @@ export class CourseList extends React.Component {
         const boxes = [];
         this.props.courses.forEach((course) => {
             boxes.push(
-                <Grid item>
+                <Grid item key={course.id + 'coursebox'}>
                     <CourseBox
                         assignments={getAssignmentsByCourse(
                             this.props.assignments,
                             course
                         )}
                         course={course}
+                        updateAssignmentCallback={
+                            this.props.updateAssignmentCallback
+                        }
                     />
                 </Grid>
             );

@@ -4,9 +4,15 @@ import { Navbar } from '../components/navbar.js';
 import React from 'react';
 import '../css/styles.css';
 
-import { APIAssignmentsGet, APICoursesGet, APIUsernameGet } from '../api.js';
+import {
+    APIAssignmentModify,
+    APIAssignmentsGet,
+    APICoursesGet,
+    APIUsernameGet,
+} from '../api.js';
 
 export default class GPAPage extends React.Component {
+    userid = '';
     constructor(props) {
         super(props);
         this.state = {
@@ -30,10 +36,26 @@ export default class GPAPage extends React.Component {
             })
             .then((data) => {
                 this.setState({ assignments: data, loadedAssignments: true });
-                console.log(data[0].due);
                 console.log('recieved assignments', data);
             });
     }
+
+    updateAssignment(data) {
+        
+        APIAssignmentModify({ ...data, userid: this.userid }).then(() => {
+            let newAssignments = [...this.state.assignments].map((a) => {
+                if (a.id === data.id) {
+                    for (let key in data) {
+                        a[key] = data[key] ?? a[key];
+                    }
+                }
+                return a;
+            });
+            this.setState({ assignments: newAssignments });
+        });
+    }
+    // eslint-disable-next-line
+    updateAssignment = this.updateAssignment.bind(this);
 
     setCourses() {
         APICoursesGet(this.userid)
@@ -85,10 +107,17 @@ export default class GPAPage extends React.Component {
                 <Container>
                     <Grid container spacing={2} padding={1}>
                         <Grid item xs={7}>
-                            <CourseList courses={this.state.courses} assignments={this.state.assignments} />
+                            <CourseList
+                                courses={this.state.courses}
+                                assignments={this.state.assignments}
+                                updateAssignmentCallback={this.updateAssignment}
+                            />
                         </Grid>
-                        <Grid item xs={5} spacing={2}>
-                            <GPATally courses={this.state.courses} assignments={this.state.assignments} />
+                        <Grid item xs={5}>
+                            <GPATally
+                                courses={this.state.courses}
+                                assignments={this.state.assignments}
+                            />
                         </Grid>
                     </Grid>
                 </Container>
