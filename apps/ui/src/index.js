@@ -2,6 +2,7 @@
 import { Home } from './routes/home';
 import GPAPage from './routes/gpaPage';
 import LoginPage from './routes/loginPage';
+import CoursePage from './routes/coursePage';
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -28,6 +29,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 <Route path="/" element={<Home />} />
                 <Route path="/gpa" element={<GPAPage />} />
                 <Route path="/login" element={<LoginPage />} />
+                <Route path="/courses" element={<CoursePage />} />
             </Routes>
         </Router>
     </ThemeProvider>
