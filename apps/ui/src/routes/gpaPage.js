@@ -25,69 +25,44 @@ export default class GPAPage extends React.Component {
         };
     }
 
-    setAssignments() {
-        APIAssignmentsGet(this.userid)
-            .then((e) => {
-                if (e.status === 200) {
-                    return e.json();
-                }
-                window.location.replace('/login');
-                throw new Error('Not logged in');
-            })
-            .then((data) => {
-                this.setState({ assignments: data, loadedAssignments: true });
-                console.log('recieved assignments', data);
-            });
-    }
-
-    updateAssignment(data) {
-        
-        APIAssignmentModify({ ...data, userid: this.userid }).then(() => {
-            let newAssignments = [...this.state.assignments].map((a) => {
-                if (a.id === data.id) {
-                    for (let key in data) {
-                        a[key] = data[key] ?? a[key];
-                    }
-                }
-                return a;
-            });
-            this.setState({ assignments: newAssignments });
-        });
+    async updateAssignment(data) {
+        let m = await APIAssignmentModify({ ...data, userid: this.userid });
+        if (m === 200) {
+            await this.setAssignments();
+        }
+        else {
+            console.log('Error updating assignment');
+        }
     }
     // eslint-disable-next-line
     updateAssignment = this.updateAssignment.bind(this);
 
-    setCourses() {
-        APICoursesGet(this.userid)
-            .then((e) => {
-                if (e.status === 200) {
-                    return e.json();
-                }
-                window.location.replace('/login');
-                throw new Error('Not logged in');
-            })
-            .then((data) => {
-                this.setState({ courses: data, loadedCourses: true });
-                console.log('recieved courses', data);
-            });
+
+    async setAssignments() {
+        let a = await APIAssignmentsGet(this.userid);
+        if(a === null) {
+            window.location.replace('/login');
+        } else {
+            this.setState({ assignments: a, loadedAssignments: true });
+        }
     }
 
-    setUsername() {
-        APIUsernameGet(this.userid)
-            .then((e) => {
-                if (e.status === 200) {
-                    return e.json();
-                }
-                window.location.replace('/login');
-                throw new Error('Not logged in');
-            })
-            .then((data) => {
-                this.setState({
-                    username: data.username,
-                    loadedUsername: true,
-                });
-                console.log('recieved username', data);
-            });
+    async setCourses() {
+        let c = await APICoursesGet(this.userid);
+        if (c === null) {
+            window.location.replace('/login');
+        } else {
+            this.setState({ courses: c, loadedCourses: true });
+        }
+    }
+
+    async setUsername() {
+        let u = APIUsernameGet(this.userid);
+        if(u === null) {
+            window.location.replace('/login');
+        } else {
+            this.setState({ username: u, loadedUsername: true });
+        }
     }
 
     componentDidMount() {

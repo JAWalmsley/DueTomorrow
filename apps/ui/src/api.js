@@ -46,7 +46,19 @@ export function APIUsernameGet(userid) {
             'Content-Type': 'application/json',
         },
         credentials: 'include',
-    });
+    })
+    .then((e) => {
+        if(e.status === 200) {
+            return e.json();
+        }
+        throw new Error();
+    })
+    .then((data) => {
+        return data;
+    })
+    .catch((error) => {
+        return null;
+    })
 }
 
 /**
@@ -60,7 +72,19 @@ export function APIAssignmentsGet(userid) {
             'Content-Type': 'application/json',
         },
         credentials: 'include',
-    });
+    })
+    .then((e) => {
+        if(e.status === 200) {
+            return e.json();
+        }
+        throw new Error();
+    })
+    .then((data) => {
+        return data;
+    })
+    .catch((error) => {
+        return null;
+    })
 }
 
 /**
@@ -109,10 +133,7 @@ export function APIAssignmentModify(data) {
             body: JSON.stringify(data),
         }
     ).then((res) => {
-        if (res.status === 200) {
-            return res.text();
-        }
-        throw new Error(res.statusText);
+        return res.status;
     });
 }
 
@@ -133,5 +154,17 @@ export function APICoursesGet(userid) {
             'Content-Type': 'application/json',
         },
         credentials: 'include',
-    });
+    })
+    .then((e) => {
+        if(e.status === 200) {
+            return e.json();
+        }
+        throw new Error();
+    })
+    .then((data) => {
+        return data;
+    })
+    .catch((error) => {
+        return null;
+    })
 }

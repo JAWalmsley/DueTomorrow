@@ -3,11 +3,7 @@ import { Navbar } from '../components/navbar.js';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import '../css/styles.css';
-import {
-    APIAssignmentsGet,
-    APICoursesGet,
-    APIUsernameGet,
-} from '../api.js';
+import { APIAssignmentsGet, APICoursesGet, APIUsernameGet } from '../api.js';
 import React from 'react';
 
 export class Home extends React.Component {
@@ -25,52 +21,31 @@ export class Home extends React.Component {
         };
     }
 
-    setAssignments() {
-        APIAssignmentsGet(this.userid)
-            .then((e) => {
-                if (e.status === 200) {
-                    return e.json();
-                }
-                window.location.replace('/login');
-                throw new Error('Not logged in');
-            })
-            .then((data) => {
-                this.setState({ assignments: data, loadedAssignments: true });
-                console.log('recieved assignments', data);
-            });
+    async setAssignments() {
+        let a = await APIAssignmentsGet(this.userid);
+        if(a === null) {
+            window.location.replace('/login');
+        } else {
+            this.setState({ assignments: a, loadedAssignments: true });
+        }
     }
 
-    setCourses() {
-        APICoursesGet(this.userid)
-            .then((e) => {
-                if (e.status === 200) {
-                    return e.json();
-                }
-                window.location.replace('/login');
-                throw new Error('Not logged in');
-            })
-            .then((data) => {
-                this.setState({ courses: data, loadedCourses: true });
-                console.log('recieved courses', data);
-            });
+    async setCourses() {
+        let c = await APICoursesGet(this.userid);
+        if (c === null) {
+            window.location.replace('/login');
+        } else {
+            this.setState({ courses: c, loadedCourses: true });
+        }
     }
 
-    setUsername() {
-        APIUsernameGet(this.userid)
-            .then((e) => {
-                if (e.status === 200) {
-                    return e.json();
-                }
-                window.location.replace('/login');
-                throw new Error('Not logged in');
-            })
-            .then((data) => {
-                this.setState({
-                    username: data.username,
-                    loadedUsername: true,
-                });
-                console.log('recieved username', data);
-            });
+    async setUsername() {
+        let u = APIUsernameGet(this.userid);
+        if(u === null) {
+            window.location.replace('/login');
+        } else {
+            this.setState({ username: u, loadedUsername: true });
+        }
     }
 
     componentDidMount() {
@@ -86,7 +61,7 @@ export class Home extends React.Component {
         }
         return (
             <>
-                <Navbar username={this.state.username} />
+                <Navbar />
                 <Container>
                     <Grid container>
                         <Grid item xs={12}>

@@ -1,5 +1,4 @@
 import {
-    Autocomplete,
     Card,
     CardActions,
     CardContent,
@@ -7,11 +6,9 @@ import {
     TextField,
     Typography,
     Button,
-    ToggleButton,
-    ToggleButtonGroup,
 } from '@mui/material';
 
-import { GithubPicker, CirclePicker, TwitterPicker } from 'react-color';
+import { TwitterPicker } from 'react-color';
 
 import React from 'react';
 
@@ -69,10 +66,23 @@ export class EntryRow extends React.Component {
                                     }}
                                 />
                             </Grid>
+                            {/* Colour */}
                             <Grid item sm={5}>
                                 <TwitterPicker
-                                color={this.state.colour}
-                                onChangeComplete={(e) => this.setState({colour: e})}></TwitterPicker>
+                                    color={this.state.colour}
+                                    colors={[
+                                        '#EB144C',
+                                        '#FF6900',
+                                        '#FCB900',
+                                        '#7BDCB5',
+                                        '#8ED1FC',
+                                        '#0693E3',
+                                        '#9900EF',
+                                    ]}
+                                    onChangeComplete={(e) =>
+                                        this.setState({ colour: e })
+                                    }
+                                ></TwitterPicker>
                             </Grid>
                         </Grid>
                     </CardContent>
