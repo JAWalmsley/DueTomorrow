@@ -24,6 +24,7 @@ import { APIAssignmentPost, APIAssignmentModify } from '../api.js';
 /**
  * Row of one assignment
  * @param {Object} assignment
+ * @param {Object} course
  */
 export class AssignmentRow extends React.Component {
     constructor(props) {

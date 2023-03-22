@@ -8,6 +8,8 @@ import {
     Button,
 } from '@mui/material';
 
+import { Delete, DeleteOutline } from '@mui/icons-material';
+
 import { TwitterPicker } from 'react-color';
 
 import React from 'react';
@@ -98,6 +100,57 @@ export class EntryRow extends React.Component {
                         </Grid>
                     </CardActions>
                 </Card>
+            </>
+        );
+    }
+}
+
+/**
+ * @param {Object} course
+ *
+ */
+export class CourseBox extends React.Component {
+    render() {
+        return (
+            <>
+                <Card>
+                    <CardContent  style={{ backgroundColor: this.props.course.colour }}> 
+                        <Typography variant="h5" component="div">
+                            {this.props.course.name}
+                        </Typography>
+                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                            {this.props.course.credits} credits
+                        </Typography>
+                    </CardContent>
+                    <CardActions>
+                        <Grid container justifyContent="flex-end">
+                            <Button size="large" color="primary" variant='text'>
+                                <Delete />
+                            </Button>
+                        </Grid>
+                    </CardActions>
+                </Card>
+            </>
+        );
+    }
+}
+
+/**
+ * @param {Array} courses
+ */
+export class CourseList extends React.Component {
+    render() {
+        return (
+            <>
+                <Grid container spacing={2} padding={1}>
+                    {this.props.courses.map((course) => {
+                        return (
+                            <Grid item sm={12} xl={4}>
+                                <CourseBox course={course} />
+                            </Grid>
+                        );
+                    })}
+                </Grid>
             </>
         );
     }
