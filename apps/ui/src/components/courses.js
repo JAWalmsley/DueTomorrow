@@ -8,7 +8,7 @@ import {
     Button,
 } from '@mui/material';
 
-import { Delete, DeleteOutline } from '@mui/icons-material';
+import { Delete } from '@mui/icons-material';
 
 import { TwitterPicker } from 'react-color';
 

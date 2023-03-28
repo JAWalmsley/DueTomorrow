@@ -3,7 +3,7 @@ import { Navbar } from '../components/navbar.js';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import '../css/styles.css';
-import { APIAssignmentsGet, APICoursesGet, APIUsernameGet, APIAssignmentDelete } from '../api.js';
+import { APIAssignmentsGet, APICoursesGet, APIUsernameGet, APIAssignmentDelete, APIAssignmentPost, APIAssignmentModify } from '../api.js';
 import React from 'react';
 
 export class Home extends React.Component {
@@ -30,11 +30,18 @@ export class Home extends React.Component {
         }
     }
 
+    async updateAssignment(data) {
+        await APIAssignmentModify({ ...data, userid: this.userid });
+        this.setState({assignments: await APIAssignmentsGet(this.userid)});
+    }
+    // eslint-disable-next-line
+    updateAssignment = this.updateAssignment.bind(this);
     
     async deleteAssignment(data) {
         data = {...data, userid: this.userid};
         await APIAssignmentDelete(data);
-        this.setState({ assignments: await APIAssignmentsGet(this.userid) });
+        let a = await APIAssignmentsGet(this.userid)
+        this.setState({ assignments:  a}, () => console.log(this.state.assignments));
     } 
     // eslint-disable-next-line
     deleteAssignment = this.deleteAssignment.bind(this);
@@ -47,6 +54,13 @@ export class Home extends React.Component {
             this.setState({ courses: c, loadedCourses: true });
         }
     }
+
+    async createAssignment(assig) {
+        await APIAssignmentPost({ ...assig, userid: this.userid });
+        this.setState({assignments: await APIAssignmentsGet(this.userid)})
+    }
+    // eslint-disable-next-line
+    createAssignment = this.createAssignment.bind(this);
 
     async setUsername() {
         let u = APIUsernameGet(this.userid);
@@ -79,6 +93,8 @@ export class Home extends React.Component {
                                 userid={this.userid}
                                 courses={this.state.courses}
                                 deleteAssignmentCallback={this.deleteAssignment}
+                                createAssignmentCallback={this.createAssignment}
+                                updateAssignmentCallback={this.updateAssignment}
                             />
                         </Grid>
                     </Grid>

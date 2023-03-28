@@ -19,8 +19,6 @@ import {
     Typography,
 } from '@mui/material';
 
-import { APIAssignmentPost, APIAssignmentModify, APIAssignmentsGet, APIAssignmentDelete } from '../api.js';
-
 /**
  * Row of one assignment
  * @param {Object} assignment
@@ -243,46 +241,10 @@ export class HeaderRow extends React.Component {
 }
 
 export class AssignmentTable extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            assignments: this.props.assignments,
-        };
-    }
-
-    createAssignment(assig) {
-        APIAssignmentPost({ ...assig, userid: this.props.userid }).then(
-            (newid) => {
-                assig.id = newid;
-                assig.userid = this.props.userid;
-                assig.done = false;
-                this.setState({
-                    assignments: [...this.state.assignments, assig],
-                });
-            }
-        );
-    }
-    // eslint-disable-next-line
-    createAssignment = this.createAssignment.bind(this);
-
-    updateAssignment(data) {
-        APIAssignmentModify({ ...data, userid: this.props.userid }).then(() => {
-            let newAssignments = [...this.state.assignments].map((a) => {
-                if (a.id === data.id) {
-                    for (let key in data) {
-                        a[key] = data[key] ?? a[key];
-                    }
-                }
-                return a;
-            });
-            this.setState({ assignments: newAssignments });
-        });
-    }
-    // eslint-disable-next-line
-    updateAssignment = this.updateAssignment.bind(this);
+    
 
     render() {
-        let sortedAssignments = [...this.state.assignments];
+        let sortedAssignments = [...this.props.assignments];
         sortedAssignments.sort((a, b) => {
             let aDate = Date.parse(a.due);
             let bDate = Date.parse(b.due);
@@ -296,7 +258,7 @@ export class AssignmentTable extends React.Component {
             <>
                 <EntryRow
                     courses={this.props.courses}
-                    newAssignmentCallback={this.createAssignment}
+                    newAssignmentCallback={this.props.createAssignmentCallback}
                 />
                 <TableContainer className="center">
                     <Table size="small">
@@ -321,10 +283,10 @@ export class AssignmentTable extends React.Component {
                             {sortedAssignments.map((assignment, i) => {
                                 return (
                                     <AssignmentRow
-                                        key={Math.random()}
+                                        key={"ar" + assignment.id}
                                         assignment={assignment}
                                         updateAssignmentCallback={
-                                            this.updateAssignment
+                                            this.props.updateAssignmentCallback
                                         }
                                         deleteAssignmentCallback={this.props.deleteAssignmentCallback}
                                         course={this.props.courses.find(
