@@ -3,7 +3,7 @@ import { Navbar } from '../components/navbar.js';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import '../css/styles.css';
-import { APIAssignmentsGet, APICoursesGet, APIUsernameGet } from '../api.js';
+import { APIAssignmentsGet, APICoursesGet, APIUsernameGet, APIAssignmentDelete } from '../api.js';
 import React from 'react';
 
 export class Home extends React.Component {
@@ -29,6 +29,15 @@ export class Home extends React.Component {
             this.setState({ assignments: a, loadedAssignments: true });
         }
     }
+
+    
+    async deleteAssignment(data) {
+        data = {...data, userid: this.userid};
+        await APIAssignmentDelete(data);
+        this.setState({ assignments: await APIAssignmentsGet(this.userid) });
+    } 
+    // eslint-disable-next-line
+    deleteAssignment = this.deleteAssignment.bind(this);
 
     async setCourses() {
         let c = await APICoursesGet(this.userid);
@@ -69,6 +78,7 @@ export class Home extends React.Component {
                                 assignments={this.state.assignments}
                                 userid={this.userid}
                                 courses={this.state.courses}
+                                deleteAssignmentCallback={this.deleteAssignment}
                             />
                         </Grid>
                     </Grid>

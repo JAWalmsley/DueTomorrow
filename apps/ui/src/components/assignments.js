@@ -19,7 +19,7 @@ import {
     Typography,
 } from '@mui/material';
 
-import { APIAssignmentPost, APIAssignmentModify } from '../api.js';
+import { APIAssignmentPost, APIAssignmentModify, APIAssignmentsGet, APIAssignmentDelete } from '../api.js';
 
 /**
  * Row of one assignment
@@ -73,7 +73,7 @@ export class AssignmentRow extends React.Component {
                         />
                     </TableCell>
                     <TableCell>
-                        <Button>
+                        <Button onClick={() => this.props.deleteAssignmentCallback({id: this.state.id})}>
                             <Delete />
                         </Button>
                     </TableCell>
@@ -326,6 +326,7 @@ export class AssignmentTable extends React.Component {
                                         updateAssignmentCallback={
                                             this.updateAssignment
                                         }
+                                        deleteAssignmentCallback={this.props.deleteAssignmentCallback}
                                         course={this.props.courses.find(
                                             (c) => c.id === assignment.courseid
                                         )}

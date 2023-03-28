@@ -137,6 +137,22 @@ export function APIAssignmentModify(data) {
     });
 }
 
+export function APIAssignmentDelete(data) {
+    return fetch(config.endpoint + 'users/' + data.userid + '/assignments/' + data.id, {
+        method: 'DELETE',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+    }).then((res) => {
+        if (res.status === 200) {
+            return res.text();
+        }
+        throw new Error(res.statusText);
+    });
+}
+
 /**
  * Courses
  */
