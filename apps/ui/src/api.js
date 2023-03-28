@@ -168,3 +168,41 @@ export function APICoursesGet(userid) {
         return null;
     })
 }
+
+/**
+ * Creates a new course
+ * @param {Object} data 
+ * @returns 
+ */
+export function APICoursesPost(data) {
+    return fetch(config.endpoint + 'users/' + data.userid + '/courses/', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(data),
+    }).then((res) => {
+        if (res.status === 200) {
+            return res.text();
+        }
+        throw new Error(res.statusText);
+    });
+}
+
+export function APICoursesDelete(data) {
+    return fetch(config.endpoint + 'users/' + data.userid + '/courses/' + data.id, {
+        method: 'DELETE',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+    }).then((res) => {
+        if (res.status === 200) {
+            return res.text();
+        }
+        throw new Error(res.statusText);
+    });
+}
