@@ -19,9 +19,6 @@ import {
     Typography,
 } from '@mui/material';
 
-
-
-
 /**
  * Row of one assignment
  * @param {Object} assignment
@@ -75,7 +72,13 @@ export class AssignmentRow extends React.Component {
                         />
                     </TableCell>
                     <TableCell>
-                        <Button onClick={() => this.props.deleteAssignmentCallback({id: this.state.id})}>
+                        <Button
+                            onClick={() =>
+                                this.props.deleteAssignmentCallback({
+                                    id: this.state.id,
+                                })
+                            }
+                        >
                             <Delete />
                         </Button>
                     </TableCell>
@@ -91,17 +94,25 @@ export class AssignmentRow extends React.Component {
  * @param newAssignmentCallback
  */
 export class EntryRow extends React.Component {
+    initialState = {
+        name: '',
+        course: this.props.courses[0].name,
+        courseInput: this.props.courses[0].id.toString(),
+        courseid: this.props.courses[0].id,
+        due: '',
+        weight: '',
+        id: '',
+    };
     constructor(props) {
         super(props);
-        this.state = {
-            name: '',
-            course: this.props.courses[0].name,
-            courseInput: this.props.courses[0].id.toString(),
-            courseid: this.props.courses[0].id,
-            due: '',
-            weight: '',
-            id: '',
-        };
+        this.state = this.initialState;
+        this.nameInput = React.createRef();
+    }
+
+    submit() {
+        this.props.newAssignmentCallback(this.state);
+        this.setState(this.initialState);
+        this.nameInput.current.focus();
     }
 
     render() {
@@ -127,6 +138,7 @@ export class EntryRow extends React.Component {
                                     label="Name"
                                     variant="standard"
                                     value={this.state.name}
+                                    inputRef={this.nameInput}
                                     onChange={(e) => {
                                         this.setState({ name: e.target.value });
                                     }}
@@ -198,6 +210,9 @@ export class EntryRow extends React.Component {
                                             weight: e.target.value,
                                         });
                                     }}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') this.submit();
+                                    }}
                                 />
                             </Grid>
                         </Grid>
@@ -208,9 +223,7 @@ export class EntryRow extends React.Component {
                                 size="large"
                                 variant="outlined"
                                 color="secondary"
-                                onClick={() =>
-                                    this.props.newAssignmentCallback(this.state)
-                                }
+                                onClick={() => this.submit()}
                             >
                                 Add
                             </Button>
@@ -245,8 +258,6 @@ export class HeaderRow extends React.Component {
 }
 
 export class AssignmentTable extends React.Component {
-    
-
     render() {
         let sortedAssignments = [...this.props.assignments];
         sortedAssignments.sort((a, b) => {
@@ -287,12 +298,14 @@ export class AssignmentTable extends React.Component {
                             {sortedAssignments.map((assignment, i) => {
                                 return (
                                     <AssignmentRow
-                                        key={"ar" + assignment.id}
+                                        key={'ar' + assignment.id}
                                         assignment={assignment}
                                         updateAssignmentCallback={
                                             this.props.updateAssignmentCallback
                                         }
-                                        deleteAssignmentCallback={this.props.deleteAssignmentCallback}
+                                        deleteAssignmentCallback={
+                                            this.props.deleteAssignmentCallback
+                                        }
                                         course={this.props.courses.find(
                                             (c) => c.id === assignment.courseid
                                         )}
