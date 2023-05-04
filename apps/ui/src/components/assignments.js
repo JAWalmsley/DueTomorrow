@@ -19,6 +19,9 @@ import {
     Typography,
 } from '@mui/material';
 
+
+
+
 /**
  * Row of one assignment
  * @param {Object} assignment
@@ -45,11 +48,12 @@ export class AssignmentRow extends React.Component {
     handleChange = this.handleChange.bind(this);
     render() {
         let dueDate = new Date(this.state.due);
-        let dueString = dueDate.toLocaleDateString('en-GB', {
-            weekday: 'long',
+        let dueString = dueDate.toLocaleString('en-GB', {
+            weekday: 'short',
             year: 'numeric',
-            month: 'long',
+            month: 'short',
             day: 'numeric',
+            timeZone: 'UTC',
         });
 
         return (
@@ -171,9 +175,9 @@ export class EntryRow extends React.Component {
                                 <TextField
                                     color="secondary"
                                     fullWidth
-                                    label=" "
+                                    label="Due Date"
                                     variant="standard"
-                                    type="date"
+                                    type="text"
                                     value={this.state.due}
                                     onChange={(e) => {
                                         this.setState({ due: e.target.value });
