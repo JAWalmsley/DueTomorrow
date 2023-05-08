@@ -121,7 +121,6 @@ export class EntryRow extends React.Component {
             let resp = this.props.newAssignmentCallback(this.state);
             this.setState(this.initialState);
             this.nameInput.current.focus();
-            console.log(resp);
         }
         this.setState({errors: newErrors});
         
