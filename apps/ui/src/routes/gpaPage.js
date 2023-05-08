@@ -29,18 +29,16 @@ export default class GPAPage extends React.Component {
         let m = await APIAssignmentModify({ ...data, userid: this.userid });
         if (m === 200) {
             await this.setAssignments();
-        }
-        else {
+        } else {
             console.log('Error updating assignment');
         }
     }
     // eslint-disable-next-line
     updateAssignment = this.updateAssignment.bind(this);
 
-
     async setAssignments() {
         let a = await APIAssignmentsGet(this.userid);
-        if(a === null) {
+        if (a === null) {
             window.location.replace('/login');
         } else {
             this.setState({ assignments: a, loadedAssignments: true });
@@ -58,7 +56,7 @@ export default class GPAPage extends React.Component {
 
     async setUsername() {
         let u = APIUsernameGet(this.userid);
-        if(u === null) {
+        if (u === null) {
             window.location.replace('/login');
         } else {
             this.setState({ username: u, loadedUsername: true });
@@ -81,17 +79,17 @@ export default class GPAPage extends React.Component {
                 <Navbar />
                 <Container>
                     <Grid container spacing={2} padding={1}>
-                        <Grid item xs={7}>
+                        <Grid item lg={5} xs={12}>
+                            <GPATally
+                                courses={this.state.courses}
+                                assignments={this.state.assignments}
+                            />
+                        </Grid>
+                        <Grid item lg={7} xs={12}>
                             <CourseList
                                 courses={this.state.courses}
                                 assignments={this.state.assignments}
                                 updateAssignmentCallback={this.updateAssignment}
-                            />
-                        </Grid>
-                        <Grid item xs={5}>
-                            <GPATally
-                                courses={this.state.courses}
-                                assignments={this.state.assignments}
                             />
                         </Grid>
                     </Grid>

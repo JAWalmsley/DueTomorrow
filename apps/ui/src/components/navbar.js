@@ -7,23 +7,25 @@ export class Navbar extends React.Component {
             <AppBar position="static">
                 <Toolbar>
                     <Typography
-                        variant="h6"
+                        variant="h3"
                         component="div"
                         sx={{ flexGrow: 1 }}
                     >
-                        BTE
+                        DT
                     </Typography>
                     <Button color="inherit" href="/">
-                        Assignments
+                        <Typography variant="h6">Assignments</Typography>
                     </Button>
                     <Button color="inherit" href="/courses">
-                        Courses
+                    <Typography variant="h6">Courses</Typography>
                     </Button>
                     <Button color="inherit" href="/gpa">
-                        GPA
+                    <Typography variant="h6">GPA</Typography>
                     </Button>
 
-                    <Button color="inherit">Log Out</Button>
+                    <Button color="inherit">
+                    <Typography variant="h6">Log Out</Typography>
+                    </Button>
                 </Toolbar>
             </AppBar>
         );

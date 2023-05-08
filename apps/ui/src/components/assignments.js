@@ -47,7 +47,6 @@ export class AssignmentRow extends React.Component {
         let dueDate = new Date(this.state.due);
         let dueString = dueDate.toLocaleString('en-GB', {
             weekday: 'short',
-            year: 'numeric',
             month: 'short',
             day: 'numeric',
             timeZone: 'UTC',
@@ -69,6 +68,7 @@ export class AssignmentRow extends React.Component {
                             defaultChecked={!!this.state.done}
                             onChange={this.handleChange}
                             inputProps={{ 'aria-label': 'controlled' }}
+                            size="large"
                         />
                     </TableCell>
                     <TableCell>
@@ -79,7 +79,7 @@ export class AssignmentRow extends React.Component {
                                 })
                             }
                         >
-                            <Delete />
+                            <Delete fontSize="large"/>
                         </Button>
                     </TableCell>
                 </TableRow>
@@ -130,7 +130,7 @@ export class EntryRow extends React.Component {
 
                         <Grid container spacing={2}>
                             {/* Name */}
-                            <Grid item sm={3}>
+                            <Grid item lg={3} xs={7}>
                                 <TextField
                                     autoFocus
                                     color="secondary"
@@ -145,7 +145,7 @@ export class EntryRow extends React.Component {
                                 />
                             </Grid>
                             {/* Course */}
-                            <Grid item sm={4}>
+                            <Grid item lg={4} xs={5}>
                                 <Autocomplete
                                     disablePortal
                                     id="combo-box-demo"
@@ -183,7 +183,7 @@ export class EntryRow extends React.Component {
                                 />
                             </Grid>
                             {/* Date */}
-                            <Grid item sm={3}>
+                            <Grid item lg={3} xs={7}>
                                 <TextField
                                     color="secondary"
                                     fullWidth
@@ -197,7 +197,7 @@ export class EntryRow extends React.Component {
                                 />
                             </Grid>
                             {/* Weight */}
-                            <Grid item sm={2}>
+                            <Grid item lg={2} xs={5}>
                                 <TextField
                                     color="secondary"
                                     fullWidth
@@ -269,6 +269,8 @@ export class AssignmentTable extends React.Component {
             return a.done ? 1 : -1;
         });
 
+        let mdSize = window.matchMedia("(min-width: 900px)")
+
         return (
             <>
                 <EntryRow
@@ -276,12 +278,13 @@ export class AssignmentTable extends React.Component {
                     newAssignmentCallback={this.props.createAssignmentCallback}
                 />
                 <TableContainer className="center">
-                    <Table size="small">
+                    <Table size={mdSize.matches ? "small" : "medium"}>
+                        {console.log(mdSize.matches)}
                         <colgroup>
                             <col style={{ width: '20%' }} />
                             <col style={{ width: '20%' }} />
-                            <col style={{ width: '30%' }} />
-                            <col style={{ width: '10%' }} />
+                            <col style={{ width: '25%' }} />
+                            <col style={{ width: '15%' }} />
                             <col style={{ width: '10%' }} />
                         </colgroup>
                         <HeaderRow
@@ -291,7 +294,7 @@ export class AssignmentTable extends React.Component {
                                 'Due',
                                 'Weight',
                                 'Done',
-                                'Delete',
+                                '',
                             ]}
                         />
                         <TableBody key={Math.random()}>
