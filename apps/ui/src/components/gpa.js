@@ -220,8 +220,8 @@ export class GPATally extends React.Component {
             73: 3,
             77: 3.3,
             80: 3.7,
-            85: 4,
-            90: 4.3,
+            85: 3.9,
+            90: 4,
         };
 
         function GPAScale(grade, scale) {
