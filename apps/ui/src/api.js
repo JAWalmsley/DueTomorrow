@@ -21,6 +21,22 @@ export function APIlogin(data) {
     });
 }
 
+export function APILogout() {
+    return fetch(config.endpoint + 'logout', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include'
+    }).then((res) => {
+        if (res.status === 200) {
+            return res.text();
+        }
+        throw new Error(res.statusText);
+    });
+}
+
 export function APIregister(data) {
     return fetch(config.endpoint + 'users', {
         method: 'POST',

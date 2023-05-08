@@ -11,9 +11,10 @@ const users = require('./routes/users.js');
 const assignments = require('./routes/assignments');
 const courses = require('./routes/courses');
 const login = require('./routes/login')
+const logout = require('./routes/logout')
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000','http://192.168.2.187:3000'],
     credentials: true,
 }))
 app.use(helmet())
@@ -31,6 +32,7 @@ app.use('/css', express.static(__dirname + '/css'));
 app.use('/js', express.static(__dirname + '/js'));
 
 app.use('/api/login', login);
+app.use('/api/logout', logout);
 
 app.use('/api/users', users);
 app.use('/api/users/:userid/assignments', assignments)
