@@ -3,8 +3,26 @@ import { Navbar } from '../components/navbar.js';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import '../css/styles.css';
-import { APIAssignmentsGet, APICoursesGet, APIUsernameGet, APIAssignmentDelete, APIAssignmentPost, APIAssignmentModify } from '../api.js';
+import {
+    APIAssignmentsGet,
+    APICoursesGet,
+    APIUsernameGet,
+    APIAssignmentDelete,
+    APIAssignmentPost,
+    APIAssignmentModify,
+} from '../api.js';
 import React from 'react';
+import {
+    Box,
+    Dialog,
+    Modal,
+    Typography,
+    DialogActions,
+    Button,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+} from '@mui/material';
 
 export class Home extends React.Component {
     userid = '';
@@ -23,7 +41,7 @@ export class Home extends React.Component {
 
     async setAssignments() {
         let a = await APIAssignmentsGet(this.userid);
-        if(a === null) {
+        if (a === null) {
             window.location.replace('/login');
         } else {
             this.setState({ assignments: a, loadedAssignments: true });
@@ -32,17 +50,19 @@ export class Home extends React.Component {
 
     async updateAssignment(data) {
         await APIAssignmentModify({ ...data, userid: this.userid });
-        this.setState({assignments: await APIAssignmentsGet(this.userid)});
+        this.setState({ assignments: await APIAssignmentsGet(this.userid) });
     }
     // eslint-disable-next-line
     updateAssignment = this.updateAssignment.bind(this);
-    
+
     async deleteAssignment(data) {
-        data = {...data, userid: this.userid};
+        data = { ...data, userid: this.userid };
         await APIAssignmentDelete(data);
-        let a = await APIAssignmentsGet(this.userid)
-        this.setState({ assignments:  a}, () => console.log(this.state.assignments));
-    } 
+        let a = await APIAssignmentsGet(this.userid);
+        this.setState({ assignments: a }, () =>
+            console.log(this.state.assignments)
+        );
+    }
     // eslint-disable-next-line
     deleteAssignment = this.deleteAssignment.bind(this);
 
@@ -57,14 +77,14 @@ export class Home extends React.Component {
 
     async createAssignment(assig) {
         await APIAssignmentPost({ ...assig, userid: this.userid });
-        this.setState({assignments: await APIAssignmentsGet(this.userid)})
+        this.setState({ assignments: await APIAssignmentsGet(this.userid) });
     }
     // eslint-disable-next-line
     createAssignment = this.createAssignment.bind(this);
 
     async setUsername() {
         let u = APIUsernameGet(this.userid);
-        if(u === null) {
+        if (u === null) {
             window.location.replace('/login');
         } else {
             this.setState({ username: u, loadedUsername: true });
@@ -81,6 +101,40 @@ export class Home extends React.Component {
     render() {
         if (!(this.state.loadedAssignments && this.state.loadedCourses)) {
             return <>Loading...</>;
+        }
+        if (this.state.courses.length === 0) {
+            return (
+                <>
+                    <Navbar />
+                    <Dialog
+                        open={true}
+                        onClose={() => window.location.replace('/courses')}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">
+                            {'No Courses'}
+                        </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                You don't have any courses yet, you'll need at
+                                least one to start making assignments.
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button
+                                onClick={() =>
+                                    window.location.replace('/courses')
+                                }
+                                variant='text'
+                                color='secondary'
+                            >
+                                Courses Page
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                </>
+            );
         }
         return (
             <>
