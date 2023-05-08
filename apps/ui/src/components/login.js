@@ -44,7 +44,7 @@ export class LoginBox extends React.Component {
             } catch (e) {
                 console.log(await e);
                 if(await e === 'Already exists') {
-                    newErrors.password = 'That user already exists';
+                    newErrors.username = 'That user already exists';
                 }
             }
         }
