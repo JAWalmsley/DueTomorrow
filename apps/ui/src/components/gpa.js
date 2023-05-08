@@ -108,11 +108,11 @@ export class CourseHeader extends React.Component {
     render() {
         return (
             <TableRow>
-                <TableCell className="center">
+                <TableCell className="center" size="medium">
                     {this.props.course.name}
                 </TableCell>
                 
-                <TableCell className="center">
+                <TableCell className="center" size="medium">
                     {this.props.course.credits} Credits
                 </TableCell>
                 <TableCell />
@@ -163,7 +163,7 @@ export class CourseBox extends React.Component {
         return (
             <Card>
                 <CardContent sx={{padding: 0}}>
-                    <Table id={this.props.course.id}>
+                    <Table id={this.props.course.id} size="small">
                         <colgroup>
                             <col style={{ width: '50%' }} />
                             <col style={{ width: '30%' }} />
