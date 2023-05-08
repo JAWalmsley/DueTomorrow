@@ -33,7 +33,7 @@ export function APILogout() {
         if (res.status === 200) {
             return res.text();
         }
-        throw new Error(res.statusText);
+        throw res.statusText;
     });
 }
 
@@ -50,8 +50,8 @@ export function APIregister(data) {
         if (res.status === 200) {
             return res.text();
         }
-        throw new Error(res.statusText);
-    });
+        throw res.text();
+    })
 }
 
 export function APIUsernameGet(userid) {
