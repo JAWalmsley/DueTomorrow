@@ -97,7 +97,12 @@ export class Home extends React.Component {
 
     async createAssignment(assig) {
         assig.due = parseDate(assig.due).toISOString().split('T')[0];
-        await APIAssignmentPost({ ...assig, userid: this.userid });
+        try {
+            await APIAssignmentPost({ ...assig, userid: this.userid });
+        }
+        catch(e) {
+            console.log(e);
+        }
         this.setState({ assignments: await APIAssignmentsGet(this.userid) });
     }
     // eslint-disable-next-line
