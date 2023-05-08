@@ -19,8 +19,6 @@ import {
     Typography,
 } from '@mui/material';
 
-import useMediaQuery from '@mui/material';
-
 /**
  * Row of one assignment
  * @param {Object} assignment
@@ -49,7 +47,6 @@ export class AssignmentRow extends React.Component {
         let dueDate = new Date(this.state.due);
         let dueString = dueDate.toLocaleString('en-GB', {
             weekday: 'short',
-            year: 'numeric',
             month: 'short',
             day: 'numeric',
             timeZone: 'UTC',
@@ -71,6 +68,7 @@ export class AssignmentRow extends React.Component {
                             defaultChecked={!!this.state.done}
                             onChange={this.handleChange}
                             inputProps={{ 'aria-label': 'controlled' }}
+                            size="large"
                         />
                     </TableCell>
                     <TableCell>
@@ -81,7 +79,7 @@ export class AssignmentRow extends React.Component {
                                 })
                             }
                         >
-                            <Delete />
+                            <Delete fontSize="large"/>
                         </Button>
                     </TableCell>
                 </TableRow>
@@ -285,8 +283,8 @@ export class AssignmentTable extends React.Component {
                         <colgroup>
                             <col style={{ width: '20%' }} />
                             <col style={{ width: '20%' }} />
-                            <col style={{ width: '30%' }} />
-                            <col style={{ width: '10%' }} />
+                            <col style={{ width: '25%' }} />
+                            <col style={{ width: '15%' }} />
                             <col style={{ width: '10%' }} />
                         </colgroup>
                         <HeaderRow
@@ -296,7 +294,7 @@ export class AssignmentTable extends React.Component {
                                 'Due',
                                 'Weight',
                                 'Done',
-                                'Delete',
+                                '',
                             ]}
                         />
                         <TableBody key={Math.random()}>

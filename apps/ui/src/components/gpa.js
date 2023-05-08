@@ -111,10 +111,11 @@ export class CourseHeader extends React.Component {
                 <TableCell className="center">
                     {this.props.course.name}
                 </TableCell>
-                <TableCell />
+                
                 <TableCell className="center">
                     {this.props.course.credits} Credits
                 </TableCell>
+                <TableCell />
             </TableRow>
         );
     }
@@ -161,7 +162,7 @@ export class CourseBox extends React.Component {
         });
         return (
             <Card>
-                <CardContent>
+                <CardContent sx={{padding: 0}}>
                     <Table id={this.props.course.id}>
                         <colgroup>
                             <col style={{ width: '50%' }} />

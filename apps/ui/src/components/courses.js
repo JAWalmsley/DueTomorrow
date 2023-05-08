@@ -39,9 +39,9 @@ export class EntryRow extends React.Component {
                             New Course
                         </Typography>
 
-                        <Grid container spacing={2}>
+                        <Grid container spacing={2} >
                             {/* Name */}
-                            <Grid item sm={5}>
+                            <Grid item lg={5} xs={12}>
                                 <TextField
                                     autoFocus
                                     color="secondary"
@@ -55,7 +55,7 @@ export class EntryRow extends React.Component {
                                 />
                             </Grid>
                             {/* Credits */}
-                            <Grid item sm={2}>
+                            <Grid item lg={2} xs={8}>
                                 <TextField
                                     color="secondary"
                                     fullWidth
@@ -71,7 +71,7 @@ export class EntryRow extends React.Component {
                                 />
                             </Grid>
                             {/* Colour */}
-                            <Grid item sm={5}>
+                            <Grid container item lg={5} xs={4}>
                                 <TwitterPicker
                                     color={this.state.colour}
                                     colors={[
@@ -118,17 +118,17 @@ export class CourseBox extends React.Component {
             <>
                 <Card>
                     <CardContent  style={{ backgroundColor: this.props.course.colour }}> 
-                        <Typography variant="h5" component="div">
+                        <Typography variant="h3" component="div">
                             {this.props.course.name}
                         </Typography>
-                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                        <Typography color="text.secondary">
                             {this.props.course.credits} credits
                         </Typography>
                     </CardContent>
                     <CardActions>
                         <Grid container justifyContent="flex-end">
                             <Button size="large" color="primary" variant='text' onClick={() => this.props.deleteCourseCallback({id: this.props.course.id})}>
-                                <Delete />
+                                <Delete fontSize='large' />
                             </Button>
                         </Grid>
                     </CardActions>
