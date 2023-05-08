@@ -3,35 +3,8 @@ import { Navbar } from '../components/navbar.js';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import '../css/styles.css';
-import {
-    APIAssignmentsGet,
-    APICoursesGet,
-    APIUsernameGet,
-    APIAssignmentDelete,
-    APIAssignmentPost,
-    APIAssignmentModify,
-} from '../api.js';
+import { APIAssignmentsGet, APICoursesGet, APIUsernameGet, APIAssignmentDelete, APIAssignmentPost, APIAssignmentModify } from '../api.js';
 import React from 'react';
-
-const MONTH_MILIS = 1000 * 60 * 60 * 24 * 30;
-
-/**
- * Converts a string into the nearest Date object
- * @param {string} input
- * @returns Date
- */
-function parseDate(input) {
-    let dateobj = new Date(input);
-
-    dateobj.setFullYear(new Date().getFullYear());
-    // If the date is more than 6 months in the future, assume it's from last year
-    if (dateobj - new Date() > 6 * MONTH_MILIS) {
-        dateobj.setFullYear(new Date().getFullYear() - 1);
-    } else if (dateobj - new Date() < -6 * MONTH_MILIS) {
-        dateobj.setFullYear(new Date().getFullYear() + 1);
-    }
-    return dateobj;
-}
 
 export class Home extends React.Component {
     userid = '';
@@ -50,7 +23,7 @@ export class Home extends React.Component {
 
     async setAssignments() {
         let a = await APIAssignmentsGet(this.userid);
-        if (a === null) {
+        if(a === null) {
             window.location.replace('/login');
         } else {
             this.setState({ assignments: a, loadedAssignments: true });
@@ -59,19 +32,17 @@ export class Home extends React.Component {
 
     async updateAssignment(data) {
         await APIAssignmentModify({ ...data, userid: this.userid });
-        this.setState({ assignments: await APIAssignmentsGet(this.userid) });
+        this.setState({assignments: await APIAssignmentsGet(this.userid)});
     }
     // eslint-disable-next-line
     updateAssignment = this.updateAssignment.bind(this);
-
+    
     async deleteAssignment(data) {
-        data = { ...data, userid: this.userid };
+        data = {...data, userid: this.userid};
         await APIAssignmentDelete(data);
-        let a = await APIAssignmentsGet(this.userid);
-        this.setState({ assignments: a }, () =>
-            console.log(this.state.assignments)
-        );
-    }
+        let a = await APIAssignmentsGet(this.userid)
+        this.setState({ assignments:  a}, () => console.log(this.state.assignments));
+    } 
     // eslint-disable-next-line
     deleteAssignment = this.deleteAssignment.bind(this);
 
@@ -85,16 +56,15 @@ export class Home extends React.Component {
     }
 
     async createAssignment(assig) {
-        assig.due = parseDate(assig.due).toISOString().split('T')[0];
         await APIAssignmentPost({ ...assig, userid: this.userid });
-        this.setState({ assignments: await APIAssignmentsGet(this.userid) });
+        this.setState({assignments: await APIAssignmentsGet(this.userid)})
     }
     // eslint-disable-next-line
     createAssignment = this.createAssignment.bind(this);
 
     async setUsername() {
         let u = APIUsernameGet(this.userid);
-        if (u === null) {
+        if(u === null) {
             window.location.replace('/login');
         } else {
             this.setState({ username: u, loadedUsername: true });

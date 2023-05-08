@@ -9,9 +9,9 @@ import ReactDOM from 'react-dom/client';
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, responsiveFontSizes, ThemeProvider } from '@mui/material/styles';
 
-const theme = createTheme({
+let theme = createTheme({
     palette: {
         primary: {
             main: '#5c6bc0',
@@ -21,6 +21,9 @@ const theme = createTheme({
         },
     },
 });
+
+theme = responsiveFontSizes(theme);
+theme.typography.fontSize = 50;
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <ThemeProvider theme={theme}>

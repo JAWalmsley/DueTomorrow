@@ -148,7 +148,7 @@ export class CourseList extends React.Component {
                 <Grid container spacing={2} padding={1}>
                     {this.props.courses.map((course) => {
                         return (
-                            <Grid item sm={12} xl={4} key={course.id}>
+                            <Grid item xs={12} lg={4} key={course.id}>
                                 <CourseBox course={course} deleteCourseCallback={this.props.deleteCourseCallback}/>
                             </Grid>
                         );
