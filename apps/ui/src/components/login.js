@@ -9,17 +9,46 @@ export class LoginBox extends React.Component {
         this.state = {
             username: '',
             password: '',
+            errors: { username: '', password: '' },
         };
     }
-    login() {
-        APIlogin(this.state)
-            .then((uid) => localStorage.setItem('userid', uid))
-            .then(() => window.location.replace('/'));
+    async login() {
+        this.setState({ errors: {} });
+        let newErrors = { ...this.state.errors };
+        newErrors.username = !this.state.username ? 'Username is required' : '';
+        newErrors.password = !this.state.password ? 'Password is required' : '';
+        if (!(newErrors.username || newErrors.password)) {
+            try {
+                let resp = await APIlogin(this.state);
+                localStorage.setItem('userid', resp);
+                window.location.replace('/');
+            } catch (e) {
+                if(e.message === 'Unauthorized') {
+                    newErrors.password = 'Incorrect username or password';
+                }
+                console.log(e.message);
+            }
+        }
+        this.setState({ errors: newErrors });
     }
-    register() {
-        APIregister(this.state)
-            .then((uid) => localStorage.setItem('userid', uid))
-            .then(() => window.location.replace('/'));
+    async register() {
+        this.setState({ errors: {} });
+        let newErrors = { ...this.state.errors };
+        newErrors.username = !this.state.username ? 'Username is required' : '';
+        newErrors.password = !this.state.password ? 'Password is required' : '';
+        if (!(newErrors.username || newErrors.password)) {
+            try {
+                let resp = await APIregister(this.state);
+                localStorage.setItem('userid', resp);
+                window.location.replace('/');
+            } catch (e) {
+                console.log(await e);
+                if(await e === 'Already exists') {
+                    newErrors.username = 'That user already exists';
+                }
+            }
+        }
+        this.setState({ errors: newErrors });
     }
     render() {
         return (
@@ -45,6 +74,8 @@ export class LoginBox extends React.Component {
                         onChange={(e) => {
                             this.setState({ username: e.target.value });
                         }}
+                        error={this.state.errors.username !== ''}
+                        helperText={this.state.errors.username}
                     ></TextField>
                 </Grid>
                 <Grid item xs={7}>
@@ -57,6 +88,8 @@ export class LoginBox extends React.Component {
                         onChange={(e) => {
                             this.setState({ password: e.target.value });
                         }}
+                        error={this.state.errors.password !== ''}
+                        helperText={this.state.errors.password}
                     ></TextField>
                 </Grid>
                 {/*force new row */}

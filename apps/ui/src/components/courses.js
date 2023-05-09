@@ -17,13 +17,27 @@ import React from 'react';
  * @param {Function} newCourseCallback
  */
 export class EntryRow extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
+    initialState = {
             name: '',
             credits: '',
-            colour: '',
-        };
+            colour: '#FFFFFF',
+            errors: {name: '', credits: ''},
+        }
+    constructor(props) {
+        super(props);
+        this.state = this.initialState;
+    }
+
+    submit() {
+        this.setState({errors: {}});
+        let newErrors = {...this.state.errors};
+        newErrors.name = !this.state.name ? 'Name is required' : '';
+        newErrors.credits = !this.state.credits ? "Credits is required" : '';
+        if(!(newErrors.name || newErrors.credits)) {
+            let resp = this.props.newCourseCallback(this.state);
+            this.setState(this.initialState);
+        }
+        this.setState({errors: newErrors});
     }
 
     render() {
@@ -52,6 +66,8 @@ export class EntryRow extends React.Component {
                                     onChange={(e) => {
                                         this.setState({ name: e.target.value });
                                     }}
+                                    error={this.state.errors.name !== ''}
+                                    helperText={this.state.errors.name}
                                 />
                             </Grid>
                             {/* Credits */}
@@ -68,6 +84,8 @@ export class EntryRow extends React.Component {
                                             credits: e.target.value,
                                         });
                                     }}
+                                    error={this.state.errors.credits !== ''}
+                                    helperText={this.state.errors.credits}
                                 />
                             </Grid>
                             {/* Colour */}
@@ -96,7 +114,7 @@ export class EntryRow extends React.Component {
                                 size="large"
                                 variant="outlined"
                                 color="secondary"
-                                onClick={() => this.props.newCourseCallback(this.state)}
+                                onClick={() => this.submit()}
                             >
                                 Add
                             </Button>

@@ -102,6 +102,7 @@ export class EntryRow extends React.Component {
         due: '',
         weight: '',
         id: '',
+        errors: {name: '', course: '', due: '', weight: ''},
     };
     constructor(props) {
         super(props);
@@ -110,9 +111,19 @@ export class EntryRow extends React.Component {
     }
 
     submit() {
-        this.props.newAssignmentCallback(this.state);
-        this.setState(this.initialState);
-        this.nameInput.current.focus();
+        this.setState({errors: {}});
+        let newErrors = {...this.state.errors};
+        newErrors.name = !this.state.name ? 'Name is required' : '';
+        newErrors.course = !this.state.course ? "Course is required" : '';
+        newErrors.due = !this.state.due ? "Due date is required" : '';
+        newErrors.weight = !this.state.weight ? "Weight is required" : '';
+        if(!(newErrors.name || newErrors.course || newErrors.due || newErrors.weight)) {
+            let resp = this.props.newAssignmentCallback(this.state);
+            this.setState(this.initialState);
+            this.nameInput.current.focus();
+        }
+        this.setState({errors: newErrors});
+        
     }
 
     render() {
@@ -142,6 +153,8 @@ export class EntryRow extends React.Component {
                                     onChange={(e) => {
                                         this.setState({ name: e.target.value });
                                     }}
+                                    error={this.state.errors.name !== ''}
+                                    helperText={this.state.errors.name}
                                 />
                             </Grid>
                             {/* Course */}
@@ -178,6 +191,8 @@ export class EntryRow extends React.Component {
                                             fullWidth
                                             label="Course"
                                             variant="standard"
+                                            error={this.state.errors.course !== ''}
+                                            helperText={this.state.errors.course}
                                         />
                                     )}
                                 />
@@ -194,6 +209,8 @@ export class EntryRow extends React.Component {
                                     onChange={(e) => {
                                         this.setState({ due: e.target.value });
                                     }}
+                                    error={this.state.errors.due !== ''}
+                                    helperText={this.state.errors.due}
                                 />
                             </Grid>
                             {/* Weight */}
@@ -213,6 +230,8 @@ export class EntryRow extends React.Component {
                                     onKeyDown={(e) => {
                                         if (e.key === 'Enter') this.submit();
                                     }}
+                                    error={this.state.errors.weight !== ''}
+                                    helperText={this.state.errors.weight}
                                 />
                             </Grid>
                         </Grid>
