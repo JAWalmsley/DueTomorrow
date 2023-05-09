@@ -40,7 +40,7 @@ theme.typography.h6[lgQuery] = {fontSize : '1rem'};
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <ThemeProvider theme={theme}>
-        <Router>
+        <Router basename={''}>
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/gpa" element={<GPAPage />} />

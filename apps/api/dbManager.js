@@ -1,12 +1,11 @@
 const mysql = require('mysql2');
-const config = require('./config.json');
 
 let con = mysql.createPool({
     connectionLimit: 10,
-    host: 'localhost',
-    user: config.username,
-    password: config.password,
-    database: config.database,
+    host: 'host.docker.internal',
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     dateStrings: true,
 });
 
@@ -25,7 +24,6 @@ makeReq = function (cmd, vals) {
 };
 
 // SET UP
-let dbName = config.database;
 
 con.query(
     'CREATE TABLE IF NOT EXISTS logins (id VARCHAR(255) PRIMARY KEY, username VARCHAR(255), password VARCHAR(255));',

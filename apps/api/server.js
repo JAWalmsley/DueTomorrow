@@ -4,8 +4,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 
 const app = express();
-const config = require('./config.json');
-const port = 80;
+const port = 3001;
 
 const users = require('./routes/users.js');
 const assignments = require('./routes/assignments');
@@ -21,7 +20,7 @@ app.use(helmet())
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(session({
-    secret: config.jwtSecret,
+    secret: process.env.JWT_SECRET,
     resave: true,
     saveUninitialized: true,
     rolling: true,

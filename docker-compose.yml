@@ -1,0 +1,18 @@
+version: "3.8"
+services:
+    nodeserver:
+        build:
+            context: ./apps/api
+        ports:
+            - "3001:3001"
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        environment:
+            - DB_PASSWORD=llama2621
+            - DB_NAME=bigtest
+    nginx:
+        restart: always
+        build:
+            context: ./apps/ui
+        ports:
+            - "80:80"
