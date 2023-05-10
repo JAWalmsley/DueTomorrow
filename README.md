@@ -1,14 +1,16 @@
 # DueTomorrow
 [duetomorrow.ca](http://duetomorrow.ca/)
 
-A to-do list to track assignments, courses, and grades. Comes with a built-in GPA calculator! Excuse the backend developer UI, react rewrite is in the works (check out the rewrite-react branch!)
+A to-do list to track assignments, courses, and grades. Comes with a built-in GPA calculator!
 
 ## Assignment list
-![image](https://user-images.githubusercontent.com/35351784/225179616-779cc5ad-1f07-4fcd-ab48-36c7c2f519fd.png)
+![image](https://github.com/JAWalmsley/DueTomorrow/assets/35351784/53d748c9-b6a0-4434-842e-1650f0d359ed)
 
 ## GPA Calculator
-![image](https://user-images.githubusercontent.com/35351784/225179880-5fe50844-8c4c-4cb2-b258-e286e91845cb.png)
+![image](https://github.com/JAWalmsley/DueTomorrow/assets/35351784/e667bb65-00b3-4502-aef7-7da5cb476ddc)
 
+## Manage Courselist
+![image](https://github.com/JAWalmsley/DueTomorrow/assets/35351784/52d302eb-e787-44ff-96b5-aac6e81cb75f)
 
 ### Getting Started
 1. Clone the repository
@@ -16,7 +18,7 @@ A to-do list to track assignments, courses, and grades. Comes with a built-in GP
     git clone https://github.com/JAWalmsley/DueTomorrow.git
     ```
 
-2. Add env file to supply these variables
+2. Add `.env` file to supply these variables
 ```sh
 DB_USER=
 DB_PASSWORD=
