@@ -61,7 +61,7 @@ export class LoginBox extends React.Component {
                         align="center"
                         sx={{ fontWeight: 400 }}
                     >
-                        BTE
+                        DueTomorrow
                     </Typography>
                 </Grid>
                 <Grid item xs={7}>
