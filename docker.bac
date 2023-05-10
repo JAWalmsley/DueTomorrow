@@ -11,8 +11,9 @@ services:
             - DB_USER=bte
             - DB_PASSWORD=xmturbnv&6epgc
             - DB_NAME=BTE
-            - DB_HOST=host.docker.internal
+            - DB_HOST=localhost
             - JWT_SECRET=guydfy7d8sfhbdfbdhj
+        network_mode: "host"
     nginx:
         restart: always
         build:
