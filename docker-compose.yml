@@ -8,11 +8,11 @@ services:
         extra_hosts:
             - "host.docker.internal:host-gateway"
         environment:
-            - DB_USER=bte
-            - DB_PASSWORD=xmturbnv&6epgc
-            - DB_NAME=BTE
+            - DB_USER=username
+            - DB_PASSWORD=password
+            - DB_NAME=databasename
             - DB_HOST=host.docker.internal
-            - JWT_SECRET=guydfy7d8sfhbdfbdhj
+            - JWT_SECRET=jwtsecret
     nginx:
         restart: always
         build:
