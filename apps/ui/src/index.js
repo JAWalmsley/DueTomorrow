@@ -32,8 +32,8 @@ theme.typography.body2[lgQuery] = { fontSize: '1rem' };
 theme.typography.body1.fontSize = '2rem';
 theme.typography.body1[lgQuery] = { fontSize: '1rem' };
 
-theme.typography.h3 = {fontSize : '3rem', fontWeight : '500', fontFamily : 'Roboto'};
-theme.typography.h3[lgQuery] = {fontSize : '2rem'};
+theme.typography.h3.fontSize = '3rem';
+theme.typography.h3[lgQuery] = {...theme.typography.h3, fontSize : '2rem'};
 
 theme.typography.h6 = {fontSize : '1.6rem'};
 theme.typography.h6[lgQuery] = {fontSize : '1rem'};
