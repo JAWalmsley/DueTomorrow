@@ -131,7 +131,7 @@ export class HeaderRow extends React.Component {
         const cells = [];
         this.props.columns.forEach((column) => {
             cells.push(
-                <TableCell key={column} className="center-align">
+                <TableCell key={column}>
                     <b>{column}</b>
                 </TableCell>
             );
@@ -242,10 +242,10 @@ export class GPATally extends React.Component {
             let twelvept = GPAScale(avg, twelvePointScale);
             rows.push(
                 <TableRow key={Math.random()}>
-                    <TableCell>{course.name}</TableCell>
-                    <TableCell>{course.credits}</TableCell>
-                    <TableCell>{twelvept}</TableCell>
-                    <TableCell>{fourpt}</TableCell>
+                    <TableCell align="left">{course.name}</TableCell>
+                    <TableCell align="center">{course.credits}</TableCell>
+                    <TableCell align="center">{twelvept}</TableCell>
+                    <TableCell align="center">{fourpt}</TableCell>
                 </TableRow>
             );
         });
@@ -254,8 +254,8 @@ export class GPATally extends React.Component {
                 <CardContent>
                     <Table>
                     <colgroup>
-                            <col style={{ width: '55%' }} />
-                            <col style={{ width: '15%' }} />
+                            <col style={{ width: '50%' }} />
+                            <col style={{ width: '20%' }} />
                             <col style={{ width: '15%' }} />
                             <col style={{ width: '15%' }} />
                         </colgroup>

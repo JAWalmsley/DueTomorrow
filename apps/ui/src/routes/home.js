@@ -166,7 +166,7 @@ export class Home extends React.Component {
             <>
                 <Navbar />
                 <Container>
-                    <Grid container>
+                    <Grid container spacing={2} padding={1}>
                         <Grid item xs={12}>
                             <AssignmentTable
                                 assignments={this.state.assignments}
