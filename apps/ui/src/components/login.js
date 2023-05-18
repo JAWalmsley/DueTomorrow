@@ -76,6 +76,9 @@ export class LoginBox extends React.Component {
                         }}
                         error={this.state.errors.username !== ''}
                         helperText={this.state.errors.username}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') this.login.bind(this)();
+                        }}
                     ></TextField>
                 </Grid>
                 <Grid item xs={7}>
@@ -90,6 +93,9 @@ export class LoginBox extends React.Component {
                         }}
                         error={this.state.errors.password !== ''}
                         helperText={this.state.errors.password}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') this.login.bind(this)();
+                        }}
                     ></TextField>
                 </Grid>
                 {/*force new row */}
