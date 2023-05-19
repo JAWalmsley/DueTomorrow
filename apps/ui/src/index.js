@@ -10,6 +10,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import { createTheme, responsiveFontSizes, ThemeProvider } from '@mui/material/styles';
+import { CssBaseline } from '@mui/material';
 
 let theme = createTheme({
     palette: {
@@ -19,6 +20,7 @@ let theme = createTheme({
         secondary: {
             main: '#4db6ac',
         },
+        mode: "dark",
     },
 });
 
@@ -40,6 +42,7 @@ theme.typography.h6[lgQuery] = {...theme.typography.h6, fontSize : '1rem'};
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <ThemeProvider theme={theme}>
+        <CssBaseline />
         <Router basename={''}>
             <Routes>
                 <Route path="/" element={<Home />} />
