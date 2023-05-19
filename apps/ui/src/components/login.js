@@ -13,7 +13,7 @@ export class LoginBox extends React.Component {
         };
     }
     async login() {
-        this.setState({ errors: {} });
+        this.setState({ errors: {username: '', password: ''} });
         let newErrors = { ...this.state.errors };
         newErrors.username = !this.state.username ? 'Username is required' : '';
         newErrors.password = !this.state.password ? 'Password is required' : '';
@@ -29,10 +29,12 @@ export class LoginBox extends React.Component {
                 console.log(e.message);
             }
         }
+        
         this.setState({ errors: newErrors });
+        console.log(this.state.errors);
     }
     async register() {
-        this.setState({ errors: {} });
+        this.setState({ errors: {username: '', password: ''} });
         let newErrors = { ...this.state.errors };
         newErrors.username = !this.state.username ? 'Username is required' : '';
         newErrors.password = !this.state.password ? 'Password is required' : '';
