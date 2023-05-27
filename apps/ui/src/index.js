@@ -9,36 +9,86 @@ import ReactDOM from 'react-dom/client';
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import { createTheme, responsiveFontSizes, ThemeProvider } from '@mui/material/styles';
+import {
+    createTheme,
+    responsiveFontSizes,
+    ThemeProvider,
+} from '@mui/material/styles';
+import { deepmerge } from '@mui/utils';
 import { CssBaseline } from '@mui/material';
+import { indigo, grey } from '@mui/material/colors';
 
-let theme = createTheme({
+// let theme = createTheme({
+//     palette: {
+//         primary: {
+//             main: '#5c6bc0',
+//         },
+//         secondary: {
+//             main: '#4db6ac',
+//         },
+//         mode: "dark",
+//     },
+// });
+
+let theme = createTheme();
+
+const getDesignTokens = (mode) => ({
     palette: {
-        primary: {
-            main: '#5c6bc0',
-        },
-        secondary: {
-            main: '#4db6ac',
-        },
-        mode: "dark",
+        mode,
+        ...(mode === 'light'
+            ? {
+                  // palette values for light mode
+                  primary: indigo,
+                  divider: indigo[600],
+                  text: {
+                      primary: grey[900],
+                      secondary: grey[800],
+                  },
+                  textOnColour: theme.palette.augmentColor({
+                      color: {
+                          main: '#fff',
+                      },
+                  }),
+              }
+            : {
+                  // palette values for dark mode
+                  primary: indigo,
+                  divider: indigo[400],
+                  text: {
+                      primary: grey[200],
+                      secondary: grey,
+                  },
+                  textOnColour: theme.palette.augmentColor({
+                    color: {
+                        main: '#fff',
+                    },
+                }),
+              }),
     },
 });
 
-theme = responsiveFontSizes(theme);
+theme = createTheme(getDesignTokens('dark'));
+theme = deepmerge(theme, responsiveFontSizes(theme));
 
 const lgQuery = theme.breakpoints.up('lg');
 
 theme.typography.body2.fontSize = '2rem';
-theme.typography.body2[lgQuery] = {...theme.typography.body2, fontSize: '1rem' };
+theme.typography.body2[lgQuery] = {
+    ...theme.typography.body2,
+    fontSize: '1rem',
+};
 
 theme.typography.body1.fontSize = '2rem';
-theme.typography.body1[lgQuery] = {...theme.typography.body1, fontSize: '1rem' };
+theme.typography.body1[lgQuery] = {
+    ...theme.typography.body1,
+    fontSize: '1rem',
+};
 
 theme.typography.h3.fontSize = '3rem';
-theme.typography.h3[lgQuery] = {...theme.typography.h3, fontSize : '2rem'};
+theme.typography.h3[lgQuery] = { ...theme.typography.h3, fontSize: '2rem' };
 
 theme.typography.h6.fontSize = '1.6rem';
-theme.typography.h6[lgQuery] = {...theme.typography.h6, fontSize : '1rem'};
+theme.typography.h6[lgQuery] = { ...theme.typography.h6, fontSize: '1rem' };
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <ThemeProvider theme={theme}>

@@ -12,6 +12,8 @@ import { Delete } from '@mui/icons-material';
 
 import { TwitterPicker } from 'react-color';
 
+import { red, orange, blueGrey, green, blue, indigo, purple } from '@mui/material/colors';
+
 import React from 'react';
 /**
  * @param {Function} newCourseCallback
@@ -93,13 +95,13 @@ export class EntryRow extends React.Component {
                                 <TwitterPicker
                                     color={this.state.colour}
                                     colors={[
-                                        '#EB144C',
-                                        '#FF6900',
-                                        '#FCB900',
-                                        '#7BDCB5',
-                                        '#8ED1FC',
-                                        '#0693E3',
-                                        '#9900EF',
+                                        red[700],
+                                        orange[800],
+                                        green[800],
+                                        blue[800],
+                                        blueGrey[700],
+                                        indigo[500],
+                                        purple[500],
                                     ]}
                                     onChangeComplete={(e) =>
                                         this.setState({ colour: e.hex })

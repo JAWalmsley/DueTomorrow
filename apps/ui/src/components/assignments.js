@@ -56,13 +56,13 @@ export class AssignmentRow extends React.Component {
             <>
                 <TableRow
                     key={Math.random()}
-                    sx={{ backgroundColor: this.state.colour }}
+                    sx={{ backgroundColor: this.state.colour}}
                 >
-                    <TableCell>{this.state.name}</TableCell>
-                    <TableCell>{this.state.course}</TableCell>
-                    <TableCell>{dueString}</TableCell>
-                    <TableCell>{this.state.weight}</TableCell>
-                    <TableCell>
+                    <TableCell sx={{color: "textOnColour.main"}}>{this.state.name}</TableCell>
+                    <TableCell sx={{color: "textOnColour.main"}}>{this.state.course}</TableCell>
+                    <TableCell sx={{color: "textOnColour.main"}}>{dueString}</TableCell>
+                    <TableCell sx={{color: "textOnColour.main"}}>{this.state.weight}</TableCell>
+                    <TableCell sx={{color: "textOnColour.main"}}>
                         <Checkbox
                             key={Math.random()}
                             defaultChecked={!!this.state.done}
@@ -71,7 +71,7 @@ export class AssignmentRow extends React.Component {
                             size="large"
                         />
                     </TableCell>
-                    <TableCell>
+                    <TableCell sx={{color: "textOnColour.main"}}>
                         <Button
                             onClick={() =>
                                 this.props.deleteAssignmentCallback({
