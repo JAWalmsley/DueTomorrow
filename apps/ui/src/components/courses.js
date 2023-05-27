@@ -95,8 +95,8 @@ export class EntryRow extends React.Component {
                                 <TwitterPicker
                                     color={this.state.colour}
                                     colors={[
-                                        red[700],
-                                        orange[800],
+                                        red[800],
+                                        orange[900],
                                         green[800],
                                         blue[800],
                                         blueGrey[700],
@@ -138,10 +138,10 @@ export class CourseBox extends React.Component {
             <>
                 <Card>
                     <CardContent  style={{ backgroundColor: this.props.course.colour }}> 
-                        <Typography variant="h3" component="div">
+                        <Typography variant="h3" component="div" color="textOnColour.main">
                             {this.props.course.name}
                         </Typography>
-                        <Typography color="text.secondary">
+                        <Typography color="textOnColour.main">
                             {this.props.course.credits} credits
                         </Typography>
                     </CardContent>

@@ -29,7 +29,6 @@ import { indigo, grey } from '@mui/material/colors';
 //         mode: "dark",
 //     },
 // });
-
 let theme = createTheme();
 
 const getDesignTokens = (mode) => ({
@@ -38,7 +37,7 @@ const getDesignTokens = (mode) => ({
         ...(mode === 'light'
             ? {
                   // palette values for light mode
-                  primary: indigo,
+                  primary: {main: indigo[500]},
                   divider: indigo[600],
                   text: {
                       primary: grey[900],
@@ -52,7 +51,7 @@ const getDesignTokens = (mode) => ({
               }
             : {
                   // palette values for dark mode
-                  primary: indigo,
+                  primary: {main: indigo[900]},
                   divider: indigo[400],
                   text: {
                       primary: grey[200],

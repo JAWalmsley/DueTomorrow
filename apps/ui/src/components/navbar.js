@@ -10,7 +10,7 @@ export class Navbar extends React.Component {
     }
     render() {
         return (
-            <AppBar position="static">
+            <AppBar position="static" sx = {{bgcolor: 'primary.main'}}>
                 <Toolbar>
                     <Typography
                         variant="h3"
@@ -23,14 +23,14 @@ export class Navbar extends React.Component {
                         <Typography variant="h6">Assignments</Typography>
                     </Button>
                     <Button color="inherit" href="/courses">
-                    <Typography variant="h6">Courses</Typography>
+                        <Typography variant="h6">Courses</Typography>
                     </Button>
                     <Button color="inherit" href="/gpa">
-                    <Typography variant="h6">GPA</Typography>
+                        <Typography variant="h6">GPA</Typography>
                     </Button>
 
                     <Button color="inherit" onClick={this.logout}>
-                    <Typography variant="h6">Log Out</Typography>
+                        <Typography variant="h6">Log Out</Typography>
                     </Button>
                 </Toolbar>
             </AppBar>
