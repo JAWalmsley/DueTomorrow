@@ -12,7 +12,15 @@ import { Delete } from '@mui/icons-material';
 
 import { TwitterPicker } from 'react-color';
 
-import { red, orange, blueGrey, green, blue, indigo, purple } from '@mui/material/colors';
+import {
+    red,
+    orange,
+    blueGrey,
+    green,
+    blue,
+    indigo,
+    purple,
+} from '@mui/material/colors';
 
 import React from 'react';
 /**
@@ -20,26 +28,26 @@ import React from 'react';
  */
 export class EntryRow extends React.Component {
     initialState = {
-            name: '',
-            credits: '',
-            colour: '#FFFFFF',
-            errors: {name: '', credits: ''},
-        }
+        name: '',
+        credits: '',
+        colour: '#FFFFFF',
+        errors: { name: '', credits: '' },
+    };
     constructor(props) {
         super(props);
         this.state = this.initialState;
     }
 
     submit() {
-        this.setState({errors: {}});
-        let newErrors = {...this.state.errors};
+        this.setState({ errors: {} });
+        let newErrors = { ...this.state.errors };
         newErrors.name = !this.state.name ? 'Name is required' : '';
-        newErrors.credits = !this.state.credits ? "Credits is required" : '';
-        if(!(newErrors.name || newErrors.credits)) {
+        newErrors.credits = !this.state.credits ? 'Credits is required' : '';
+        if (!(newErrors.name || newErrors.credits)) {
             let resp = this.props.newCourseCallback(this.state);
             this.setState(this.initialState);
         }
-        this.setState({errors: newErrors});
+        this.setState({ errors: newErrors });
     }
 
     render() {
@@ -55,7 +63,7 @@ export class EntryRow extends React.Component {
                             New Course
                         </Typography>
 
-                        <Grid container spacing={2} >
+                        <Grid container spacing={2}>
                             {/* Name */}
                             <Grid item lg={5} xs={12}>
                                 <TextField
@@ -137,8 +145,14 @@ export class CourseBox extends React.Component {
         return (
             <>
                 <Card>
-                    <CardContent  style={{ backgroundColor: this.props.course.colour }}> 
-                        <Typography variant="h3" component="div" color="textOnColour.main">
+                    <CardContent
+                        style={{ backgroundColor: this.props.course.colour }}
+                    >
+                        <Typography
+                            variant="h3"
+                            component="div"
+                            color="textOnColour.main"
+                        >
                             {this.props.course.name}
                         </Typography>
                         <Typography color="textOnColour.main">
@@ -147,8 +161,17 @@ export class CourseBox extends React.Component {
                     </CardContent>
                     <CardActions>
                         <Grid container justifyContent="flex-end">
-                            <Button size="large" color="primary" variant='text' onClick={() => this.props.deleteCourseCallback({id: this.props.course.id})}>
-                                <Delete fontSize='large' />
+                            <Button
+                                size="large"
+                                color="primary"
+                                variant="contained"
+                                onClick={() =>
+                                    this.props.deleteCourseCallback({
+                                        id: this.props.course.id,
+                                    })
+                                }
+                            >
+                                <Typography variant="button">Delete</Typography>
                             </Button>
                         </Grid>
                     </CardActions>
@@ -169,7 +192,12 @@ export class CourseList extends React.Component {
                     {this.props.courses.map((course) => {
                         return (
                             <Grid item xs={12} lg={4} key={course.id}>
-                                <CourseBox course={course} deleteCourseCallback={this.props.deleteCourseCallback}/>
+                                <CourseBox
+                                    course={course}
+                                    deleteCourseCallback={
+                                        this.props.deleteCourseCallback
+                                    }
+                                />
                             </Grid>
                         );
                     })}
