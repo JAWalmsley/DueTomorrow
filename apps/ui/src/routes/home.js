@@ -22,9 +22,10 @@ import {
     DialogTitle,
     DialogContent,
     DialogContentText,
+    Paper,
 } from '@mui/material';
 
-const MONTH_MILIS = 1000*60*60*24*30;
+const MONTH_MILIS = 1000 * 60 * 60 * 24 * 30;
 
 /**
  * Converts a string into the nearest Date object
@@ -99,8 +100,7 @@ export class Home extends React.Component {
         assig.due = parseDate(assig.due).toISOString().split('T')[0];
         try {
             await APIAssignmentPost({ ...assig, userid: this.userid });
-        }
-        catch(e) {
+        } catch (e) {
             console.log(e);
         }
         this.setState({ assignments: await APIAssignmentsGet(this.userid) });
@@ -152,8 +152,8 @@ export class Home extends React.Component {
                                 onClick={() =>
                                     window.location.replace('/courses')
                                 }
-                                variant='text'
-                                color='secondary'
+                                variant="text"
+                                color="secondary"
                             >
                                 Courses Page
                             </Button>

@@ -10,7 +10,7 @@ export class Navbar extends React.Component {
     }
     render() {
         return (
-            <AppBar position="static" sx = {{bgcolor: 'primary.main'}}>
+            <AppBar position="static">
                 <Toolbar>
                     <Typography
                         variant="h3"
