@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
-import { DeleteOutlineRounded, DeleteOutlined } from '@mui/icons-material';
+import { Delete, DeleteOutline, DeleteOutlineRounded, DeleteOutlined } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import {
     Autocomplete,
@@ -101,7 +101,7 @@ export class AssignmentRow extends React.Component {
                             color="primary"
                             variant="contained"
                         >
-                            {/* <DeleteOutlineRounded fontSize="medium" sx={{color: "textOnColour.main"}}/> */}
+                            <Delete fontSize="medium" sx={{color: "textOnColour.main"}}/>
                             <Typography variant="button">Delete</Typography>
                         </Button>
                     </TableCell>
@@ -273,7 +273,7 @@ export class EntryRow extends React.Component {
                         <Grid container justifyContent="flex-end">
                             <Button
                                 size="large"
-                                variant="outlined"
+                                variant="contained"
                                 color="secondary"
                                 onClick={() => this.submit()}
                             >
@@ -325,7 +325,7 @@ export class AssignmentTable extends React.Component {
 
         return (
             <>
-                <Paper elevation={2} sx={{marginBottom: '8px'}}>
+                <Paper elevation={1} sx={{marginBottom: '8px'}}>
                     <EntryRow
                         courses={this.props.courses}
                         newAssignmentCallback={

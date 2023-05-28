@@ -53,7 +53,7 @@ export class EntryRow extends React.Component {
     render() {
         return (
             <>
-                <Card variant="outlined">
+                <Card>
                     <CardContent>
                         <Typography
                             sx={{ fontSize: 14 }}
@@ -122,7 +122,7 @@ export class EntryRow extends React.Component {
                         <Grid container justifyContent="flex-end">
                             <Button
                                 size="large"
-                                variant="outlined"
+                                variant="contained"
                                 color="secondary"
                                 onClick={() => this.submit()}
                             >
@@ -144,7 +144,7 @@ export class CourseBox extends React.Component {
     render() {
         return (
             <>
-                <Card>
+                <Card elevation={1}>
                     <CardContent
                         style={{ backgroundColor: this.props.course.colour }}
                     >
