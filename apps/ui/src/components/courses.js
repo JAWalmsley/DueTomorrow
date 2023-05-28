@@ -12,6 +12,8 @@ import { Delete } from '@mui/icons-material';
 
 import { TwitterPicker } from 'react-color';
 
+import DTColourPicker from './DTColourPicker';
+
 import {
     red,
     orange,
@@ -23,6 +25,7 @@ import {
 } from '@mui/material/colors';
 
 import React from 'react';
+import colourPicker from './DTColourPicker';
 /**
  * @param {Function} newCourseCallback
  */
@@ -100,7 +103,7 @@ export class EntryRow extends React.Component {
                             </Grid>
                             {/* Colour */}
                             <Grid container item lg={5} xs={4}>
-                                <TwitterPicker
+                                {/* <TwitterPicker
                                     color={this.state.colour}
                                     colors={[
                                         red[800],
@@ -111,10 +114,27 @@ export class EntryRow extends React.Component {
                                         indigo[500],
                                         purple[500],
                                     ]}
+                                    sx={{ backgroundColor: "red" }}
                                     onChangeComplete={(e) =>
                                         this.setState({ colour: e.hex })
                                     }
-                                ></TwitterPicker>
+                                ></TwitterPicker> */}
+                                <DTColourPicker
+                                    colour={this.state.colour}
+                                    colours={[
+                                        red[800],
+                                        orange[900],
+                                        green[800],
+                                        blue[800],
+                                        blueGrey[700],
+                                        indigo[800],
+                                        purple[500],
+                                    ]}
+                                    sx={{ backgroundColor: 'red' }}
+                                    onChange={(colour) => {
+                                        this.setState({ colour: colour.hex });
+                                    }}
+                                ></DTColourPicker>
                             </Grid>
                         </Grid>
                     </CardContent>
@@ -149,7 +169,7 @@ export class CourseBox extends React.Component {
                         style={{ backgroundColor: this.props.course.colour }}
                     >
                         <Typography
-                            variant="h3"
+                            variant="h4"
                             component="div"
                             color="textOnColour.main"
                         >

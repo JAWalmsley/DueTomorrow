@@ -63,16 +63,16 @@ export class AssignmentRow extends React.Component {
                     }}
                 >
                     <TableCell sx={{ color: 'textOnColour.main' }}>
-                        {this.state.name}
+                        <Typography>{this.state.name}</Typography>
                     </TableCell>
                     <TableCell sx={{ color: 'textOnColour.main' }}>
-                        {this.state.course}
+                        <Typography>{this.state.course}</Typography>
                     </TableCell>
                     <TableCell sx={{ color: 'textOnColour.main' }}>
-                        {dueString}
+                        <Typography>{dueString}</Typography>
                     </TableCell>
                     <TableCell sx={{ color: 'textOnColour.main' }}>
-                        {this.state.weight}
+                        <Typography>{this.state.weight}</Typography>
                     </TableCell>
                     <TableCell
                         sx={{
@@ -297,7 +297,7 @@ export class HeaderRow extends React.Component {
         this.props.columns.forEach((column) => {
             cells.push(
                 <TableCell key={column}>
-                    <b>{column}</b>
+                    <Typography><b>{column}</b></Typography>
                 </TableCell>
             );
         });
