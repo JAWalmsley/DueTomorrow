@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
-import { Delete } from '@mui/icons-material';
+import { Delete, DeleteOutline, DeleteOutlineRounded, DeleteOutlined } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import {
     Autocomplete,
@@ -15,6 +15,7 @@ import {
     CardActions,
     CardContent,
     Grid,
+    Paper,
     TextField,
     Typography,
 } from '@mui/material';
@@ -56,13 +57,30 @@ export class AssignmentRow extends React.Component {
             <>
                 <TableRow
                     key={Math.random()}
-                    sx={{ backgroundColor: this.state.colour }}
+                    sx={{
+                        backgroundColor: this.state.colour,
+                        textAlign: 'left',
+                    }}
                 >
-                    <TableCell>{this.state.name}</TableCell>
-                    <TableCell>{this.state.course}</TableCell>
-                    <TableCell>{dueString}</TableCell>
-                    <TableCell>{this.state.weight}</TableCell>
-                    <TableCell>
+                    <TableCell sx={{ color: 'textOnColour.main' }}>
+                        <Typography>{this.state.name}</Typography>
+                    </TableCell>
+                    <TableCell sx={{ color: 'textOnColour.main' }}>
+                        <Typography>{this.state.course}</Typography>
+                    </TableCell>
+                    <TableCell sx={{ color: 'textOnColour.main' }}>
+                        <Typography>{dueString}</Typography>
+                    </TableCell>
+                    <TableCell sx={{ color: 'textOnColour.main' }}>
+                        <Typography>{this.state.weight}</Typography>
+                    </TableCell>
+                    <TableCell
+                        sx={{
+                            color: 'textOnColour.main',
+                            padding: '1px',
+                            textAlign: 'center',
+                        }}
+                    >
                         <Checkbox
                             key={Math.random()}
                             defaultChecked={!!this.state.done}
@@ -71,15 +89,20 @@ export class AssignmentRow extends React.Component {
                             size="large"
                         />
                     </TableCell>
-                    <TableCell>
+                    <TableCell
+                        sx={{ color: 'textOnColour.main', textAlign: 'right' }}
+                    >
                         <Button
                             onClick={() =>
                                 this.props.deleteAssignmentCallback({
                                     id: this.state.id,
                                 })
                             }
+                            color="primary"
+                            variant="contained"
                         >
-                            <Delete fontSize="large"/>
+                            {/* <Delete fontSize="medium" sx={{color: "textOnColour.main"}}/> */}
+                            <Typography variant="button">Delete</Typography>
                         </Button>
                     </TableCell>
                 </TableRow>
@@ -102,7 +125,7 @@ export class EntryRow extends React.Component {
         due: '',
         weight: '',
         id: '',
-        errors: {name: '', course: '', due: '', weight: ''},
+        errors: { name: '', course: '', due: '', weight: '' },
     };
     constructor(props) {
         super(props);
@@ -111,25 +134,31 @@ export class EntryRow extends React.Component {
     }
 
     submit() {
-        this.setState({errors: {}});
-        let newErrors = {...this.state.errors};
+        this.setState({ errors: {} });
+        let newErrors = { ...this.state.errors };
         newErrors.name = !this.state.name ? 'Name is required' : '';
-        newErrors.course = !this.state.course ? "Course is required" : '';
-        newErrors.due = !this.state.due ? "Due date is required" : '';
-        newErrors.weight = !this.state.weight ? "Weight is required" : '';
-        if(!(newErrors.name || newErrors.course || newErrors.due || newErrors.weight)) {
+        newErrors.course = !this.state.course ? 'Course is required' : '';
+        newErrors.due = !this.state.due ? 'Due date is required' : '';
+        newErrors.weight = !this.state.weight ? 'Weight is required' : '';
+        if (
+            !(
+                newErrors.name ||
+                newErrors.course ||
+                newErrors.due ||
+                newErrors.weight
+            )
+        ) {
             let resp = this.props.newAssignmentCallback(this.state);
             this.setState(this.initialState);
             this.nameInput.current.focus();
         }
-        this.setState({errors: newErrors});
-        
+        this.setState({ errors: newErrors });
     }
 
     render() {
         return (
             <>
-                <Card variant="outlined">
+                <Card>
                     <CardContent>
                         <Typography
                             sx={{ fontSize: 14 }}
@@ -191,8 +220,12 @@ export class EntryRow extends React.Component {
                                             fullWidth
                                             label="Course"
                                             variant="standard"
-                                            error={this.state.errors.course !== ''}
-                                            helperText={this.state.errors.course}
+                                            error={
+                                                this.state.errors.course !== ''
+                                            }
+                                            helperText={
+                                                this.state.errors.course
+                                            }
                                         />
                                     )}
                                 />
@@ -240,7 +273,7 @@ export class EntryRow extends React.Component {
                         <Grid container justifyContent="flex-end">
                             <Button
                                 size="large"
-                                variant="outlined"
+                                variant="contained"
                                 color="secondary"
                                 onClick={() => this.submit()}
                             >
@@ -263,8 +296,8 @@ export class HeaderRow extends React.Component {
         const cells = [];
         this.props.columns.forEach((column) => {
             cells.push(
-                <TableCell key={column} className="center-align">
-                    <b>{column}</b>
+                <TableCell key={column}>
+                    <Typography><b>{column}</b></Typography>
                 </TableCell>
             );
         });
@@ -288,55 +321,65 @@ export class AssignmentTable extends React.Component {
             return a.done ? 1 : -1;
         });
 
-        let mdSize = window.matchMedia("(min-width: 900px)")
+        let mdSize = window.matchMedia('(min-width: 900px)');
 
         return (
             <>
-                <EntryRow
-                    courses={this.props.courses}
-                    newAssignmentCallback={this.props.createAssignmentCallback}
-                />
-                <TableContainer className="center">
-                    <Table size={mdSize.matches ? "small" : "medium"}>
-                        {console.log(mdSize.matches)}
-                        <colgroup>
-                            <col style={{ width: '20%' }} />
-                            <col style={{ width: '20%' }} />
-                            <col style={{ width: '25%' }} />
-                            <col style={{ width: '15%' }} />
-                            <col style={{ width: '10%' }} />
-                        </colgroup>
-                        <HeaderRow
-                            columns={[
-                                'Name',
-                                'Course',
-                                'Due',
-                                'Weight',
-                                'Done',
-                                '',
-                            ]}
-                        />
-                        <TableBody key={Math.random()}>
-                            {sortedAssignments.map((assignment, i) => {
-                                return (
-                                    <AssignmentRow
-                                        key={'ar' + assignment.id}
-                                        assignment={assignment}
-                                        updateAssignmentCallback={
-                                            this.props.updateAssignmentCallback
-                                        }
-                                        deleteAssignmentCallback={
-                                            this.props.deleteAssignmentCallback
-                                        }
-                                        course={this.props.courses.find(
-                                            (c) => c.id === assignment.courseid
-                                        )}
-                                    ></AssignmentRow>
-                                );
-                            })}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                <Paper elevation={1} sx={{marginBottom: '8px'}}>
+                    <EntryRow
+                        courses={this.props.courses}
+                        newAssignmentCallback={
+                            this.props.createAssignmentCallback
+                        }
+                    />
+                </Paper>
+                <Paper elevation={1}>
+                    <TableContainer className="center">
+                        <Table size={mdSize.matches ? 'small' : 'medium'}>
+                            {console.log(mdSize.matches)}
+                            <colgroup>
+                                <col style={{ width: '20%' }} />
+                                <col style={{ width: '20%' }} />
+                                <col style={{ width: '15%' }} />
+                                <col style={{ width: '10%' }} />
+                                <col style={{ width: '5%' }} />
+                                <col style={{ width: '15%' }} />
+                            </colgroup>
+                            <HeaderRow
+                                columns={[
+                                    'Name',
+                                    'Course',
+                                    'Due',
+                                    'Weight',
+                                    'Done',
+                                    '',
+                                ]}
+                            />
+                            <TableBody key={Math.random()}>
+                                {sortedAssignments.map((assignment, i) => {
+                                    return (
+                                        <AssignmentRow
+                                            key={'ar' + assignment.id}
+                                            assignment={assignment}
+                                            updateAssignmentCallback={
+                                                this.props
+                                                    .updateAssignmentCallback
+                                            }
+                                            deleteAssignmentCallback={
+                                                this.props
+                                                    .deleteAssignmentCallback
+                                            }
+                                            course={this.props.courses.find(
+                                                (c) =>
+                                                    c.id === assignment.courseid
+                                            )}
+                                        ></AssignmentRow>
+                                    );
+                                })}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Paper>
             </>
         );
     }

@@ -1,4 +1,4 @@
-import { Container } from '@mui/material';
+import { Container, Paper } from '@mui/material';
 import { Grid } from '@mui/material';
 import { Navbar } from '../components/navbar.js';
 import { EntryRow, CourseList } from '../components/courses.js';
@@ -15,7 +15,6 @@ export default class CoursePage extends React.Component {
         };
     }
 
-    
     async setCourses() {
         console.log(this.userid);
         let c = await APICoursesGet(this.userid);
@@ -29,7 +28,7 @@ export default class CoursePage extends React.Component {
     setCourses = this.setCourses.bind(this);
 
     async deleteCourse(data) {
-        data = {...data, userid: this.userid};
+        data = { ...data, userid: this.userid };
         await APICoursesDelete(data);
         this.setState({ courses: await APICoursesGet(this.userid) });
     }
@@ -37,7 +36,7 @@ export default class CoursePage extends React.Component {
     deleteCourse = this.deleteCourse.bind(this);
 
     async newCourse(data) {
-        data = {...data, userid: this.userid};
+        data = { ...data, userid: this.userid };
         await APICoursesPost(data);
         this.setState({ courses: await APICoursesGet(this.userid) });
     }
@@ -46,12 +45,12 @@ export default class CoursePage extends React.Component {
 
     componentDidMount() {
         this.userid = localStorage.getItem('userid');
-        console.log("id is" + this.userid);
+        console.log('id is' + this.userid);
         this.setCourses();
     }
 
     render() {
-        if (!(this.state.loadedCourses)) {
+        if (!this.state.loadedCourses) {
             return <>Loading...</>;
         }
         return (
@@ -60,10 +59,20 @@ export default class CoursePage extends React.Component {
                 <Container>
                     <Grid container spacing={2} padding={1}>
                         <Grid item xs={12}>
-                            <EntryRow newCourseCallback={this.newCourse} userid={this.state.userid}/>
+                            <Paper sx={{marginBottom: '8px'}} elevation={1}>
+                                <EntryRow
+                                    newCourseCallback={this.newCourse}
+                                    userid={this.state.userid}
+                                />
+                            </Paper>
                         </Grid>
                         <Grid item xs={12}>
-                            <CourseList courses={this.state.courses} deleteCourseCallback={this.deleteCourse}/>
+                            <Paper elevation={0}>
+                                <CourseList
+                                    courses={this.state.courses}
+                                    deleteCourseCallback={this.deleteCourse}
+                                />
+                            </Paper>
                         </Grid>
                     </Grid>
                 </Container>
