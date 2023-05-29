@@ -29,7 +29,7 @@ import colourPicker from './DTColourPicker';
 /**
  * @param {Function} newCourseCallback
  */
-export class EntryRow extends React.Component {
+export class CourseEntryRow extends React.Component {
     initialState = {
         name: '',
         credits: '',

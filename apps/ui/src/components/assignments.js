@@ -20,6 +20,8 @@ import {
     Typography,
 } from '@mui/material';
 
+import { HeaderRow } from './headerRow';
+
 /**
  * Row of one assignment
  * @param {Object} assignment
@@ -116,7 +118,7 @@ export class AssignmentRow extends React.Component {
  * @param courses
  * @param newAssignmentCallback
  */
-export class EntryRow extends React.Component {
+export class AssignmentEntryRow extends React.Component {
     initialState = {
         name: '',
         course: this.props.courses[0].name,
@@ -287,28 +289,6 @@ export class EntryRow extends React.Component {
     }
 }
 
-/**
- * Header of a table
- * @param columns
- */
-export class HeaderRow extends React.Component {
-    render() {
-        const cells = [];
-        this.props.columns.forEach((column) => {
-            cells.push(
-                <TableCell key={column}>
-                    <Typography><b>{column}</b></Typography>
-                </TableCell>
-            );
-        });
-        return (
-            <TableHead>
-                <TableRow>{cells}</TableRow>
-            </TableHead>
-        );
-    }
-}
-
 export class AssignmentTable extends React.Component {
     render() {
         let sortedAssignments = [...this.props.assignments];
@@ -326,7 +306,7 @@ export class AssignmentTable extends React.Component {
         return (
             <>
                 <Paper elevation={1} sx={{marginBottom: '8px'}}>
-                    <EntryRow
+                    <AssignmentEntryRow
                         courses={this.props.courses}
                         newAssignmentCallback={
                             this.props.createAssignmentCallback
