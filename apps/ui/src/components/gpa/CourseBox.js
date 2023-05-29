@@ -6,7 +6,6 @@ import {
 import React from 'react';
 import { GradeRow } from './GradeRow';
 import { CourseHeader } from './CourseHeader';
-import { HeaderRow } from './HeaderRow';
 
 /**
  * Box containing all assignments for a course
@@ -41,9 +40,9 @@ export class CourseBox extends React.Component {
                             }}
                         >
                             <CourseHeader course={this.props.course} />
-                            <HeaderRow
+                            {/* <HeaderRow
                                 columns={['Assignment', 'Weight', 'Grade']}
-                                colour={this.props.course.colour} />
+                                colour={this.props.course.colour} /> */}
                         </TableHead>
                         <TableBody>{rows}</TableBody>
                     </Table>

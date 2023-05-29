@@ -1,4 +1,4 @@
-import { TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { TableCell, TableRow, Typography } from "@mui/material";
 import React from "react";
 
 /**
@@ -16,9 +16,7 @@ export class HeaderRow extends React.Component {
             );
         });
         return (
-            <TableHead>
                 <TableRow>{cells}</TableRow>
-            </TableHead>
         );
     }
 }
