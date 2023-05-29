@@ -13,16 +13,12 @@ import {
 } from '../api.js';
 import React from 'react';
 import {
-    Box,
     Dialog,
-    Modal,
-    Typography,
     DialogActions,
     Button,
     DialogTitle,
     DialogContent,
     DialogContentText,
-    Paper,
 } from '@mui/material';
 
 const MONTH_MILIS = 1000 * 60 * 60 * 24 * 30;

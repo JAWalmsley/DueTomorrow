@@ -3,8 +3,6 @@ import React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import { Delete, DeleteOutline, DeleteOutlineRounded, DeleteOutlined } from '@mui/icons-material';
 import {
     Paper,
 } from '@mui/material';

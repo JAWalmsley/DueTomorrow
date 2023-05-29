@@ -96,22 +96,6 @@ export class CourseEntryRow extends React.Component {
                             </Grid>
                             {/* Colour */}
                             <Grid container item lg={5} xs={4}>
-                                {/* <TwitterPicker
-                    color={this.state.colour}
-                    colors={[
-                        red[800],
-                        orange[900],
-                        green[800],
-                        blue[800],
-                        blueGrey[700],
-                        indigo[500],
-                        purple[500],
-                    ]}
-                    sx={{ backgroundColor: "red" }}
-                    onChangeComplete={(e) =>
-                        this.setState({ colour: e.hex })
-                    }
-                ></TwitterPicker> */}
                                 <DTColourPicker
                                     colour={this.state.colour}
                                     colours={[
