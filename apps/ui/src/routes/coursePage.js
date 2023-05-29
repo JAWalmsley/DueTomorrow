@@ -1,7 +1,8 @@
 import { Container, Paper } from '@mui/material';
 import { Grid } from '@mui/material';
-import { Navbar } from '../components/navbar.js';
-import { CourseEntryRow, CourseList } from '../components/courses.js';
+import { Navbar } from '../components/Navbar.js';
+import { CourseList } from '../components/courses/CourseList.js';
+import { CourseEntryRow } from '../components/courses/CourseEntryRow.js';
 import { APICoursesDelete, APICoursesGet, APICoursesPost } from '../api.js';
 
 import React from 'react';

@@ -1,5 +1,5 @@
 import { Container, Box } from '@mui/material';
-import { LoginBox } from '../components/login';
+import { LoginBox } from '../components/LoginBox';
 
 export default function LoginPage() {
     return (

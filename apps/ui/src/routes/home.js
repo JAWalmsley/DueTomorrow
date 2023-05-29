@@ -1,5 +1,5 @@
-import { AssignmentTable } from '../components/assignments.js';
-import { Navbar } from '../components/navbar.js';
+import { AssignmentTable } from '../components/assignments/AssignmentTable.js';
+import { Navbar } from '../components/Navbar.js';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import '../css/styles.css';
