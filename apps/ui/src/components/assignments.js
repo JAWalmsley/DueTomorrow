@@ -101,7 +101,7 @@ export class AssignmentRow extends React.Component {
                             color="primary"
                             variant="contained"
                         >
-                            <Delete fontSize="medium" sx={{color: "textOnColour.main"}}/>
+                            {/* <Delete fontSize="medium" sx={{color: "textOnColour.main"}}/> */}
                             <Typography variant="button">Delete</Typography>
                         </Button>
                     </TableCell>

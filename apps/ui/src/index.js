@@ -38,6 +38,7 @@ const getDesignTokens = (mode) => ({
             ? {
                   // palette values for light mode
                   primary: {main: indigo[500]},
+                  secondary: {main: indigo[500]},
                   divider: indigo[600],
                   text: {
                       primary: grey[900],
