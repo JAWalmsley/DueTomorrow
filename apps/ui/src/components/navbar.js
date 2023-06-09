@@ -1,5 +1,15 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, Button } from '@mui/material';
+import {
+    AppBar,
+    Toolbar,
+    Typography,
+    Button,
+    Dialog,
+    DialogTitle,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+} from '@mui/material';
 
 import { APILogout } from '../api.js';
 
@@ -8,32 +18,73 @@ export class Navbar extends React.Component {
         APILogout();
         window.location.replace('/login');
     }
+    constructor(props) {
+        super(props);
+        this.state = {
+            dialogOpen: false,
+        }
+    }
+    
     render() {
         return (
-            <AppBar position="static">
-                <Toolbar>
-                    <Typography
-                        variant="h3"
-                        component="div"
-                        sx={{ flexGrow: 1 }}
-                    >
-                        DT
-                    </Typography>
-                    <Button color="inherit" href="/">
-                        <Typography variant="h6">Assignments</Typography>
-                    </Button>
-                    <Button color="inherit" href="/courses">
-                        <Typography variant="h6">Courses</Typography>
-                    </Button>
-                    <Button color="inherit" href="/gpa">
-                        <Typography variant="h6">GPA</Typography>
-                    </Button>
+            <>
+                <AppBar position="static">
+                    <Toolbar>
+                        <Typography
+                            variant="h3"
+                            component="div"
+                            sx={{ flexGrow: 1 }}
+                        >
+                            DT
+                        </Typography>
+                        <Button color="inherit" href="/">
+                            <Typography variant="h6">Assignments</Typography>
+                        </Button>
+                        <Button color="inherit" href="/courses">
+                            <Typography variant="h6">Courses</Typography>
+                        </Button>
+                        <Button color="inherit" href="/gpa">
+                            <Typography variant="h6">GPA</Typography>
+                        </Button>
 
-                    <Button color="inherit" onClick={this.logout}>
-                        <Typography variant="h6">Log Out</Typography>
-                    </Button>
-                </Toolbar>
-            </AppBar>
+                        <Button color="inherit" onClick={() => this.setState({dialogOpen: true})}>
+                            <Typography variant="h6">Log Out</Typography>
+                        </Button>
+                    </Toolbar>
+                </AppBar>
+
+                <Dialog
+                    open={this.state.dialogOpen}
+                    onClose={() => this.setState({dialogOpen: false})}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    {/* <DialogTitle id="alert-dialog-title">
+                        Log out
+                    </DialogTitle> */}
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Are you sure you want to log out?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button
+                            onClick={() => this.setState({dialogOpen: false})}
+                            variant="text"
+                            color="textOnColour"
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            onClick={() => this.logout()}
+                            variant="text"
+                            color="textOnColour"
+                        >
+                            Log out
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            </>
         );
     }
 }
