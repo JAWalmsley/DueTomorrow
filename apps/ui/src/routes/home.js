@@ -1,5 +1,5 @@
-import { AssignmentTable } from '../components/assignments.js';
-import { Navbar } from '../components/navbar.js';
+import { AssignmentTable } from '../components/assignments/AssignmentTable.js';
+import { Navbar } from '../components/Navbar.js';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import '../css/styles.css';
@@ -13,16 +13,12 @@ import {
 } from '../api.js';
 import React from 'react';
 import {
-    Box,
     Dialog,
-    Modal,
-    Typography,
     DialogActions,
     Button,
     DialogTitle,
     DialogContent,
     DialogContentText,
-    Paper,
 } from '@mui/material';
 
 const MONTH_MILIS = 1000 * 60 * 60 * 24 * 30;

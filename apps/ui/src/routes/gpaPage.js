@@ -1,6 +1,7 @@
 import { Container, Grid } from '@mui/material';
-import { CourseList, GPATally } from '../components/gpa.js';
-import { Navbar } from '../components/navbar.js';
+import { CourseList } from '../components/gpa/CourseList.js';
+import { GPATally } from '../components/gpa/GPATally.js';
+import { Navbar } from '../components/Navbar.js';
 import React from 'react';
 import '../css/styles.css';
 
