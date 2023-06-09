@@ -64,7 +64,7 @@ export class AssignmentRow extends React.Component {
                         sx={{
                             color: 'textOnColour.main',
                             padding: '1px',
-                            textAlign: 'center',
+                            textAlign: 'left',
                         }}
                     >
                         <Checkbox
