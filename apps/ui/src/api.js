@@ -202,6 +202,32 @@ export function APICoursesGet(userid) {
 }
 
 /**
+ * Gets the courses belonging to a share code
+ */
+export function APICoursesGetByCode(shareCode) {
+    return fetch(config.endpoint + 'sharecodes/' + shareCode, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+    })
+    .then((e) => {
+        if(e.status === 200) {
+            return e.json();
+        }
+        throw new Error();
+    })
+    .then((data) => {
+        return data;
+    })
+    .catch((error) => {
+        return null;
+    })
+}
+
+/**
  * Creates a new course
  * @param {Object} data 
  * @returns 
