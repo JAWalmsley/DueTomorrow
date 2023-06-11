@@ -49,6 +49,13 @@ con.query(
     }
 );
 
+con.query(
+    'CREATE TABLE IF NOT EXISTS sharecodes (code VARCHAR(50), courseid VARCHAR(255), FOREIGN KEY (courseid) REFERENCES courses(id) ON DELETE CASCADE);',
+    function (err, result) {
+        if (err) throw err;
+    }
+);
+
 exports.User = class {
     /**
      * Create a user
@@ -129,6 +136,15 @@ exports.Course = class {
     }
 
     /**
+     * Get a course by its id
+     * @param {String} id 
+     * @returns {Promise} mySQL query Promise
+     */
+    static getByID(id) {
+        return makeReq('SELECT * FROM courses WHERE id = ?', [id]);
+    }
+
+    /**
      * Updates a course
      * @param id {String} - The id to update
      * @param data {Object} - The new data to replace
@@ -148,6 +164,43 @@ exports.Course = class {
         return makeReq('DELETE FROM courses WHERE id = ?', [id]);
     }
 };
+
+exports.ShareCode = class {
+    /**
+     * Creates a share code to a list of courses
+     * @param {String} code code to share the list by
+     * @param {String[]} courseids list of course ids to share
+     * @returns 
+     */
+    static async create(code, courseids) {
+        let promises = [];
+        let exists = await this.codeExists(code);
+        if(exists) { return false}
+        courseids.forEach((courseid) => {
+            promises.push(makeReq('INSERT INTO sharecodes (code, courseid) VALUES (?)', [[code, courseid]]));
+        });
+        return Promise.all(promises);
+    }
+
+    /**
+     * Gets the courses that a share code is for
+     * @param {String} code the code to get the course ids for
+     */
+    static getByCode(code) {
+        return makeReq('SELECT * FROM sharecodes WHERE code = ?', [code]);
+    }
+
+    /**
+     * Checks if a code already exists
+     * @param {String} code 
+     */
+    static codeExists(code) {
+        return makeReq('SELECT * FROM sharecodes WHERE code = ?', [code])
+            .then((result) => {
+                return result.length > 0;
+            });
+    }
+}
 
 exports.Assignment = class {
     /**
@@ -176,6 +229,15 @@ exports.Assignment = class {
      */
     static getByUserID(userID) {
         return makeReq('SELECT * FROM assignments WHERE userid = ? ORDER BY done, due, weight DESC', [userID]);
+    }
+
+    /**
+     * Get all assignments belonging to a course
+     * @param {String} courseid 
+     * @returns {Promise} mySQL query Promise
+     */
+    static getByCourseID(courseid) {
+        return makeReq('SELECT * FROM assignments WHERE courseid = ?', [courseid]);
     }
 
     /**
