@@ -11,8 +11,14 @@ import {
     DialogContentText,
 } from '@mui/material';
 
+import { redirect } from 'react-router-dom';
+
 import { APILogout } from '../api.js';
 
+/**
+ * Navbar
+ * @param {boolean} loggedin
+ */
 export class Navbar extends React.Component {
     logout() {
         APILogout();
@@ -26,6 +32,25 @@ export class Navbar extends React.Component {
     }
     
     render() {
+        if(!this.props.loggedin) {
+            return (
+                <AppBar position="static">
+                    <Toolbar>
+                        <Typography
+                            variant="h3"
+                            component="div"
+                            sx={{ flexGrow: 1 }}
+                        >
+                            DT
+                        </Typography>
+
+                        <Button color="inherit" href="/login">
+                            <Typography variant="h6">Log In</Typography>
+                        </Button>
+                    </Toolbar>
+                </AppBar>
+            )
+        }
         return (
             <>
                 <AppBar position="static">
@@ -87,4 +112,8 @@ export class Navbar extends React.Component {
             </>
         );
     }
+}
+
+Navbar.defaultProps = {
+    loggedin: true
 }

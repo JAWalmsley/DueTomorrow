@@ -1,7 +1,9 @@
 import {
+    Button,
     Card,
     CardActions,
     CardContent,
+    Grid,
     List,
     ListItem,
     ListItemText,
@@ -34,18 +36,21 @@ export default function CourseShareBox(props) {
                     {props.credits} credits
                 </Typography>
             </CardContent>
+            <Table>
+                <TableBody>
+                    {props.assignments.map((assignment) => (
+                        <TableRow>
+                            <TableCell>{assignment.name}</TableCell>
+                            <TableCell>{assignment.due}</TableCell>
+                            <TableCell>{assignment.weight}%</TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
             <CardActions>
-                <Table>
-                    <TableBody>
-                        {props.assignments.map((assignment) => (
-                            <TableRow>
-                                <TableCell>{assignment.name}</TableCell>
-                                <TableCell>{assignment.due}</TableCell>
-                                <TableCell>{assignment.weight}%</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
+                <Grid container justifyContent={'flex-end'}>
+                    <Button variant="contained">Import</Button>
+                </Grid>
             </CardActions>
         </Card>
     );

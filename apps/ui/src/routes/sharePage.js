@@ -39,29 +39,11 @@ export default function SharePage() {
     console.log(courses);
     return (
         <>
-            <Navbar />
+            <Navbar loggedin={false}/>
             <Container>
-                <Card elevation={1}>
-                    <CardContent>
-                        <Typography>
-                            Log in to import the courses below
-                        </Typography>
-                    </CardContent>
-                    <CardActions>
-                        <Grid container justifyContent="flex-end">
-                            <Button
-                                size="large"
-                                color="primary"
-                                variant="contained"
-                            >
-                                Import
-                            </Button>
-                        </Grid>
-                    </CardActions>
-                </Card>
                 <Grid container spacing={2} padding={1}>
                     {courses.map((course) => (
-                        <Grid item xs={6}>
+                        <Grid item xs={12}>
                             <CourseShareBox
                                 name={course.name}
                                 colour={course.colour}
