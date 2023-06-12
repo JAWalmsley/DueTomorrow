@@ -5,13 +5,10 @@ import {
     Typography,
     Button,
     Dialog,
-    DialogTitle,
     DialogActions,
     DialogContent,
     DialogContentText,
 } from '@mui/material';
-
-import { redirect } from 'react-router-dom';
 
 import { APILogout } from '../api.js';
 
@@ -22,6 +19,7 @@ import { APILogout } from '../api.js';
 export class Navbar extends React.Component {
     logout() {
         APILogout();
+        localStorage.removeItem('userid');
         window.location.replace('/login');
     }
     constructor(props) {

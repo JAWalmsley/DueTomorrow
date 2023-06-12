@@ -1,12 +1,4 @@
-import {
-    Button,
-    Card,
-    CardActions,
-    CardContent,
-    Container,
-    Paper,
-    Typography,
-} from '@mui/material';
+import { Container } from '@mui/material';
 import { Grid } from '@mui/material';
 import { Navbar } from '../components/Navbar.js';
 import { useSearchParams } from 'react-router-dom';
@@ -14,7 +6,6 @@ import { APICoursesGetByCode } from '../api.js';
 import { useEffect, useState } from 'react';
 
 import React from 'react';
-import { indigo } from '@mui/material/colors';
 
 import CourseShareBox from '../components/CourseShareBox.js';
 
@@ -36,10 +27,10 @@ export default function SharePage() {
             console.log(courses);
         }
     });
-    console.log(courses);
+    let userid = localStorage.getItem('userid');
     return (
         <>
-            <Navbar loggedin={false}/>
+            <Navbar loggedin={userid ? true : false} />
             <Container>
                 <Grid container spacing={2} padding={1}>
                     {courses.map((course) => (
@@ -50,6 +41,7 @@ export default function SharePage() {
                                 credits={course.credits}
                                 assignments={course.assignments}
                                 key={course.name}
+                                loggedin={userid ? true : false}
                             ></CourseShareBox>
                         </Grid>
                     ))}

@@ -21,7 +21,7 @@ export class LoginBox extends React.Component {
             try {
                 let resp = await APIlogin(this.state);
                 localStorage.setItem('userid', resp);
-                window.location.replace('/');
+                window.location.replace(this.props.redirect);
             } catch (e) {
                 if(e.message === 'Unauthorized') {
                     newErrors.password = 'Incorrect username or password';
@@ -42,7 +42,7 @@ export class LoginBox extends React.Component {
             try {
                 let resp = await APIregister(this.state);
                 localStorage.setItem('userid', resp);
-                window.location.replace('/');
+                window.location.replace(this.props.redirect);
             } catch (e) {
                 console.log(await e);
                 if(await e === 'Already exists') {
@@ -125,4 +125,8 @@ export class LoginBox extends React.Component {
             </Grid>
         );
     }
+}
+
+LoginBox.defaultProps = {
+    redirect: '/',
 }
