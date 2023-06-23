@@ -86,7 +86,7 @@ export default function CourseShareBox(props) {
             </Card>
             <Snackbar
                 open={snackbarOpen}
-                autoHideDuration={6000}
+                autoHideDuration={3000}
                 message="Course imported"
                 onClose={() => setSnackbarOpen(false)}
             />
