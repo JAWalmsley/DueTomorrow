@@ -18,7 +18,7 @@ import React, { useCallback, useState } from 'react';
 export default function CourseShareBox(props) {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-    const importCourse = useCallback((loggedin, course, assignments) => {
+    const importCourse = useCallback(async (loggedin, course, assignments) => {
         if (!loggedin) {
             window.location.replace(
                 '/login?redirect=' +
@@ -27,14 +27,13 @@ export default function CourseShareBox(props) {
             );
         }
         setSnackbarOpen(true);
-        // TODO: REMEMBER TO UNCOMMENT THIS
-        // let userid = localStorage.getItem('userid');
-        // let courseid = await APICoursesPost({...course, userid: userid});
-        // for(let assignment of assignments) {
-        //     assignment.userid = userid;
-        //     assignment.courseid = courseid;
-        //     APIAssignmentPost(assignment);
-        // }
+        let userid = localStorage.getItem('userid');
+        let courseid = await APICoursesPost({...course, userid: userid});
+        for(let assignment of assignments) {
+            assignment.userid = userid;
+            assignment.courseid = courseid;
+            APIAssignmentPost(assignment);
+        }
     }, []);
 
     return (
