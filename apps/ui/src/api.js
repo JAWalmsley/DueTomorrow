@@ -63,18 +63,18 @@ export function APIUsernameGet(userid) {
         },
         credentials: 'include',
     })
-    .then((e) => {
-        if(e.status === 200) {
-            return e.json();
-        }
-        throw new Error();
-    })
-    .then((data) => {
-        return data;
-    })
-    .catch((error) => {
-        return null;
-    })
+        .then((e) => {
+            if (e.status === 200) {
+                return e.json();
+            }
+            throw new Error();
+        })
+        .then((data) => {
+            return data;
+        })
+        .catch((error) => {
+            return null;
+        })
 }
 
 /**
@@ -89,18 +89,18 @@ export function APIAssignmentsGet(userid) {
         },
         credentials: 'include',
     })
-    .then((e) => {
-        if(e.status === 200) {
-            return e.json();
-        }
-        throw new Error();
-    })
-    .then((data) => {
-        return data;
-    })
-    .catch((error) => {
-        return null;
-    })
+        .then((e) => {
+            if (e.status === 200) {
+                return e.json();
+            }
+            throw new Error();
+        })
+        .then((data) => {
+            return data;
+        })
+        .catch((error) => {
+            return null;
+        })
 }
 
 /**
@@ -135,10 +135,10 @@ export function APIAssignmentPost(data) {
 export function APIAssignmentModify(data) {
     return fetch(
         config.endpoint +
-            'users/' +
-            data.userid +
-            '/assignments/' +
-            data.id,
+        'users/' +
+        data.userid +
+        '/assignments/' +
+        data.id,
         {
             method: 'PUT',
             mode: 'cors',
@@ -187,18 +187,68 @@ export function APICoursesGet(userid) {
         },
         credentials: 'include',
     })
-    .then((e) => {
-        if(e.status === 200) {
-            return e.json();
+        .then((e) => {
+            if (e.status === 200) {
+                return e.json();
+            }
+            throw new Error();
+        })
+        .then((data) => {
+            return data;
+        })
+        .catch((error) => {
+            return null;
+        })
+}
+
+
+/**
+ *
+ * @param {String} data.userid your userid
+ * @param {String} data.courseids the course ids to add to the sharecode
+ * @returns
+ */
+export function APICreateCode(data) {
+    return fetch(config.endpoint + 'users/' + data.userid + '/sharecodes/', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(data),
+    }).then((res) => {
+        if (res.status === 200) {
+            return res.text();
         }
-        throw new Error();
+        throw new Error(res.statusText);
+    });
+}
+
+/**
+ * Gets the courses belonging to a share code
+ */
+export function APICoursesGetByCode(shareCode) {
+    return fetch(config.endpoint + 'sharecodes/' + shareCode, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
     })
-    .then((data) => {
-        return data;
-    })
-    .catch((error) => {
-        return null;
-    })
+        .then((e) => {
+            if (e.status === 200) {
+                return e.json();
+            }
+            throw new Error();
+        })
+        .then((data) => {
+            return data;
+        })
+        .catch((error) => {
+            return null;
+        })
 }
 
 /**

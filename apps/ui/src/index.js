@@ -17,6 +17,7 @@ import {
 import { deepmerge } from '@mui/utils';
 import { CssBaseline } from '@mui/material';
 import { indigo, grey } from '@mui/material/colors';
+import SharePage from './routes/sharePage';
 
 // let theme = createTheme({
 //     palette: {
@@ -100,6 +101,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 <Route path="/gpa" element={<GPAPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/courses" element={<CoursePage />} />
+                <Route path="/share" element={<SharePage />} />
             </Routes>
         </Router>
     </ThemeProvider>

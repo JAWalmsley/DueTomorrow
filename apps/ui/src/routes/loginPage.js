@@ -1,7 +1,13 @@
 import { Container, Box } from '@mui/material';
 import { LoginBox } from '../components/LoginBox';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 export default function LoginPage() {
+    const [searchParams, setSearchParams] = useSearchParams();
+    let redirect = searchParams.get('redirect');
+    if (!redirect) {
+        redirect = '/';
+    }
     return (
         <>
             <Container>
@@ -11,7 +17,7 @@ export default function LoginPage() {
                     alignItems="center"
                     minHeight="90vh"
                 >
-                    <LoginBox />
+                    <LoginBox redirect={redirect} />
                 </Box>
             </Container>
         </>
