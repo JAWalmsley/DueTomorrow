@@ -15,7 +15,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 
-import theme from './generateTheme';
+import { theme } from './generateTheme';
 
 serviceWorkerRegistration.register();
 

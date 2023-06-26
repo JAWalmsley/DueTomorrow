@@ -2,7 +2,7 @@ import { createTheme, responsiveFontSizes } from "@mui/material";
 import { grey, indigo } from "@mui/material/colors";
 import { deepmerge } from '@mui/utils';
 
-let theme = createTheme();
+export let theme = createTheme();
 
 const getDesignTokens = (mode) => ({
     palette: {
@@ -63,5 +63,3 @@ theme.typography.h3[lgQuery] = { ...theme.typography.h3, fontSize: '1rem' };
 
 theme.typography.h6.fontSize = '1.6rem';
 theme.typography.h6[lgQuery] = { ...theme.typography.h6, fontSize: '1rem' };
-
-module.exports = theme;
