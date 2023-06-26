@@ -37,35 +37,35 @@ const getDesignTokens = (mode) => ({
         mode,
         ...(mode === 'light'
             ? {
-                  // palette values for light mode
-                  primary: {main: indigo[500]},
-                  secondary: {main: indigo[500]},
-                  divider: indigo[600],
-                  text: {
-                      primary: grey[900],
-                      secondary: grey[800],
-                  },
-                  textOnColour: theme.palette.augmentColor({
-                      color: {
-                          main: '#fff',
-                      },
-                  }),
-              }
-            : {
-                  // palette values for dark mode
-                  primary: {main: indigo[700]},
-                  secondary: {main: indigo[700]},
-                  divider: indigo[900],
-                  text: {
-                      primary: grey[200],
-                      secondary: grey,
-                  },
-                  textOnColour: theme.palette.augmentColor({
+                // palette values for light mode
+                primary: { main: indigo[500] },
+                secondary: { main: indigo[500] },
+                divider: indigo[600],
+                text: {
+                    primary: grey[900],
+                    secondary: grey[800],
+                },
+                textOnColour: theme.palette.augmentColor({
                     color: {
                         main: '#fff',
                     },
                 }),
-              }),
+            }
+            : {
+                // palette values for dark mode
+                primary: { main: indigo[700] },
+                secondary: { main: indigo[700] },
+                divider: indigo[900],
+                text: {
+                    primary: grey[200],
+                    secondary: grey,
+                },
+                textOnColour: theme.palette.augmentColor({
+                    color: {
+                        main: '#fff',
+                    },
+                }),
+            }),
     },
 });
 
@@ -91,6 +91,22 @@ theme.typography.h3[lgQuery] = { ...theme.typography.h3, fontSize: '1rem' };
 
 theme.typography.h6.fontSize = '1.6rem';
 theme.typography.h6[lgQuery] = { ...theme.typography.h6, fontSize: '1rem' };
+
+
+if ('serviceWorker' in navigator) {
+    // Register a service worker hosted at the root of the
+    // site using the default scope.
+    navigator.serviceWorker.register(`${process.env.PUBLIC_URL}/service-worker.js`).then(
+        registration => {
+            console.log('Service worker registration succeeded:', registration);
+        },
+      /*catch*/ error => {
+            console.error(`Service worker registration failed: ${error}`);
+        }
+    );
+} else {
+    console.error('Service workers are not supported.');
+}
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <ThemeProvider theme={theme}>
