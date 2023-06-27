@@ -15,6 +15,10 @@ const getSharecode = require('./routes/getSharecode.js');
 const createSharecode = require('./routes/createSharecode');
 const notifications = require('./routes/notifications');
 
+const sendReminderNotifications = require('./notificationSender.js');
+
+sendReminderNotifications();
+
 app.use(
     cors({
         origin: ['http://localhost:3000', 'http://192.168.2.187:3000'],

@@ -89,6 +89,14 @@ exports.User = class {
     }
 
     /**
+     * Gets all users in the database
+     * @returns {Promise<Object>} all users
+     */
+    static getAll() {
+        return makeReq('SELECT * FROM logins', []);
+    }
+
+    /**
      * Gets a user by userid
      * @param {String} userid - The userid to search by
      * @returns {Promise<Object>} The first result in the results (should be the only result)
