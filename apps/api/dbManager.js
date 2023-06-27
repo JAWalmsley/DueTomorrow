@@ -56,6 +56,10 @@ con.query(
     }
 );
 
+con.query(
+    'CREATE TABLE IF NOT EXISTS notifications (userid VARCHAR(255), endpoint TEXT, p256dh TEXT, auth TEXT, FOREIGN KEY (userid) REFERENCES logins(id) ON DELETE CASCADE);',
+)
+
 exports.User = class {
     /**
      * Create a user
@@ -260,6 +264,24 @@ exports.Assignment = class {
         return makeReq('DELETE FROM assignments WHERE id = ?', [id]);
     }
 };
+
+exports.Notification = class {
+    static create(userid, endpoint, p256dh, auth) {
+        return makeReq(
+            'INSERT INTO notifications (userid, endpoint, p256dh, auth) VALUES (?)',
+            [[userid, endpoint, p256dh, auth]]
+        );
+    }
+
+    /**
+     * Get all notification subscriptions owned by given user
+     * @param {String} userID
+     * @returns {Promise} mySQL query Promise
+     */
+    static getByUserID(userID) {
+        return makeReq('SELECT * FROM notifications WHERE userid = ?', [userID]);
+    }
+}
 
 /**
  * Clears all tables in DB

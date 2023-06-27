@@ -75,5 +75,5 @@ self.addEventListener('push', e => {
         return;
     }
     const data = e.data.json();
-    self.registration.showNotification('Title');
+    self.registration.showNotification(data.title, {icon: '/favicon.png', body: data.body});
 })

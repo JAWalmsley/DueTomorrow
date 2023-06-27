@@ -13,6 +13,7 @@ const login = require('./routes/login');
 const logout = require('./routes/logout');
 const getSharecode = require('./routes/getSharecode.js');
 const createSharecode = require('./routes/createSharecode');
+const notifications = require('./routes/notifications');
 
 app.use(
     cors({
@@ -42,6 +43,7 @@ app.use('/api/logout', logout);
 app.use('/api/users', users);
 app.use('/api/users/:userid/assignments', assignments);
 app.use('/api/users/:userid/courses', courses);
+app.use('/api/users/:userid/notifications', notifications)
 app.use('/api/users/:userid/sharecodes', createSharecode);
 app.use('/api/sharecodes', getSharecode);
 

@@ -1,15 +1,31 @@
+import { APIPushRegister } from "./api";
+
+function urlBase64ToUint8Array(base64String) {
+    const padding = "=".repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+      .replace(/\-/g, "+")
+      .replace(/_/g, "/");
+  
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+  
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}    
 
 export async function subscribeToPush(registration) {
     const options = {
         userVisibleOnly: true,
-        applicationServerKey: 'BJtmkYnihcjp50XHbaJrr4JF8TdBkCnDOmAGGSLW-7WkjmiYPG6MGZ2bUKZK0Lh5x3XD5XL6my5W41LzAZ9Tlm8'
+        applicationServerKey: 'BImzP4wGIm3r8ibGG4Q82EkigWwUe-twN8LammszWIQ6nAfZ7yPC8KB7X_KJIuccgT4PLtfUi7_S1VQaNxlNn88'
     };
 
     const pushSubscription = await registration.pushManager.subscribe(options);
-    console.log(
-        'Received PushSubscription: ',
-        JSON.stringify(pushSubscription),
-    );
-    console.log("Your userid is", localStorage.getItem('userid'));
+    // console.log(
+    //     'Received PushSubscription: ',
+    //     JSON.stringify(pushSubscription),
+    // );
+    await APIPushRegister({userid: localStorage.getItem('userid'), subscription: pushSubscription});
     return pushSubscription;
 }
