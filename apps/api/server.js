@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
 const helmet = require('helmet');
+const schedule = require('node-schedule');
 
 const app = express();
 const port = 3001;
@@ -17,7 +18,8 @@ const notifications = require('./routes/notifications');
 
 const sendReminderNotifications = require('./notificationSender.js');
 
-sendReminderNotifications();
+// Send push notifications every day for items due tomorrow
+schedule.scheduleJob('0 18 * * *', sendReminderNotifications);
 
 app.use(
     cors({

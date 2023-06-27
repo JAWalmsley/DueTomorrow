@@ -17,8 +17,6 @@ import { CssBaseline } from '@mui/material';
 
 import { theme } from './generateTheme';
 
-
-
 ReactDOM.createRoot(document.getElementById('root')).render(
     <ThemeProvider theme={theme}>
         <CssBaseline />

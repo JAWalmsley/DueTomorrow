@@ -4,7 +4,7 @@ const router = express.Router({mergeParams: true});
 const dbManager = require('../dbManager');
 const {isUserAuthorized} = require("./userAuth");
 
-webpush.setVapidDetails('https://duetomorrow.ca', "BImzP4wGIm3r8ibGG4Q82EkigWwUe-twN8LammszWIQ6nAfZ7yPC8KB7X_KJIuccgT4PLtfUi7_S1VQaNxlNn88", "k92rPSgLzCKtQkPUK0ftJoW8squ0z2krjk6cxOhgIZc")
+webpush.setVapidDetails('https://duetomorrow.ca', process.env.VAPID_PUBLIC, process.env.VAPID_PRIVATE)
 
 router.post('/', isUserAuthorized, async (req, res) => {
     // console.log("Got a notification request", req);

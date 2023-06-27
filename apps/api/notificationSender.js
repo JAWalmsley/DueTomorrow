@@ -1,9 +1,9 @@
 const dbManager = require('./dbManager.js')
 const webpush = require('web-push');
-webpush.setVapidDetails('https://duetomorrow.ca', "BImzP4wGIm3r8ibGG4Q82EkigWwUe-twN8LammszWIQ6nAfZ7yPC8KB7X_KJIuccgT4PLtfUi7_S1VQaNxlNn88", "k92rPSgLzCKtQkPUK0ftJoW8squ0z2krjk6cxOhgIZc")
+webpush.setVapidDetails('https://duetomorrow.ca', process.env.VAPID_PUBLIC, process.env.VAPID_PRIVATE)
 
 async function sendReminderNotifications() {
-    console.log("aaaaaa");
+    console.log("Sending scheduled notifications");
     let users = await dbManager.User.getAll()
     for (let user of users) {
         // TODO: send to all subcriptions

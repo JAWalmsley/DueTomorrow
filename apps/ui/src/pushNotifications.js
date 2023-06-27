@@ -18,7 +18,7 @@ function urlBase64ToUint8Array(base64String) {
 export async function subscribeToPush(registration) {
     const options = {
         userVisibleOnly: true,
-        applicationServerKey: 'BImzP4wGIm3r8ibGG4Q82EkigWwUe-twN8LammszWIQ6nAfZ7yPC8KB7X_KJIuccgT4PLtfUi7_S1VQaNxlNn88'
+        applicationServerKey: process.env.REACT_APP_VAPID_PUBLIC
     };
 
     const pushSubscription = await registration.pushManager.subscribe(options);
