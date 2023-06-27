@@ -1,4 +1,5 @@
 const mysql = require('mysql2');
+var hash = require('object-hash');
 
 let con = mysql.createPool({
     connectionLimit: 10,
@@ -56,6 +57,10 @@ con.query(
     }
 );
 
+con.query(
+    'CREATE TABLE IF NOT EXISTS notifications (hash VARCHAR(255) PRIMARY KEY, userid VARCHAR(255), endpoint TEXT, p256dh TEXT, auth TEXT, FOREIGN KEY (userid) REFERENCES logins(id) ON DELETE CASCADE);',
+)
+
 exports.User = class {
     /**
      * Create a user
@@ -85,6 +90,14 @@ exports.User = class {
     }
 
     /**
+     * Gets all users in the database
+     * @returns {Promise<Object>} all users
+     */
+    static getAll() {
+        return makeReq('SELECT * FROM logins', []);
+    }
+
+    /**
      * Gets a user by userid
      * @param {String} userid - The userid to search by
      * @returns {Promise<Object>} The first result in the results (should be the only result)
@@ -92,7 +105,7 @@ exports.User = class {
     static getByUserID(userid) {
         return makeReq('SELECT * FROM logins WHERE id = ?', [
             userid,
-        ]).then(function(result) {
+        ]).then(function (result) {
             return result[0];
         })
     }
@@ -175,7 +188,7 @@ exports.ShareCode = class {
     static async create(code, courseids) {
         let promises = [];
         let exists = await this.codeExists(code);
-        if(exists) { return false}
+        if (exists) { return false }
         courseids.forEach((courseid) => {
             promises.push(makeReq('INSERT INTO sharecodes (code, courseid) VALUES (?)', [[code, courseid]]));
         });
@@ -260,6 +273,30 @@ exports.Assignment = class {
         return makeReq('DELETE FROM assignments WHERE id = ?', [id]);
     }
 };
+
+exports.Notification = class {
+    static create(userid, endpoint, p256dh, auth) {
+        let subHash = hash({ userid, endpoint, p256dh, auth })
+        return makeReq(
+            'INSERT INTO notifications (hash, userid, endpoint, p256dh, auth) VALUES (?)',
+            [[subHash, userid, endpoint, p256dh, auth]]
+        ).catch(err => {
+            // Ignore errors if the subscription already exists (hash is primary key)
+            if (err == "ER_DUP_ENTRY") {
+                throw err;
+            }
+        }); 
+    }
+
+    /**
+     * Get all notification subscriptions owned by given user
+     * @param {String} userID
+     * @returns {Promise} mySQL query Promise
+     */
+    static getByUserID(userID) {
+        return makeReq('SELECT * FROM notifications WHERE userid = ?', [userID]);
+    }
+}
 
 /**
  * Clears all tables in DB
