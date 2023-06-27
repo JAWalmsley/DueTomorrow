@@ -18,21 +18,6 @@ const isLocalhost = Boolean(
     window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/)
 );
 
-function subscribeToPush(registration) {
-    const options = {
-        userVisibleOnly: true,
-        applicationServerKey: 'BJtmkYnihcjp50XHbaJrr4JF8TdBkCnDOmAGGSLW-7WkjmiYPG6MGZ2bUKZK0Lh5x3XD5XL6my5W41LzAZ9Tlm8'
-    };
-
-    return registration.pushManager.subscribe(options).then(function (pushSubscription) {
-        console.log(
-            'Received PushSubscription: ',
-            JSON.stringify(pushSubscription),
-        );
-        return pushSubscription;
-    });;
-}
-
 /*
  *  Default Functions Begin
  */
@@ -75,9 +60,6 @@ function registerValidSW(swUrl, config) {
     navigator.serviceWorker
         .register(swUrl)
         .then((registration) => {
-            // Subscribe to push notifications
-            subscribeToPush(registration);
-
             // Default stuff
             registration.onupdatefound = () => {
                 const installingWorker = registration.installing;

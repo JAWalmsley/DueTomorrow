@@ -1,10 +1,12 @@
 
+const config = require('./config.json')
+
 /**
  * Users
  */
 
 export function APIlogin(data) {
-    return fetch('http://localhost:3001/api/' + 'login', {
+    return fetch(config.endpoint  + 'login', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -21,7 +23,7 @@ export function APIlogin(data) {
 }
 
 export function APILogout() {
-    return fetch('http://localhost:3001/api/' + 'logout', {
+    return fetch(config.endpoint  + 'logout', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -37,7 +39,7 @@ export function APILogout() {
 }
 
 export function APIregister(data) {
-    return fetch('http://localhost:3001/api/' + 'users', {
+    return fetch(config.endpoint  + 'users', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -54,7 +56,7 @@ export function APIregister(data) {
 }
 
 export function APIUsernameGet(userid) {
-    return fetch('http://localhost:3001/api/' + 'users/' + userid, {
+    return fetch(config.endpoint  + 'users/' + userid, {
         method: 'GET',
         mode: 'cors',
         headers: {
@@ -80,7 +82,7 @@ export function APIUsernameGet(userid) {
  * Assignments
  */
 export function APIAssignmentsGet(userid) {
-    return fetch('http://localhost:3001/api/' + 'users/' + userid + '/assignments', {
+    return fetch(config.endpoint  + 'users/' + userid + '/assignments', {
         method: 'GET',
         mode: 'cors',
         headers: {
@@ -108,7 +110,7 @@ export function APIAssignmentsGet(userid) {
  * @returns
  */
 export function APIAssignmentPost(data) {
-    return fetch('http://localhost:3001/api/' + 'users/' + data.userid + '/assignments/', {
+    return fetch(config.endpoint  + 'users/' + data.userid + '/assignments/', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -133,7 +135,7 @@ export function APIAssignmentPost(data) {
  */
 export function APIAssignmentModify(data) {
     return fetch(
-        'http://localhost:3001/api/' +
+        config.endpoint  +
         'users/' +
         data.userid +
         '/assignments/' +
@@ -153,7 +155,7 @@ export function APIAssignmentModify(data) {
 }
 
 export function APIAssignmentDelete(data) {
-    return fetch('http://localhost:3001/api/' + 'users/' + data.userid + '/assignments/' + data.id, {
+    return fetch(config.endpoint  + 'users/' + data.userid + '/assignments/' + data.id, {
         method: 'DELETE',
         mode: 'cors',
         headers: {
@@ -178,7 +180,7 @@ export function APIAssignmentDelete(data) {
  * @returns
  */
 export function APICoursesGet(userid) {
-    return fetch('http://localhost:3001/api/' + 'users/' + userid + '/courses', {
+    return fetch(config.endpoint  + 'users/' + userid + '/courses', {
         method: 'GET',
         mode: 'cors',
         headers: {
@@ -208,7 +210,7 @@ export function APICoursesGet(userid) {
  * @returns
  */
 export function APICreateCode(data) {
-    return fetch('http://localhost:3001/api/users/' + data.userid + '/sharecodes/', {
+    return fetch(config.endpoint + '/api/users/' + data.userid + '/sharecodes/', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -228,7 +230,7 @@ export function APICreateCode(data) {
  * Gets the courses belonging to a share code
  */
 export function APICoursesGetByCode(shareCode) {
-    return fetch('http://localhost:3001/api/' + 'sharecodes/' + shareCode, {
+    return fetch(config.endpoint  + 'sharecodes/' + shareCode, {
         method: 'GET',
         mode: 'cors',
         headers: {
@@ -256,7 +258,7 @@ export function APICoursesGetByCode(shareCode) {
  * @returns 
  */
 export function APICoursesPost(data) {
-    return fetch('http://localhost:3001/api/' + 'users/' + data.userid + '/courses/', {
+    return fetch(config.endpoint  + 'users/' + data.userid + '/courses/', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -273,13 +275,30 @@ export function APICoursesPost(data) {
 }
 
 export function APICoursesDelete(data) {
-    return fetch('http://localhost:3001/api/' + 'users/' + data.userid + '/courses/' + data.id, {
+    return fetch(config.endpoint  + 'users/' + data.userid + '/courses/' + data.id, {
         method: 'DELETE',
         mode: 'cors',
         headers: {
             'Content-Type': 'application/json',
         },
         credentials: 'include',
+    }).then((res) => {
+        if (res.status === 200) {
+            return res.text();
+        }
+        throw new Error(res.statusText);
+    });
+}
+
+export function APIPushRegister(data) {
+    return fetch(config.endpoint  + 'users/' + data.userid + '/courses/', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(data),
     }).then((res) => {
         if (res.status === 200) {
             return res.text();

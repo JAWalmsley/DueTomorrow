@@ -5,7 +5,7 @@ import LoginPage from './routes/loginPage';
 import CoursePage from './routes/coursePage';
 import SharePage from './routes/sharePage';
 
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -17,9 +17,7 @@ import { CssBaseline } from '@mui/material';
 
 import { theme } from './generateTheme';
 
-serviceWorkerRegistration.register();
 
-Notification.requestPermission();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <ThemeProvider theme={theme}>

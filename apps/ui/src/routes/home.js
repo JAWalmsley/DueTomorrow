@@ -20,6 +20,10 @@ import {
     DialogContent,
     DialogContentText,
 } from '@mui/material';
+import { subscribeToPush } from '../pushNotifications.js';
+
+import * as serviceWorkerRegistration from '../serviceWorkerRegistration';
+
 
 const MONTH_MILIS = 1000 * 60 * 60 * 24 * 30;
 
@@ -39,6 +43,13 @@ function parseDate(input) {
         dateobj.setFullYear(new Date().getFullYear() + 1);
     }
     return dateobj;
+}
+
+async function registerServiceWorker() {
+    console.log("registering service worker");
+    Notification.requestPermission();
+    await serviceWorkerRegistration.register();
+    navigator.serviceWorker.getRegistration('service-worker.js').then((reg) => subscribeToPush(reg));
 }
 
 export class Home extends React.Component {
@@ -158,6 +169,8 @@ export class Home extends React.Component {
                 </>
             );
         }
+        // The user is logged in so we register the push notifications and cache the pages for PWA
+        registerServiceWorker();
         return (
             <>
                 <Navbar />
