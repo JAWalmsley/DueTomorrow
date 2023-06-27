@@ -1,6 +1,9 @@
-
-const config = require('./config.json')
-
+var config;
+try {
+    config = require('./config.json');
+} catch(err) {
+    config = {endpoint: '/api/'};
+}
 /**
  * Users
  */
@@ -291,18 +294,18 @@ export function APICoursesDelete(data) {
 }
 
 export function APIPushRegister(data) {
-    return fetch(config.endpoint  + 'users/' + data.userid + '/courses/', {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify(data),
-    }).then((res) => {
-        if (res.status === 200) {
-            return res.text();
-        }
-        throw new Error(res.statusText);
-    });
+    // return fetch(config.endpoint  + 'users/' + data.userid + '/courses/', {
+    //     method: 'POST',
+    //     mode: 'cors',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //     },
+    //     credentials: 'include',
+    //     body: JSON.stringify(data),
+    // }).then((res) => {
+    //     if (res.status === 200) {
+    //         return res.text();
+    //     }
+    //     throw new Error(res.statusText);
+    // });
 }
