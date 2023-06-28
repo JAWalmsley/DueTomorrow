@@ -213,7 +213,7 @@ export function APICoursesGet(userid) {
  * @returns
  */
 export function APICreateCode(data) {
-    return fetch(config.endpoint + '/api/users/' + data.userid + '/sharecodes/', {
+    return fetch(config.endpoint + 'users/' + data.userid + '/sharecodes/', {
         method: 'POST',
         mode: 'cors',
         headers: {
