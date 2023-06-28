@@ -9,17 +9,18 @@ async function sendReminderNotifications() {
         // TODO: send to all subcriptions
         let subscriptions = await dbManager.Notification.getByUserID(user.id);
         if (subscriptions.length === 0) continue;
-        let subscription = subscriptions[0];
-
-        // Get all assignments user owns
-        let assignments = await dbManager.Assignment.getByUserID(user.id);
-        for (let assignment of assignments) {
-            if (assignment.done) continue; // Dont notify for finished assignments
-            let d = new Date(assignment.due);
-            // Get number of days until the assignment is due
-            let daysUntil = Math.floor((d - new Date()) / (1000 * 60 * 60 * 24));
-            if (daysUntil <= 1 && daysUntil > -1) {
-                sendPush(assignment, subscription);
+        // For every device the user gets subscriptions on
+        for (let subscription of subscriptions) {
+            // Get all assignments user owns
+            let assignments = await dbManager.Assignment.getByUserID(user.id);
+            for (let assignment of assignments) {
+                if (assignment.done) continue; // Dont notify for finished assignments
+                let d = new Date(assignment.due);
+                // Get number of days until the assignment is due
+                let daysUntil = Math.floor((d - new Date()) / (1000 * 60 * 60 * 24));
+                if (daysUntil <= 1 && daysUntil > -1) {
+                    sendPush(assignment, subscription);
+                }
             }
         }
     }
