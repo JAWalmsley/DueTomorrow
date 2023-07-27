@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+    router:
+        build:
+            context: ./nginxrouter
+        networks:
+            - dt
+        ports:
+            - "80:80"
+networks:
+    dt:
+        name: dt
+        external: true

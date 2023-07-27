@@ -12,3 +12,5 @@ coverage/
 .vscode/
 
 .env
+
+apps/router/nginxrouter/html/
