@@ -9,9 +9,15 @@ services:
             - "host.docker.internal:host-gateway"
         env_file:
             - .env
+        networks:
+            - dt
     nginx:
         restart: always
         build:
             context: ./apps/ui
-        ports:
-            - "80:80"
+        networks:
+            - dt
+networks:
+    dt:
+        name: dt
+        external: true
