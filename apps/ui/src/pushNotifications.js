@@ -20,12 +20,11 @@ export async function subscribeToPush(registration) {
         userVisibleOnly: true,
         applicationServerKey: process.env.REACT_APP_VAPID_PUBLIC
     };
-    console.log("Subscribing wiht this registration", registration)
     const pushSubscription = await registration.pushManager.subscribe(options);
-    console.log(
-        'Received new PushSubscription: ',
-        JSON.stringify(pushSubscription),
-    );
+    // console.log(
+    //     'Received new PushSubscription: ',
+    //     JSON.stringify(pushSubscription),
+    // );
     await APIPushRegister({userid: localStorage.getItem('userid'), subscription: pushSubscription});
     return pushSubscription;
 }

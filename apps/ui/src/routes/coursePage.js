@@ -17,7 +17,7 @@ export default class CoursePage extends React.Component {
     }
 
     async setCourses() {
-        console.log(this.userid);
+        // console.log(this.userid);
         let c = await APICoursesGet(this.userid);
         if (c === null) {
             window.location.replace('/login');
@@ -46,7 +46,7 @@ export default class CoursePage extends React.Component {
 
     componentDidMount() {
         this.userid = localStorage.getItem('userid');
-        console.log('id is' + this.userid);
+        // console.log('id is' + this.userid);
         this.setCourses();
     }
 

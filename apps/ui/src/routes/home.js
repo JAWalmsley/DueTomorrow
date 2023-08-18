@@ -49,7 +49,10 @@ async function registerServiceWorker() {
     console.log("registering service worker");
     Notification.requestPermission();
     await serviceWorkerRegistration.register();
-    navigator.serviceWorker.getRegistration('service-worker.js').then((reg) => subscribeToPush(reg));
+    navigator.serviceWorker.getRegistration('service-worker.js').then((reg) => {
+        if (!reg) return;
+        subscribeToPush(reg);
+    });
 }
 
 export class Home extends React.Component {

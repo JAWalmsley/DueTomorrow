@@ -15,16 +15,16 @@ export default function SharePage() {
     let shareCode = searchParams.get('code');
     useEffect(() => {
         async function fillCourses() {
-            console.log('fgettin courses');
+            // console.log('fgettin courses');
             let c = await APICoursesGetByCode(shareCode);
             setCourses(c.courses);
-            console.log('got ', c);
+            // console.log('got ', c);
         }
         if (!courses || courses.length === 0) {
-            console.log('filling...');
+            // console.log('filling...');
             fillCourses();
         } else {
-            console.log(courses);
+            // console.log(courses);
         }
     });
     let userid = localStorage.getItem('userid');

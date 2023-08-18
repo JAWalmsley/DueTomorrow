@@ -23,7 +23,7 @@ function weightedAverage(items, weights) {
         weightedTotal += Number(weights[i]) * Number(items[i]);
     }
     weightSum = Math.min(weightSum, 100);
-    console.log('it is', weightedTotal, weightSum, weightedTotal / weightSum);
+    // console.log('it is', weightedTotal, weightSum, weightedTotal / weightSum);
     return weightedTotal / weightSum;
 }
 
