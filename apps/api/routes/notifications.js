@@ -9,7 +9,7 @@ webpush.setVapidDetails('https://duetomorrow.ca', process.env.VAPID_PUBLIC, proc
 router.post('/', isUserAuthorized, async (req, res) => {
     // console.log("Got a notification request", req);
     if (!(req.body)) return res.status(400).send('Insufficient data given');
-    // webpush.sendNotification(req.body, JSON.stringify({title: 'DueTomorrow', body: 'Ready to get notifications!'})).catch(err => console.log(err));
+    webpush.sendNotification(req.body, JSON.stringify({title: 'DueTomorrow', body: 'Ready to get notifications!'})).catch(err => console.log(err));
     dbManager.Notification.create(req.params.userid, req.body.endpoint, req.body.keys.p256dh, req.body.keys.auth);
     res.status(200).send('Notification registered');
 });

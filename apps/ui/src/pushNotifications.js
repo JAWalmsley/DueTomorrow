@@ -22,10 +22,10 @@ export async function subscribeToPush(registration) {
     };
 
     const pushSubscription = await registration.pushManager.subscribe(options);
-    // console.log(
-    //     'Received PushSubscription: ',
-    //     JSON.stringify(pushSubscription),
-    // );
+    console.log(
+        'Received PushSubscription: ',
+        JSON.stringify(pushSubscription),
+    );
     await APIPushRegister({userid: localStorage.getItem('userid'), subscription: pushSubscription});
     return pushSubscription;
 }

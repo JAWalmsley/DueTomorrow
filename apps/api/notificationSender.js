@@ -36,7 +36,13 @@ async function sendPush(assignment, course, subscription) {
             p256dh: subscription.p256dh
         }
     },
-        JSON.stringify({ title: course.name, body: assignment.name + ' is due tomorrow' })).catch(err => console.log(err));
+        JSON.stringify({ title: course.name, body: assignment.name + ' is due tomorrow' })).catch(err =>{
+            if(err.statusCode === 410) {
+                console.log('Subscription expired');
+            } else {
+                console.log(err);
+            }
+        });
 }
 
 module.exports = sendReminderNotifications;

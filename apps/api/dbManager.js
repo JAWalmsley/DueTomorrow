@@ -296,6 +296,15 @@ exports.Notification = class {
     static getByUserID(userID) {
         return makeReq('SELECT * FROM notifications WHERE userid = ?', [userID]);
     }
+
+    /**
+     * Delete a notification subscription with given endpoint
+     * @param {String} endpoint 
+     * @returns {Promise} mySQL query Promise
+     */
+    static deleteByEndpoint(endpoint) {
+        return makeReq('DELETE FROM notifications WHERE endpoint = ?', [endpoint]);
+    }
 }
 
 /**
