@@ -19,7 +19,7 @@ const notifications = require('./routes/notifications');
 const sendReminderNotifications = require('./notificationSender.js');
 
 // Send push notifications every day for items due tomorrow
-schedule.scheduleJob('0 18 * * *', sendReminderNotifications);
+schedule.scheduleJob('0 22 * * *', sendReminderNotifications);
 
 app.use(
     cors({
