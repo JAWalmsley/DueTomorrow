@@ -31,7 +31,7 @@ export class LoginBox extends React.Component {
         }
         
         this.setState({ errors: newErrors });
-        console.log(this.state.errors);
+        // console.log(this.state.errors);
     }
     async register() {
         this.setState({ errors: {username: '', password: ''} });

@@ -1,4 +1,4 @@
-import { APIPushRegister } from "./api";
+import { APIPushRegister, APIPushRenew } from "./api";
 
 function urlBase64ToUint8Array(base64String) {
     const padding = "=".repeat((4 - base64String.length % 4) % 4);
@@ -20,12 +20,15 @@ export async function subscribeToPush(registration) {
         userVisibleOnly: true,
         applicationServerKey: process.env.REACT_APP_VAPID_PUBLIC
     };
-
     const pushSubscription = await registration.pushManager.subscribe(options);
     // console.log(
-    //     'Received PushSubscription: ',
+    //     'Received new PushSubscription: ',
     //     JSON.stringify(pushSubscription),
     // );
     await APIPushRegister({userid: localStorage.getItem('userid'), subscription: pushSubscription});
     return pushSubscription;
+}
+
+export async function renewSubscription(newSubscription, oldSubscription) {
+  await APIPushRenew({userid: localStorage.getItem('userid'), newSubscription: newSubscription, oldSubscription: oldSubscription});
 }

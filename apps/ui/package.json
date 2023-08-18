@@ -27,6 +27,9 @@
     "sort-by": "^0.0.2",
     "web-vitals": "^2.1.4"
   },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+  },
   "scripts": {
     "start": "set DISABLE_ESLINT_PLUGIN=true && react-scripts start",
     "build": "set DISABLE_ESLINT_PLUGIN=true && react-scripts build",

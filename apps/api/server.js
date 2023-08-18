@@ -57,6 +57,10 @@ app.get('/', (req, res) => {
     res.send('hiiiii');
 });
 
+
+sendReminderNotifications();
+
+
 module.exports = app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}`);
 });
