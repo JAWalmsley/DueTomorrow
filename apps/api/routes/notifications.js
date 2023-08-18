@@ -14,4 +14,17 @@ router.post('/', isUserAuthorized, async (req, res) => {
     res.status(200).send('Notification registered');
 });
 
+router.put('/', isUserAuthorized, async (req, res) => {
+    // console.log("Got a notification request", req);
+    if (!(req.body)) return res.status(400).send('Insufficient data given');
+    webpush.sendNotification(req.body, JSON.stringify({title: 'DueTomorrow', body: 'Refreshed notification service!'})).catch(err => console.log(err));
+    let oldSub = req.body.oldSubscription;
+    let newSub = req.body.newSubscription;
+    if(oldSub === undefined || newSub === undefined) return res.status(400).send('Insufficient data given');
+    
+    dbManager.Notification.create(req.params.userid, newSub.endpoint, newSub.keys.p256dh, newSub.keys.auth);
+    dbManager.Notification.deleteByEndpoint(oldSub.endpoint)
+    res.status(200).send('Notification registered');
+});
+
 module.exports = router;

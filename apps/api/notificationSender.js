@@ -1,6 +1,6 @@
 const dbManager = require('./dbManager.js')
 const webpush = require('web-push');
-webpush.setVapidDetails('https://duetomorrow.ca', process.env.VAPID_PUBLIC, process.env.VAPID_PRIVATE)
+webpush.setVapidDetails('https://duetomorrow.ca', process.env.VAPID_PUBLIC, process.env.VAPID_PRIVATE);
 
 async function sendReminderNotifications() {
     console.log("Sending scheduled notifications");
@@ -38,7 +38,8 @@ async function sendPush(assignment, course, subscription) {
     },
         JSON.stringify({ title: course.name, body: assignment.name + ' is due tomorrow' })).catch(err =>{
             if(err.statusCode === 410) {
-                console.log('Subscription expired');
+                // Delete this endpoint because the subscription expired (error 410)
+                dbManager.Notification.deleteByEndpoint(subscription.endpoint);
             } else {
                 console.log(err);
             }
