@@ -17,8 +17,8 @@ async function sendReminderNotifications() {
                 if (assignment.done) continue; // Dont notify for finished assignments
                 let d = new Date(assignment.due);
                 // Get number of days until the assignment is due
-                let daysUntil = Math.floor((d - new Date()) / (1000 * 60 * 60 * 24));
-                if (daysUntil <= 1 && daysUntil > -1) {
+                let daysUntil = (d - new Date()) / (1000 * 60 * 60 * 24);
+                if (daysUntil < 1 && daysUntil > -1) {
                     let course = (await dbManager.Course.getByID(assignment.courseid))[0];
                     sendPush(assignment, course, subscription);
                 }
