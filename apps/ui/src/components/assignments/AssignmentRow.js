@@ -44,7 +44,7 @@ export class AssignmentRow extends React.Component {
                 <TableRow
                     key={Math.random()}
                     sx={{
-                        backgroundColor: this.state.colour,
+                        backgroundColor: this.state.done ? "#555" : this.state.colour,
                         textAlign: 'left',
                     }}
                 >
