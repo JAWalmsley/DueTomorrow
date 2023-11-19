@@ -8,7 +8,7 @@ const {isUserAuthorized} = require("./userAuth");
 router.post('/', isUserAuthorized, (req, res) => {
     if (!(req.body.courseid && req.body.name && req.body.due && req.body.weight)) return res.status(400).send('Insufficient data given');
     let newid = uuid.v4();
-    dbManager.Assignment.create(newid, req.params.userid, req.body.courseid, req.body.name, req.body.due, false, req.body.weight, 0)
+    dbManager.Assignment.create(newid, req.params.userid, req.body.courseid, req.body.name, req.body.due, false, req.body.weight, null)
         .then(() => res.status(200).send(newid))
         .catch((err) => res.status(400).send(err));
 });
