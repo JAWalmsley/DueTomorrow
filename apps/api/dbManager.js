@@ -25,41 +25,45 @@ makeReq = function (cmd, vals) {
 };
 
 // SET UP
+exports.setup = function() {
 
-con.query(
-    'CREATE TABLE IF NOT EXISTS logins (id VARCHAR(255) PRIMARY KEY, username VARCHAR(255), password VARCHAR(255));',
-    function (err, result) {
-        if (err) throw err;
-        // console.log("Login table created/exists");
-    }
-);
 
-con.query(
-    'CREATE TABLE IF NOT EXISTS courses (id VARCHAR(255) PRIMARY KEY, userid VARCHAR(255), name VARCHAR(255), colour VARCHAR(7), credits INTEGER, FOREIGN KEY (userid) REFERENCES logins(id) ON DELETE CASCADE);',
-    function (err, result) {
-        if (err) throw err;
-        // console.log("Courses table created/exists");
-    }
-);
 
-con.query(
-    'CREATE TABLE IF NOT EXISTS assignments (id VARCHAR(255) PRIMARY KEY, userid VARCHAR(255), courseid VARCHAR(255), name VARCHAR(255),  due DATE, done BOOLEAN, weight INTEGER, grade INTEGER NULL, FOREIGN KEY (userid) REFERENCES logins(id) ON DELETE CASCADE, FOREIGN KEY (courseid) REFERENCES courses(id) ON DELETE CASCADE);',
-    function (err, result) {
-        if (err) throw err;
-        // console.log("Assignment table created/exists");
-    }
-);
+    con.query(
+        'CREATE TABLE IF NOT EXISTS logins (id VARCHAR(255) PRIMARY KEY, username VARCHAR(255), password VARCHAR(255));',
+        function (err, result) {
+            if (err) throw err;
+            // console.log("Login table created/exists");
+        }
+    );
 
-con.query(
-    'CREATE TABLE IF NOT EXISTS sharecodes (code VARCHAR(50), courseid VARCHAR(255), FOREIGN KEY (courseid) REFERENCES courses(id) ON DELETE CASCADE);',
-    function (err, result) {
-        if (err) throw err;
-    }
-);
+    con.query(
+        'CREATE TABLE IF NOT EXISTS courses (id VARCHAR(255) PRIMARY KEY, userid VARCHAR(255), name VARCHAR(255), colour VARCHAR(7), credits INTEGER, FOREIGN KEY (userid) REFERENCES logins(id) ON DELETE CASCADE);',
+        function (err, result) {
+            if (err) throw err;
+            // console.log("Courses table created/exists");
+        }
+    );
 
-con.query(
-    'CREATE TABLE IF NOT EXISTS notifications (hash VARCHAR(255) PRIMARY KEY, userid VARCHAR(255), endpoint TEXT, p256dh TEXT, auth TEXT, FOREIGN KEY (userid) REFERENCES logins(id) ON DELETE CASCADE);',
-)
+    con.query(
+        'CREATE TABLE IF NOT EXISTS assignments (id VARCHAR(255) PRIMARY KEY, userid VARCHAR(255), courseid VARCHAR(255), name VARCHAR(255),  due DATE, done BOOLEAN, weight INTEGER, grade INTEGER NULL, FOREIGN KEY (userid) REFERENCES logins(id) ON DELETE CASCADE, FOREIGN KEY (courseid) REFERENCES courses(id) ON DELETE CASCADE);',
+        function (err, result) {
+            if (err) throw err;
+            // console.log("Assignment table created/exists");
+        }
+    );
+
+    con.query(
+        'CREATE TABLE IF NOT EXISTS sharecodes (code VARCHAR(50), courseid VARCHAR(255), FOREIGN KEY (courseid) REFERENCES courses(id) ON DELETE CASCADE);',
+        function (err, result) {
+            if (err) throw err;
+        }
+    );
+
+    con.query(
+        'CREATE TABLE IF NOT EXISTS notifications (hash VARCHAR(255) PRIMARY KEY, userid VARCHAR(255), endpoint TEXT, p256dh TEXT, auth TEXT, FOREIGN KEY (userid) REFERENCES logins(id) ON DELETE CASCADE);',
+    )
+}
 
 exports.User = class {
     /**
@@ -285,7 +289,7 @@ exports.Notification = class {
             if (err == "ER_DUP_ENTRY") {
                 throw err;
             }
-        }); 
+        });
     }
 
     /**

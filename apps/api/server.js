@@ -1,3 +1,6 @@
+const dotenv = require('dotenv');
+dotenv.config();
+
 const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
@@ -16,10 +19,15 @@ const getSharecode = require('./routes/getSharecode.js');
 const createSharecode = require('./routes/createSharecode');
 const notifications = require('./routes/notifications');
 
+const dbManager = require('./dbManager.js');
+
 const sendReminderNotifications = require('./notificationSender.js');
 
 // Send push notifications every day for items due tomorrow
 schedule.scheduleJob('0 22 * * *', sendReminderNotifications);
+
+// Create tables if they don't exist, etc
+dbManager.setup();
 
 app.use(
     cors({

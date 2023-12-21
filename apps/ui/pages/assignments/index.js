@@ -22,8 +22,6 @@ import {
 } from '@mui/material';
 import { subscribeToPush } from '../../src/pushNotifications.js';
 
-import * as serviceWorkerRegistration from '../../src/serviceWorkerRegistration.js';
-
 
 const MONTH_MILIS = 1000 * 60 * 60 * 24 * 30;
 
@@ -45,17 +43,17 @@ function parseDate(input) {
     return dateobj;
 }
 
-async function registerServiceWorker() {
-    console.log("`register`ing service worker");
-    Notification.requestPermission();
-    await serviceWorkerRegistration.register();
-    navigator.serviceWorker.getRegistration('service-worker.js').then((reg) => {
-        if (!reg) return;
-        subscribeToPush(reg);
-    });
-}
+// async function registerServiceWorker() {
+//     console.log("`register`ing service worker");
+//     Notification.requestPermission();
+//     await serviceWorkerRegistration.register();
+//     navigator.serviceWorker.getRegistration('service-worker.js').then((reg) => {
+//         if (!reg) return;
+//         subscribeToPush(reg);
+//     });
+// }
 
-export class Home extends React.Component {
+export default class Home extends React.Component {
     userid = '';
 
     constructor(props) {

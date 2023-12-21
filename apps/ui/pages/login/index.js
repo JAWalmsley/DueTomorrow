@@ -1,9 +1,9 @@
 import { Container, Box } from '@mui/material';
 import { LoginBox } from './components/LoginBox';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'next/navigation';
 
 export default function LoginPage() {
-    const [searchParams, setSearchParams] = useSearchParams();
+    const searchParams = useSearchParams();
     let redirect = searchParams.get('redirect');
     if (!redirect) {
         redirect = '/';
