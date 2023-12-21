@@ -22,13 +22,15 @@
     "match-sorter": "^6.3.1",
     "materialize-css": "^1.0.0-rc.2",
     "next": "^14.0.4",
+    "next-with-workbox": "^3.0.5",
     "pwa-asset-generator": "^6.3.1",
     "react": "^18.2.0",
     "react-color": "^2.19.3",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.3",
     "sort-by": "^0.0.2",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "workbox-window": "^7.0.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
