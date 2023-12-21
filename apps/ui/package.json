@@ -1,19 +1,22 @@
 {
-  "name": "bte_react",
+  "name": "duetomorrow",
   "version": "0.1.0",
   "homepage": "",
   "private": true,
   "proxy": "http://0.0.0.0:3001",
   "dependencies": {
+    "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@fontsource/roboto": "^4.5.8",
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.10.13",
+    "@mui/material-nextjs": "^5.15.0",
     "@mui/x-data-grid": "^5.17.11",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@types/react": "^18.2.45",
     "jquery": "^3.6.1",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
@@ -28,7 +31,8 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "typescript": "5.3.3"
   },
   "scripts": {
     "dev": "next dev",

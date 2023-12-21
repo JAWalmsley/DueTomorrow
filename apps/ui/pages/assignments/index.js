@@ -1,8 +1,8 @@
-import { AssignmentTable } from 'AssignmentTable.js';
-import { Navbar } from 'components/Navbar.js';
+import { AssignmentTable } from './components/AssignmentTable.js';
+import { Navbar } from '../../src/components/Navbar.js';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
-import '../css/styles.css';
+// import 'src/css/styles.css';
 import {
     APIAssignmentsGet,
     APICoursesGet,
@@ -46,7 +46,7 @@ function parseDate(input) {
 }
 
 async function registerServiceWorker() {
-    console.log("registering service worker");
+    console.log("`register`ing service worker");
     Notification.requestPermission();
     await serviceWorkerRegistration.register();
     navigator.serviceWorker.getRegistration('service-worker.js').then((reg) => {
@@ -173,7 +173,8 @@ export class Home extends React.Component {
             );
         }
         // The user is logged in so we register the push notifications and cache the pages for PWA
-        registerServiceWorker();
+        // registerServiceWorker();
+        // TODO: uncomment
         return (
             <>
                 <Navbar />

@@ -13,7 +13,7 @@ import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate } from 'workbox-strategies';
 
-import { subscribeToPush, renewSubscription } from './pushNotifications';
+import { subscribeToPush, renewSubscription } from '../src/pushNotifications';
 
 clientsClaim();
 
