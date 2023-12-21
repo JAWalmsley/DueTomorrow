@@ -1,9 +1,8 @@
 import { Container, Grid } from '@mui/material';
-import { CourseList } from '../components/gpa/CourseList.js';
-import { GPATally } from '../components/gpa/GPATally.js';
+import { CourseList } from './components/GPACourseList.js';
+import { GPATally } from './components/GPATally.js';
 import { Navbar } from '../../src/components/Navbar.js';
 import React from 'react';
-import '../css/styles.css';
 
 import {
     APIAssignmentModify,

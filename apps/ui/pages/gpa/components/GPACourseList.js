@@ -2,7 +2,7 @@ import {
     Grid,
 } from '@mui/material';
 import React from 'react';
-import { CourseBox } from './CourseBox';
+import { CourseBox } from './GPACourseBox';
 
 export function getAssignmentsByCourse(a, course) {
     let assignments = [...a];

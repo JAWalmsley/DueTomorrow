@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { HeaderRow } from '../../../src/components/HeaderRow';
-import { getAssignmentsByCourse } from './CourseList';
+import { getAssignmentsByCourse } from './GPACourseList';
 
 function weightedAverage(items, weights) {
     let weightedTotal = 0;
