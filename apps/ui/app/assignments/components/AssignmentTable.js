@@ -7,7 +7,7 @@ import {
     Paper,
 } from '@mui/material';
 
-import { HeaderRow } from '../HeaderRow';
+import { HeaderRow } from '../../../src/components/HeaderRow';
 import { AssignmentRow } from './AssignmentRow';
 import { AssignmentEntryRow } from './AssignmentEntryRow';
 

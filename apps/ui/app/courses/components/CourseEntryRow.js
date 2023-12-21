@@ -7,7 +7,7 @@ import {
     Typography,
     Button,
 } from '@mui/material';
-import DTColourPicker from '../DTColourPicker';
+import DTColourPicker from '../../../src/components/DTColourPicker';
 import {
     red,
     orange,

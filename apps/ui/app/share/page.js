@@ -1,8 +1,8 @@
 import { Container } from '@mui/material';
 import { Grid } from '@mui/material';
-import { Navbar } from '../components/Navbar.js';
+import { Navbar } from '../../src/components/Navbar.js';
 import { useSearchParams } from 'react-router-dom';
-import { APICoursesGetByCode } from '../api.js';
+import { APICoursesGetByCode } from '../../src/api.js';
 import { useEffect, useState } from 'react';
 
 import React from 'react';

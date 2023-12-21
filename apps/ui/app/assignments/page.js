@@ -1,5 +1,5 @@
-import { AssignmentTable } from '../components/assignments/AssignmentTable.js';
-import { Navbar } from '../components/Navbar.js';
+import { AssignmentTable } from 'AssignmentTable.js';
+import { Navbar } from 'components/Navbar.js';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import '../css/styles.css';
@@ -10,7 +10,7 @@ import {
     APIAssignmentDelete,
     APIAssignmentPost,
     APIAssignmentModify,
-} from '../api.js';
+} from '../../src/api.js';
 import React from 'react';
 import {
     Dialog,
@@ -20,9 +20,9 @@ import {
     DialogContent,
     DialogContentText,
 } from '@mui/material';
-import { subscribeToPush } from '../pushNotifications.js';
+import { subscribeToPush } from '../../src/pushNotifications.js';
 
-import * as serviceWorkerRegistration from '../serviceWorkerRegistration';
+import * as serviceWorkerRegistration from '../../src/serviceWorkerRegistration.js';
 
 
 const MONTH_MILIS = 1000 * 60 * 60 * 24 * 30;

@@ -23,7 +23,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CloseIcon from '@mui/icons-material/Close';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import React from 'react';
-import { APICreateCode } from '../../api';
+import { APICreateCode } from '../../../src/api';
 
 /**
  * @param {Object} course

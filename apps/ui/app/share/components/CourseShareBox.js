@@ -12,7 +12,7 @@ import {
     Typography,
 } from '@mui/material';
 
-import { APIAssignmentPost, APICoursesPost } from '../api.js';
+import { APIAssignmentPost, APICoursesPost } from '../../../src/api.js';
 import React, { useCallback, useState } from 'react';
 
 export default function CourseShareBox(props) {

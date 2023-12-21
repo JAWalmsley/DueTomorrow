@@ -1,5 +1,5 @@
 import { Container, Box } from '@mui/material';
-import { LoginBox } from '../components/LoginBox';
+import { LoginBox } from './components/LoginBox';
 import { useParams, useSearchParams } from 'react-router-dom';
 
 export default function LoginPage() {

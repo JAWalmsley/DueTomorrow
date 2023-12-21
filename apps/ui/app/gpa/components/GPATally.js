@@ -7,7 +7,7 @@ import {
     TableRow
 } from '@mui/material';
 import React from 'react';
-import { HeaderRow } from '../HeaderRow';
+import { HeaderRow } from '../../../src/components/HeaderRow';
 import { getAssignmentsByCourse } from './CourseList';
 
 function weightedAverage(items, weights) {

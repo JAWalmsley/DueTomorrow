@@ -1,7 +1,7 @@
 import { Button, Grid, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
-import { APIlogin, APIregister } from '../api.js';
+import { APIlogin, APIregister } from '../../../src/api.js';
 
 export class LoginBox extends React.Component {
     constructor(props) {
