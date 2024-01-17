@@ -39,7 +39,19 @@ function shortMonthdateNumber(dateStr: string): Date {
         throw new DateParseError('Month num greater than month');
     }
     console.log(`${currentYear}-${monthNum}-${dateNumber}T00:00:00.000Z`);
-    return new Date(`${currentYear}-${monthNum}-${dateNumber}T00:00:00.000Z`);
+    return nextFutureDate(new Date(`${currentYear}-${monthNum}-${dateNumber}T00:00:00.000Z`));
+}
+
+export function nextFutureDate(date: Date) {
+    // clone to avoid mutating date
+    date = new Date(date.getTime());
+    let now = new Date();
+    date.setFullYear(now.getFullYear())
+    let diff = now.getTime() - date.getTime();
+    if(diff > 0) {
+        date.setFullYear(now.getFullYear() + 1);
+    }
+    return date;
 }
 
 export function parseDate(dateStr: string): Date {
