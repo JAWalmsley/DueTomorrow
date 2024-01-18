@@ -27,7 +27,6 @@ const monthToNumber = {
     "feb": "02",
     "mar": "03",
     "apr": "04",
-    "may": "05",
     "jun": "06",
     "jul": "07",
     "aug": "08",
@@ -93,6 +92,24 @@ function longMonthdateNumber(dateStr: string): Date {
     return nextFutureDate(new Date(`${currentYear}-${monthNum}-${dateNumber}T00:00:00.000Z`));
 }
 
+function longMonthdateNumberYear(dateStr: string): Date {
+    let monthName: string = dateStr.match(new RegExp(longMonth))![0];
+    let dateNumber: string = dateStr.match(new RegExp(twoNumbers))![0];
+    let yearNumber: string = dateStr.match(new RegExp(fourNumbers))![0];
+    if (dateNumber.length === 1) {
+        dateNumber = '0' + dateNumber;
+    }
+
+    let monthNum: string = monthToNumber[monthName];
+
+    // Making a date object with day 0 returns a date with the last day of that month. This is exclusively for february in leap years :)
+    if (parseInt(dateNumber) > new Date(parseInt(yearNumber), parseInt(monthNum), 0).getDate()) {
+        throw new DateParseError('Month num greater than month');
+    }
+    return new Date(`${yearNumber}-${monthNum}-${dateNumber}T00:00:00.000Z`);
+
+}
+
 export function nextFutureDate(date: Date) {
     // clone to avoid mutating date
     date = new Date(date.getTime());
@@ -118,6 +135,10 @@ export function parseDate(dateStr: string): Date {
     // january 01
     if (new RegExp(`^${longMonth} ${twoNumbers}$`).test(dateStr)) {
         return longMonthdateNumber(dateStr);
+    }
+    // january 01 1970
+    if (new RegExp(`^${longMonth} ${twoNumbers} ${fourNumbers}$`).test(dateStr)) {
+        return longMonthdateNumberYear(dateStr);
     }
     throw new DateParseError('Did not match any known date format');
 }
