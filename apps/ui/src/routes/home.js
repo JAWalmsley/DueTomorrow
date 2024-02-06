@@ -2,6 +2,7 @@ import { AssignmentTable } from '../components/assignments/AssignmentTable.js';
 import { Navbar } from '../components/Navbar.js';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
+import * as chrono from 'chrono-node';
 import '../css/styles.css';
 import {
     APIAssignmentsGet,
@@ -23,27 +24,6 @@ import {
 import { subscribeToPush } from '../pushNotifications.js';
 
 import * as serviceWorkerRegistration from '../serviceWorkerRegistration';
-
-
-const MONTH_MILIS = 1000 * 60 * 60 * 24 * 30;
-
-/**
- * Converts a string into the nearest Date object
- * @param {string} input
- * @returns Date
- */
-function parseDate(input) {
-    let dateobj = new Date(input);
-
-    dateobj.setFullYear(new Date().getFullYear());
-    // If the date is more than 6 months in the future, assume it's from last year
-    if (dateobj - new Date() > 6 * MONTH_MILIS) {
-        dateobj.setFullYear(new Date().getFullYear() - 1);
-    } else if (dateobj - new Date() < -6 * MONTH_MILIS) {
-        dateobj.setFullYear(new Date().getFullYear() + 1);
-    }
-    return dateobj;
-}
 
 async function registerServiceWorker() {
     console.log("registering service worker");
@@ -107,7 +87,8 @@ export class Home extends React.Component {
     }
 
     async createAssignment(assig) {
-        assig.due = parseDate(assig.due).toISOString().split('T')[0];
+        console.log(chrono.parseDate(assig.due));
+        assig.due = chrono.parseDate(assig.due).toISOString().split('T')[0];
         try {
             await APIAssignmentPost({ ...assig, userid: this.userid });
         } catch (e) {
