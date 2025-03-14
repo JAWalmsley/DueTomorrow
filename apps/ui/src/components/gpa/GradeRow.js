@@ -1,6 +1,7 @@
 import {
     TableCell, TableRow,
-    TextField
+    TextField,
+    Typography
 } from '@mui/material';
 import React from 'react';
 
@@ -38,7 +39,7 @@ export class GradeRow extends React.Component {
         const { id, name, weight, grade } = assignment;
         return (
             <TableRow key={id}>
-                <TableCell>{name}</TableCell>
+                <TableCell><Typography variant="body1">{name}</Typography></TableCell>
                 <TableCell>
                     <TextField
                         size="small"
