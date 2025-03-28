@@ -2,6 +2,7 @@ import { CenterFocusStrong, Title } from '@mui/icons-material';
 import { AppBar, Box, Button, Container, Grid, Paper, styled, Toolbar, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import React from 'react'
+import { AssignmentTable } from '../components/assignments/AssignmentTable';
 
 export default function LandingPage() {
     return (
@@ -40,11 +41,11 @@ export default function LandingPage() {
                     <Grid item xs={12}>
                         <Box height="48px" />
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={6} padding="8px">
                         <Typography align='center' variant="h6" >"DueTomorrow saves me from failing a class at least once a year"</Typography>
-                        <Typography align='center' variant="body1" color="GrayText">Jack Walmsley, Founder & CEO</Typography>
+                        <Typography align='center' variant="body1" color="GrayText">Jack Walmsley, Founder & CEO @ DueTomorrow</Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={6} padding="8px">
                         <Typography align='center' variant="h6" >"I used to write down all my assignments on my arm but then I couldn't shower until I finished all of them. I much prefer the workflow of DueTomorrow."</Typography>
                         <Typography align='center' variant="body1" color="GrayText">Anonymous</Typography>
                     </Grid>
