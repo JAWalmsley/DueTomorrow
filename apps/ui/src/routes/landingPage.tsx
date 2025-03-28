@@ -25,12 +25,12 @@ export default function LandingPage() {
                     </Toolbar>
                 </AppBar>
             <Container >
-                <Grid container paddingTop={10} alignItems="center">
-                    <Grid item xs={12}>
+                <Grid container paddingTop={10} alignItems="center" justifyContent={'center'}>
+                    <Grid item xs={8}>
                     <Typography align='center' variant="h3">Better than a spreadsheet.</Typography>
                     </Grid>
-                    <Grid item xs={12}>
-                        <Typography align='center' variant="body1" color="GrayText">Track all your assignments in one place and get a notification when there's something you forgot.</Typography>
+                    <Grid item xs={8} lg={12}>
+                        <Typography align='center' variant="h6" color="GrayText">Track all your assignments in one place and get a notification when there's something you forgot.</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <Box height="64px" />
@@ -41,11 +41,11 @@ export default function LandingPage() {
                     <Grid item xs={12}>
                         <Box height="48px" />
                     </Grid>
-                    <Grid item xs={6} padding="8px">
+                    <Grid item xs={8} lg={6} padding="8px">
                         <Typography align='center' variant="h6" >"DueTomorrow saves me from failing a class at least once a year"</Typography>
                         <Typography align='center' variant="body1" color="GrayText">Jack Walmsley, Founder & CEO @ DueTomorrow</Typography>
                     </Grid>
-                    <Grid item xs={6} padding="8px">
+                    <Grid item xs={8} lg={6} padding="8px">
                         <Typography align='center' variant="h6" >"I used to write down all my assignments on my arm but then I couldn't shower until I finished all of them. I much prefer the workflow of DueTomorrow."</Typography>
                         <Typography align='center' variant="body1" color="GrayText">Anonymous</Typography>
                     </Grid>
