@@ -1,6 +1,7 @@
 version: "3.8"
 services:
     nodeserver:
+        restart: always
         build:
             context: ./apps/api
         ports:
@@ -18,6 +19,7 @@ services:
         networks:
             - dt
     router:
+        restart: always
         build:
             context: ./apps/router/nginxrouter
         networks:
