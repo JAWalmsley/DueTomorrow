@@ -53,7 +53,7 @@ export class Home extends React.Component {
     async setAssignments() {
         let a = await APIAssignmentsGet(this.userid);
         if (a === null) {
-            window.location.replace('/login');
+            window.location.replace('/welcome');
         } else {
             this.setState({ assignments: a, loadedAssignments: true });
         }
@@ -80,7 +80,7 @@ export class Home extends React.Component {
     async setCourses() {
         let c = await APICoursesGet(this.userid);
         if (c === null) {
-            window.location.replace('/login');
+            window.location.replace('/welcome');
         } else {
             this.setState({ courses: c, loadedCourses: true });
         }
@@ -102,7 +102,7 @@ export class Home extends React.Component {
     async setUsername() {
         let u = APIUsernameGet(this.userid);
         if (u === null) {
-            window.location.replace('/login');
+            window.location.replace('/welcome');
         } else {
             this.setState({ username: u, loadedUsername: true });
         }

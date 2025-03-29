@@ -16,12 +16,14 @@ import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 
 import { theme } from './generateTheme';
+import LandingPage from './routes/landingPage.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <ThemeProvider theme={theme}>
         <CssBaseline />
         <Router basename={''}>
             <Routes>
+                <Route path='/welcome' element={<LandingPage />} />
                 <Route path="/" element={<Home />} />
                 <Route path="/gpa" element={<GPAPage />} />
                 <Route path="/login" element={<LoginPage />} />
