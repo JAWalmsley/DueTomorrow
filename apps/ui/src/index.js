@@ -23,7 +23,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <CssBaseline />
         <Router basename={''}>
             <Routes>
-                <Route path='/land' element={<LandingPage />} />
+                <Route path='/welcome' element={<LandingPage />} />
                 <Route path="/" element={<Home />} />
                 <Route path="/gpa" element={<GPAPage />} />
                 <Route path="/login" element={<LoginPage />} />
