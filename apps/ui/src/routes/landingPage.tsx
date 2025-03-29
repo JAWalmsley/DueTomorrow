@@ -8,24 +8,24 @@ export default function LandingPage() {
     return (
         <>
                 <AppBar position="static">
-                    <Toolbar>
-                        <Typography
-                            variant="h3"
-                            component="div"
-                            sx={{ flexGrow: 1 }}
-                        >
-                            DT
-                        </Typography>
+                    <Toolbar sx={{justifyContent: 'space-between'}}>
+                        <Box component="img" src='favicon.png' height='32px' />
+                        <Box textAlign={'right'}>
                         <Button color="inherit" href="/login" >
                             <Typography variant="h6">Log In</Typography>
                         </Button>
                         <Button color="inherit" href="/login" >
                             <Typography variant="h6">Register</Typography>
                         </Button>
+                        </Box>
+                        
                     </Toolbar>
                 </AppBar>
             <Container >
                 <Grid container paddingTop={10} alignItems="center" justifyContent={'center'}>
+                    <Grid item xs={12} paddingBottom='32px'>
+                    <Typography align='center' variant="h1" color='primary.main'>DueTomorrow</Typography>
+                    </Grid>
                     <Grid item xs={8}>
                     <Typography align='center' variant="h3">Better than a spreadsheet.</Typography>
                     </Grid>
