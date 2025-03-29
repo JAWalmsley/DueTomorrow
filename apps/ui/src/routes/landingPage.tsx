@@ -32,15 +32,19 @@ export default function LandingPage() {
                     <Grid item xs={8} lg={12}>
                         <Typography align='center' variant="h6" color="GrayText">Track all your assignments in one place and get a notification when there's something you forgot</Typography>
                     </Grid>
+
                     <Grid item xs={12}>
                         <Box height="64px" />
                     </Grid>
+
                     <Grid item xs={12}>
                         <Box component="img" src="assignmentspage.png" style={{maxWidth:'100%'}}/>
                     </Grid>
+
                     <Grid item xs={12}>
                         <Box height="48px" />
                     </Grid>
+
                     <Grid item xs={12} lg={6} padding="8px">
                         <Typography align='center' variant="h6" >"DueTomorrow saves me from failing a class at least once a year"</Typography>
                         <Typography align='center' variant="body1" color="GrayText">Jack Walmsley, Founder & CEO @ DueTomorrow</Typography>
@@ -49,26 +53,45 @@ export default function LandingPage() {
                         <Typography align='center' variant="h6" >"I used to write down all my assignments on my arm but then I couldn't shower until I finished all of them. I much prefer the workflow of DueTomorrow."</Typography>
                         <Typography align='center' variant="body1" color="GrayText">Anonymous</Typography>
                     </Grid>
+
                     <Grid item xs={12}>
                         <Box height="48px" />
                     </Grid>
-                    <Grid item xs={12} lg={4} marginBottom="16px">
+
+                    <Grid item xs={12} lg={4} marginBottom="16px" alignSelf={'start'}>
+                    <Typography align='left' variant="h4">Share courses with your friends</Typography>
+                    <Typography align='left' variant="body1" color="GrayText">When you add an assignment, it'll show up for everyone else too</Typography>
+                    </Grid>
+                    <Grid item xs={12} lg={8}>
+                        <Box component="img" src="sharepage.png" style={{maxWidth:'100%'}}></Box>
+                    </Grid>
+                    
+                    <Grid item xs={12}>
+                        <Box height="64px" />
+                    </Grid>
+
+                    <Grid item xs={12} lg={4} marginBottom="16px" alignSelf={'start'}>
                     <Typography align='left' variant="h4">Calculate your GPA</Typography>
                     <Typography align='left' variant="body1" color="GrayText">At least it won't be a surprise.</Typography>
                     </Grid>
                     <Grid item xs={12} lg={8}>
                         <Box component="img" src="gpapage.png" style={{maxWidth:'100%'}}></Box>
                     </Grid>
+                    
                     <Grid item xs={12}>
                         <Box height="48px" />
                     </Grid>
+
+                    
+
                     <Grid item xs={12} lg={8} paddingBottom="32px">
-                    <Typography align='left' variant="h4">Never forget an assignment again</Typography>
-                    <Typography align='left' variant="body1" color="GrayText">Be fully aware you're not doing it</Typography>
+                    <Typography sx={{textAlign:{lg: 'left', xs: 'center'}}} variant="h4">Never forget an assignment again</Typography>
+                    <Typography sx={{textAlign:{lg: 'left', xs: 'center'}}} variant="body1" color="GrayText">Be fully aware you're not doing it</Typography>
                     </Grid>
                     <Grid item xs={4} textAlign={'center'}>
                         <Button href="/login" variant='contained' size='large'>Create Account</Button>
                     </Grid>
+
                     <Grid item xs={12}>
                         <Box height="48px" />
                     </Grid>
