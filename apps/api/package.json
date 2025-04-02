@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/JAWalmsley/BetterThanExcel#readme",
   "dependencies": {
+    "@types/assert": "^1.5.11",
+    "@types/node": "^22.13.17",
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
     "BetterThanExcel": "file:",
@@ -41,10 +43,16 @@
     "object-hash": "^3.0.0",
     "pug": "^3.0.2",
     "quokka-jquery-loader": "^0.0.3",
+    "sqlite3": "^5.1.7",
     "uuid": "^8.3.2",
     "web-push": "^3.6.3"
   },
   "quokka": {
     "plugins": []
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/sqlite3": "^5.1.0",
+    "typescript": "^5.8.2"
   }
 }
