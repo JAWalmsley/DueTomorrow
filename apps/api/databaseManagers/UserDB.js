@@ -15,27 +15,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CourseDB = exports.UserDB = void 0;
-var mysql = require('mysql2');
-var hash = require('object-hash');
-var sqlite3_1 = require("sqlite3");
-var DBManager = /** @class */ (function () {
-    function DBManager(filename) {
-        this.db = new sqlite3_1.Database(filename);
-    }
-    DBManager.prototype.makeReq = function (cmd, vals) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            _this.db.all(cmd, vals, function (err, result) {
-                if (err)
-                    reject(err);
-                resolve(result);
-            });
-        });
-    };
-    ;
-    return DBManager;
-}());
+exports.UserDB = void 0;
+var dbManager_1 = require("./dbManager");
 var UserDB = /** @class */ (function (_super) {
     __extends(UserDB, _super);
     function UserDB() {
@@ -98,29 +79,6 @@ var UserDB = /** @class */ (function (_super) {
         return this.makeReq('DELETE FROM logins', []);
     };
     return UserDB;
-}(DBManager));
+}(dbManager_1.DBManager));
 exports.UserDB = UserDB;
 ;
-var CourseDB = /** @class */ (function (_super) {
-    __extends(CourseDB, _super);
-    function CourseDB() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    CourseDB.prototype.setUpTable = function () {
-        return this.makeReq('CREATE TABLE IF NOT EXISTS courses (id VARCHAR(255) PRIMARY KEY, userid VARCHAR(255), name VARCHAR(255), colour VARCHAR(7), credits INTEGER, FOREIGN KEY (userid) REFERENCES logins(id) ON DELETE CASCADE);', []);
-    };
-    CourseDB.prototype.create = function (data) {
-        return this.makeReq('INSERT INTO courses (id, userid, name, colour, credits) VALUES (?, ?, ?, ?, ?)', [data.id, data.userid, data.name, data.colour, data.credits]);
-    };
-    CourseDB.prototype.getByUserID = function (userid) {
-        return this.makeReq('SELECT * FROM courses WHERE userid = ?', [userid]);
-    };
-    CourseDB.prototype.getByID = function (id) {
-        return this.makeReq('SELECT * FROM courses WHERE id = ?', [id]);
-    };
-    CourseDB.prototype.clearDB = function () {
-        return this.makeReq('DELETE FROM courses', []);
-    };
-    return CourseDB;
-}(DBManager));
-exports.CourseDB = CourseDB;

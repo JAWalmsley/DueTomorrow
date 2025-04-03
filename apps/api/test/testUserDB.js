@@ -37,10 +37,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var assert = require("assert");
-var dbManager_1 = require("../dbManager");
+var UserDB_1 = require("../databaseManagers/UserDB");
 var sqlite3_1 = require("sqlite3");
 describe('User Database', function () {
-    var userDB = new dbManager_1.UserDB('testdb.db');
+    var userDB = new UserDB_1.UserDB('testdb.db');
     var testingCon = new sqlite3_1.Database('testdb.db');
     var testData = {
         id: 'testid',
@@ -90,6 +90,14 @@ describe('User Database', function () {
             .then(function () { return userDB.getByUsername(testData.username); })
             .then(function (response) {
             assert.equal(response.id, testData.id);
+            done();
+        });
+    });
+    it('does not get a nonexistant user', function (done) {
+        userDB.setUpTable()
+            .then(function () { return userDB.getByUserID('doesntexist'); })
+            .then(function (response) {
+            assert.equal(response, null);
             done();
         });
     });

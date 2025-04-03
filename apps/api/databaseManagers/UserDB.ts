@@ -1,6 +1,4 @@
-const mysql = require('mysql2');
-var hash = require('object-hash');
-import { Database } from "sqlite3";
+import { DBManager } from "./dbManager";
 
 export interface userData {
     // UUID V4 format ID
@@ -9,54 +7,6 @@ export interface userData {
     password: string;
 }
 
-export interface courseData {
-    id: string;
-    userid: string;
-    name: string;
-    colour: string;
-    credits: number;
-}
-
-interface assignmentData {
-    id: string;
-    userid: string;
-    courseid: string;
-    name: string;
-    due: Date;
-    done: boolean;
-    weight: number;
-    grade: number | null;
-}
-
-interface sharecodeData {
-    code: string;
-    courseid: string;
-}
-
-interface notificationData {
-    hash: string;
-    userid: string;
-    endpoint: string;
-    p256dh: string;
-    auth: string;
-}
-
-class DBManager {
-    db: Database;
-    constructor(filename: string)
-    {
-        this.db = new Database(filename);
-    }
-
-    makeReq (cmd: string, vals: any[]): Promise<any> {
-        return new Promise((resolve, reject) => {
-            this.db.all(cmd, vals, function (err: string, result: any) {
-                if (err) reject(err);
-                resolve(result);
-            });
-        });
-    };
-}
 
 export class UserDB extends DBManager {
     setUpTable()
@@ -130,33 +80,3 @@ export class UserDB extends DBManager {
         return this.makeReq('DELETE FROM logins', []);
     }
 };
-
-export class CourseDB extends DBManager {
-    setUpTable()
-    {
-        return this.makeReq(
-            'CREATE TABLE IF NOT EXISTS courses (id VARCHAR(255) PRIMARY KEY, userid VARCHAR(255), name VARCHAR(255), colour VARCHAR(7), credits INTEGER, FOREIGN KEY (userid) REFERENCES logins(id) ON DELETE CASCADE);',
-            []
-        );
-    }
-
-    create(data: courseData): Promise<any> {
-        return this.makeReq(
-            'INSERT INTO courses (id, userid, name, colour, credits) VALUES (?, ?, ?, ?, ?)',
-            [data.id, data.userid, data.name, data.colour, data.credits]
-        );
-    }
-
-    getByUserID(userid: string): Promise<courseData[]> {
-        return this.makeReq('SELECT * FROM courses WHERE userid = ?', [userid]) as Promise<courseData[]>;
-    }
-
-    getByID(id: string): Promise<courseData> {
-        return this.makeReq('SELECT * FROM courses WHERE id = ?', [id]) as Promise<courseData>;
-    }
-
-    clearDB()
-    {
-        return this.makeReq('DELETE FROM courses', []);
-    }
-}

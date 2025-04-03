@@ -1,7 +1,6 @@
 import assert = require('assert');
-import { UserDB, userData } from "../dbManager";
+import { UserDB, userData } from '../databaseManagers/UserDB';
 import { Database } from "sqlite3";
-
 
 describe('User Database', function () {
     let userDB = new UserDB('testdb.db');
@@ -54,6 +53,15 @@ describe('User Database', function () {
                 done();
             })
     });
+
+    it('does not get a nonexistant user', function (done) {
+        userDB.setUpTable()
+            .then(() => userDB.getByUserID('doesntexist'))
+            .then((response: (null | userData)) => {
+                assert.equal(response, null);
+                done();
+            })
+    })
 
     it('gets all users', function (done) {
         userDB.setUpTable()

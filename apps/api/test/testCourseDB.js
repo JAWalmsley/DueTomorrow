@@ -37,11 +37,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var assert = require("assert");
-var dbManager_1 = require("../dbManager");
+var CourseDB_1 = require("../databaseManagers/CourseDB");
 var sqlite3_1 = require("sqlite3");
+var UserDB_1 = require("../databaseManagers/UserDB");
 describe('Course Database', function () {
-    var courseDB = new dbManager_1.CourseDB('testdb.db');
-    var userDB = new dbManager_1.UserDB('testdb.db');
+    var courseDB = new CourseDB_1.CourseDB('testdb.db');
+    var userDB = new UserDB_1.UserDB('testdb.db');
     var testingCon = new sqlite3_1.Database('testdb.db');
     var testUser = {
         id: 'testuserid',
@@ -53,6 +54,13 @@ describe('Course Database', function () {
         colour: '#FFFFFF',
         credits: 3,
         name: 'test course name',
+        userid: testUser.id
+    };
+    var testCourse2 = {
+        id: 'testcourseID2',
+        colour: '#FF00FF',
+        credits: 4,
+        name: 'test course 2 name',
         userid: testUser.id
     };
     beforeEach(function () {
@@ -98,6 +106,51 @@ describe('Course Database', function () {
             assert.equal(r.colour, testCourse.colour);
             assert.equal(r.credits, testCourse.credits);
             done();
-        }); });
+        }); })
+            .catch(function (e) { return done(e); });
+    });
+    it('gets a course', function (done) {
+        courseDB.setUpTable()
+            .then(function () { return courseDB.create(testCourse); })
+            .then(function () { return courseDB.getByID(testCourse.id); })
+            .then(function (response) {
+            assert.equal(response.id, testCourse.id);
+            assert.equal(response.colour, testCourse.colour);
+            done();
+        })
+            .catch(function (e) { return done(e); });
+    });
+    it('gets all a user\'s courses', function (done) {
+        courseDB.setUpTable()
+            .then(function () { return courseDB.create(testCourse); })
+            .then(function () { return courseDB.create(testCourse2); })
+            .then(function () { return courseDB.getByUserID(testCourse.userid); })
+            .then(function (response) {
+            assert.notEqual(response, null);
+            assert.equal(response.length, 2);
+            assert.equal(response.some(function (item) { return item.id == testCourse.id; }), true);
+            assert.equal(response.some(function (item) { return item.id == testCourse2.id; }), true);
+            done();
+        })
+            .catch(function (e) { return done(e); });
+    });
+    it('does not get a nonexistant course', function (done) {
+        courseDB.setUpTable()
+            .then(function () { return courseDB.getByID('doesntexist'); })
+            .then(function (response) {
+            assert.equal(response, null);
+            done();
+        })
+            .catch(function (e) { return done(e); });
+    });
+    it('deletes a course', function (done) {
+        courseDB.setUpTable()
+            .then(function () { return courseDB.create(testCourse); })
+            .then(function () { return courseDB.deleteByID(testCourse.id); })
+            .then(function () { return testingCon.get("SELECT * FROM courses WHERE id = ?", testCourse.id, function (e, r) {
+            assert.equal(r, null);
+            done();
+        }); })
+            .catch(function (e) { return done(e); });
     });
 });
