@@ -29,29 +29,24 @@ router.get('/', isUserAuthorized, function (req, res) {
         .catch(function (err) { return res.status(400).send(err); });
 });
 router.put('/:assignmentid', isUserAuthorized, function (req, res) {
-    return res.status(410).send('Use specific endpoint (e.g) /assignmentid/done');
-});
-router.put('/:assignmentid/done', isUserAuthorized, function (req, res) {
     if (!req.body)
         return res.status(400).send('No data given');
-    var data = req.body;
-    AssignmentDB_1.assignmentDBInstance.setDoneStatus(req.params.assignmentid, data)
-        .then(function () { return res.status(200).send('Successfully updated'); })
-        .catch(function (err) { return res.status(400).send(err); });
-});
-router.put('/:assignmentid/grade', isUserAuthorized, function (req, res) {
-    if (!req.body)
-        return res.status(400).send('No data given');
-    var data = req.body;
-    AssignmentDB_1.assignmentDBInstance.setGrade(req.params.assignmentid, data)
-        .then(function () { return res.status(200).send('Successfully updated'); })
-        .catch(function (err) { return res.status(400).send(err); });
-});
-router.put('/:assignmentid/weight', isUserAuthorized, function (req, res) {
-    if (!req.body)
-        return res.status(400).send('No data given');
-    var data = req.body;
-    AssignmentDB_1.assignmentDBInstance.setWeight(req.params.assignmentid, data)
+    Promise.resolve()
+        .then(function () {
+        if (req.body.done != null) {
+            return AssignmentDB_1.assignmentDBInstance.setDoneStatus(req.params.assignmentid, req.body.done);
+        }
+    })
+        .then(function () {
+        if (req.body.grade != null) {
+            return AssignmentDB_1.assignmentDBInstance.setGrade(req.params.assignmentid, req.body.grade);
+        }
+    })
+        .then(function () {
+        if (req.body.weight != null) {
+            return AssignmentDB_1.assignmentDBInstance.setWeight(req.params.assignmentid, req.body.weight);
+        }
+    })
         .then(function () { return res.status(200).send('Successfully updated'); })
         .catch(function (err) { return res.status(400).send(err); });
 });

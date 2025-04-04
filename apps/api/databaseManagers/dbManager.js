@@ -8,6 +8,7 @@ exports.databaseFilename = "database.db";
 var DBManager = /** @class */ (function () {
     function DBManager(filename) {
         this.db = new sqlite3_1.Database(filename);
+        this.db.run("PRAGMA foreign_keys = ON");
     }
     DBManager.prototype.makeReq = function (cmd, vals) {
         var _this = this;

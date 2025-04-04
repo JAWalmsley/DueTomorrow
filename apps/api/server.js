@@ -23,6 +23,12 @@ const { userDBInstance } = require('./databaseManagers/UserDB.js');
 const { sharecodeDBInstance } = require('./databaseManagers/SharecodeDB.js');
 const { notificationDBInstance } = require('./databaseManagers/NotificationDB.js');
 
+assignmentDBInstance.setUpTable();
+courseDBInstance.setUpTable();
+userDBInstance.setUpTable();
+sharecodeDBInstance.setUpTable();
+notificationDBInstance.setUpTable();
+
 // Send push notifications every day for items due tomorrow
 schedule.scheduleJob('0 22 * * *', sendReminderNotifications);
 
@@ -61,12 +67,6 @@ app.use('/api/sharecodes', getSharecode);
 app.get('/', (req, res) => {
     res.send('hiiiii');
 });
-
-assignmentDBInstance.setUpTable();
-courseDBInstance.setUpTable();
-userDBInstance.setUpTable();
-sharecodeDBInstance.setUpTable();
-notificationDBInstance.setUpTable();
 
 sendReminderNotifications();
 

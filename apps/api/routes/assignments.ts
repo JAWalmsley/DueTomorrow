@@ -31,32 +31,26 @@ router.get('/', isUserAuthorized, (req, res) => {
 });
 
 router.put('/:assignmentid', isUserAuthorized, (req, res) => {
-    return res.status(410).send('Use specific endpoint (e.g) /assignmentid/done');
+    if (!req.body) return res.status(400).send('No data given');
+    Promise.resolve()
+        .then(() => {
+            if (req.body.done != null) {
+                return assignmentDBInstance.setDoneStatus(req.params.assignmentid, req.body.done)
+            }
+        })
+        .then(() => {
+            if (req.body.grade != null) {
+                return assignmentDBInstance.setGrade(req.params.assignmentid, req.body.grade);
+            }
+        })
+        .then(() => {
+            if (req.body.weight != null) {
+                return assignmentDBInstance.setWeight(req.params.assignmentid, req.body.weight);
+            }
+        })
+        .then(() => res.status(200).send('Successfully updated'))
+        .catch((err) => res.status(400).send(err));
 });
-
-router.put('/:assignmentid/done', isUserAuthorized, (req, res) => {
-    if (!req.body) return res.status(400).send('No data given');
-    let data = req.body;
-    assignmentDBInstance.setDoneStatus(req.params.assignmentid, data)
-        .then(() => res.status(200).send('Successfully updated'))
-        .catch((err) => res.status(400).send(err));
-})
-
-router.put('/:assignmentid/grade', isUserAuthorized, (req, res) => {
-    if (!req.body) return res.status(400).send('No data given');
-    let data = req.body;
-    assignmentDBInstance.setGrade(req.params.assignmentid, data)
-        .then(() => res.status(200).send('Successfully updated'))
-        .catch((err) => res.status(400).send(err));
-})
-
-router.put('/:assignmentid/weight', isUserAuthorized, (req, res) => {
-    if (!req.body) return res.status(400).send('No data given');
-    let data = req.body;
-    assignmentDBInstance.setWeight(req.params.assignmentid, data)
-        .then(() => res.status(200).send('Successfully updated'))
-        .catch((err) => res.status(400).send(err));
-})
 
 router.delete('/:assignmentid', isUserAuthorized, (req, res) => {
     assignmentDBInstance.deleteByID(req.params.assignmentid)

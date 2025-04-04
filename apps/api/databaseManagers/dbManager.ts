@@ -8,6 +8,7 @@ export class DBManager {
     db: Database;
     constructor(filename: string) {
         this.db = new Database(filename);
+        this.db.run("PRAGMA foreign_keys = ON")
     }
 
     makeReq(cmd: string, vals: any[]): Promise<any> {
