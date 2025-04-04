@@ -1,4 +1,4 @@
-import { DBManager } from "./dbManager";
+import { databaseFilename, DBManager } from "./dbManager";
 
 export interface courseData {
     id: string;
@@ -42,3 +42,5 @@ export class CourseDB extends DBManager {
         return this.makeReq('DELETE FROM courses', []);
     }
 }
+
+export const courseDBInstance = new CourseDB(databaseFilename);

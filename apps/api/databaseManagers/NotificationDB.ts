@@ -1,4 +1,4 @@
-import { DBManager } from "./dbManager";
+import { databaseFilename, DBManager } from "./dbManager";
 
 export interface notificationData {
     userid: string;
@@ -32,3 +32,5 @@ export class NotificationDB extends DBManager {
         );
     }
 }
+
+export const notificationDBInstance = new NotificationDB(databaseFilename);

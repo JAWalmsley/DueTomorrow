@@ -2,6 +2,8 @@ const mysql = require('mysql2');
 var hash = require('object-hash');
 import { Database } from "sqlite3";
 
+export const databaseFilename = "database.db"
+
 export class DBManager {
     db: Database;
     constructor(filename: string) {

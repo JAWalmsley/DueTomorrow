@@ -17,6 +17,11 @@ const createSharecode = require('./routes/createSharecode');
 const notifications = require('./routes/notifications');
 
 const sendReminderNotifications = require('./notificationSender.js');
+const { assignmentDBInstance } = require('./databaseManagers/AssignmentDB.js');
+const { courseDBInstance } = require('./databaseManagers/CourseDB.js');
+const { userDBInstance } = require('./databaseManagers/UserDB.js');
+const { sharecodeDBInstance } = require('./databaseManagers/SharecodeDB.js');
+const { notificationDBInstance } = require('./databaseManagers/NotificationDB.js');
 
 // Send push notifications every day for items due tomorrow
 schedule.scheduleJob('0 22 * * *', sendReminderNotifications);
@@ -57,9 +62,13 @@ app.get('/', (req, res) => {
     res.send('hiiiii');
 });
 
+assignmentDBInstance.setUpTable();
+courseDBInstance.setUpTable();
+userDBInstance.setUpTable();
+sharecodeDBInstance.setUpTable();
+notificationDBInstance.setUpTable();
 
 sendReminderNotifications();
-
 
 module.exports = app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}`);

@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.NotificationDB = void 0;
+exports.notificationDBInstance = exports.NotificationDB = void 0;
 var dbManager_1 = require("./dbManager");
 var NotificationDB = /** @class */ (function (_super) {
     __extends(NotificationDB, _super);
@@ -40,3 +40,4 @@ var NotificationDB = /** @class */ (function (_super) {
     return NotificationDB;
 }(dbManager_1.DBManager));
 exports.NotificationDB = NotificationDB;
+exports.notificationDBInstance = new NotificationDB(dbManager_1.databaseFilename);

@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CourseDB = void 0;
+exports.courseDBInstance = exports.CourseDB = void 0;
 var dbManager_1 = require("./dbManager");
 var CourseDB = /** @class */ (function (_super) {
     __extends(CourseDB, _super);
@@ -46,3 +46,4 @@ var CourseDB = /** @class */ (function (_super) {
     return CourseDB;
 }(dbManager_1.DBManager));
 exports.CourseDB = CourseDB;
+exports.courseDBInstance = new CourseDB(dbManager_1.databaseFilename);

@@ -1,4 +1,4 @@
-import { DBManager } from "./dbManager";
+import { databaseFilename, DBManager } from "./dbManager";
 
 export interface userData {
     // UUID V4 format ID
@@ -80,3 +80,5 @@ export class UserDB extends DBManager {
         return this.makeReq('DELETE FROM logins', []);
     }
 };
+
+export const userDBInstance = new UserDB(databaseFilename);

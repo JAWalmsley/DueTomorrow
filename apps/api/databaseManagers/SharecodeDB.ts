@@ -1,4 +1,4 @@
-import { DBManager } from "./dbManager";
+import { databaseFilename, DBManager } from "./dbManager";
 
 export interface sharecodeData {
     code: string;
@@ -48,3 +48,5 @@ export class SharecodeDB extends DBManager {
         return this.makeReq('DELETE FROM sharecodes', []);
     }
 }
+
+export const sharecodeDBInstance = new SharecodeDB(databaseFilename);

@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SharecodeDB = void 0;
+exports.sharecodeDBInstance = exports.SharecodeDB = void 0;
 var dbManager_1 = require("./dbManager");
 var SharecodeDB = /** @class */ (function (_super) {
     __extends(SharecodeDB, _super);
@@ -61,3 +61,4 @@ var SharecodeDB = /** @class */ (function (_super) {
     return SharecodeDB;
 }(dbManager_1.DBManager));
 exports.SharecodeDB = SharecodeDB;
+exports.sharecodeDBInstance = new SharecodeDB(dbManager_1.databaseFilename);

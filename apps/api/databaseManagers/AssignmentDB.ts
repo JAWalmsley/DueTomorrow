@@ -1,4 +1,4 @@
-import { DBManager } from "./dbManager";
+import { databaseFilename, DBManager } from "./dbManager";
 
 export interface assignmentData {
     id: string;
@@ -21,7 +21,7 @@ export class AssignmentDB extends DBManager {
     create(data: assignmentData): Promise<any> {
         return this.makeReq(
             'INSERT INTO assignments (id, userid, courseid, name, due, done, weight, grade) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-            [data.id, data.userid, data.courseid, data.name, data.due.toISOString(), data.done, data.weight, data.grade]
+            [data.id, data.userid, data.courseid, data.name, data.due, data.done, data.weight, data.grade]
         );
     }
 
@@ -59,3 +59,5 @@ export class AssignmentDB extends DBManager {
         return this.makeReq('DELETE FROM assignments', []);
     }
 }
+
+export const assignmentDBInstance = new AssignmentDB(databaseFilename);
