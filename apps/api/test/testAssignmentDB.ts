@@ -150,7 +150,7 @@ describe('Assignment Database', function () {
             .catch((e) => done(e));
     });
 
-    it('marks an assignment as done', function(done) {
+    it('marks an assignment as done', function (done) {
         assignmentDB.setUpTable()
             .then(() => assignmentDB.create(testAssignment))
             .then(() => assignmentDB.setDoneStatus(testAssignment.id, true))
@@ -167,7 +167,7 @@ describe('Assignment Database', function () {
             .catch((e) => done(e));
     });
 
-    it('sets an assignment grade', function(done) {
+    it('sets an assignment grade', function (done) {
         assignmentDB.setUpTable()
             .then(() => assignmentDB.create(testAssignment))
             .then(() => assignmentDB.setGrade(testAssignment.id, 19))
@@ -189,7 +189,7 @@ describe('Assignment Database', function () {
             .catch((e) => done(e));
     });
 
-    it('sets an assignment weight', function(done) {
+    it('sets an assignment weight', function (done) {
         assignmentDB.setUpTable()
             .then(() => assignmentDB.create(testAssignment))
             .then(() => assignmentDB.setWeight(testAssignment.id, 0))

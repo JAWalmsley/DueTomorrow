@@ -37,30 +37,28 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var assert = require("assert");
-var CourseDB_1 = require("../databaseManagers/CourseDB");
 var sqlite3_1 = require("sqlite3");
 var UserDB_1 = require("../databaseManagers/UserDB");
-describe('Course Database', function () {
-    var courseDB = new CourseDB_1.CourseDB('testdb.db');
+var NotificationDB_1 = require("../databaseManagers/NotificationDB");
+describe('Notification Database', function () {
     var userDB = new UserDB_1.UserDB('testdb.db');
+    var notificationDB = new NotificationDB_1.NotificationDB('testdb.db');
     var testingCon = new sqlite3_1.Database('testdb.db');
     var testUser = {
         id: 'testuserid',
         password: 'testpassword',
         username: 'testusername'
     };
-    var testCourse = {
-        id: 'testcourseID',
-        colour: '#FFFFFF',
-        credits: 3,
-        name: 'test course name',
+    var testNotification = {
+        auth: 'test auth',
+        endpoint: 'test endpoint',
+        p256dh: 'test p256dh',
         userid: testUser.id
     };
-    var testCourse2 = {
-        id: 'testcourseID2',
-        colour: '#FF00FF',
-        credits: 4,
-        name: 'test course 2 name',
+    var testNotification2 = {
+        auth: 'test auth 2',
+        endpoint: 'test endpoint 2',
+        p256dh: 'test p256dh 2',
         userid: testUser.id
     };
     beforeEach(function () {
@@ -70,10 +68,10 @@ describe('Course Database', function () {
                 switch (_b.label) {
                     case 0:
                         _b.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, courseDB.clearDB()];
+                        return [4 /*yield*/, userDB.clearDB()];
                     case 1:
                         _b.sent();
-                        return [4 /*yield*/, userDB.clearDB()];
+                        return [4 /*yield*/, notificationDB.clearDB()];
                     case 2:
                         _b.sent();
                         return [3 /*break*/, 4];
@@ -91,67 +89,56 @@ describe('Course Database', function () {
             });
         });
     });
-    it('sets up table', function () {
-        courseDB.setUpTable()
+    it('sets up table', function (done) {
+        notificationDB.setUpTable()
             .then(function () {
-            testingCon.get("SELECT name FROM sqlite_master WHERE type='table' AND name='courses';", function (e, r) {
-                assert.equal(r.name, 'courses');
+            testingCon.get("SELECT name FROM sqlite_master WHERE type='table' AND name='notifications';", function (e, r) {
+                assert.equal(r.name, 'notifications');
+                done();
             });
-        });
+        })
+            .catch(function (e) { return done(e); });
     });
-    it('creates a course', function (done) {
-        courseDB.setUpTable()
-            .then(function () { return courseDB.create(testCourse); })
-            .then(function () { return testingCon.get("SELECT * FROM courses WHERE id = ?;", testCourse.id, function (e, r) {
-            assert.equal(r.id, testCourse.id);
-            assert.equal(r.colour, testCourse.colour);
-            assert.equal(r.credits, testCourse.credits);
+    it('creates a notification', function (done) {
+        notificationDB.setUpTable()
+            .then(function () { return notificationDB.create(testNotification); })
+            .then(function () { return testingCon.get("SELECT * FROM notifications WHERE endpoint = ?", [testNotification.endpoint], function (e, r) {
+            assert.deepEqual(r, testNotification);
             done();
         }); })
             .catch(function (e) { return done(e); });
     });
-    it('gets a course', function (done) {
-        courseDB.setUpTable()
-            .then(function () { return courseDB.create(testCourse); })
-            .then(function () { return courseDB.getByID(testCourse.id); })
+    it('gets all notifications belonging to a user', function (done) {
+        notificationDB.setUpTable()
+            .then(function () { return notificationDB.create(testNotification); })
+            .then(function () { return notificationDB.create(testNotification2); })
+            .then(function () { return notificationDB.getByUserID(testUser.id); })
             .then(function (response) {
-            assert.equal(response.id, testCourse.id);
-            assert.equal(response.colour, testCourse.colour);
-            done();
-        })
-            .catch(function (e) { return done(e); });
-    });
-    it('gets all a user\'s courses', function (done) {
-        courseDB.setUpTable()
-            .then(function () { return courseDB.create(testCourse); })
-            .then(function () { return courseDB.create(testCourse2); })
-            .then(function () { return courseDB.getByUserID(testCourse.userid); })
-            .then(function (response) {
-            assert.notEqual(response, null);
             assert.equal(response.length, 2);
-            assert.equal(response.some(function (item) { return item.id == testCourse.id; }), true);
-            assert.equal(response.some(function (item) { return item.id == testCourse2.id; }), true);
+            assert.equal(response.some(function (item) { return item.endpoint == testNotification.endpoint; }), true);
+            assert.equal(response.some(function (item) { return item.endpoint == testNotification2.endpoint; }), true);
             done();
         })
             .catch(function (e) { return done(e); });
     });
-    it('does not get a nonexistant course', function (done) {
-        courseDB.setUpTable()
-            .then(function () { return courseDB.getByID('doesntexist'); })
+    it('does not get notifications not belonging to a user', function (done) {
+        notificationDB.setUpTable()
+            .then(function () { return notificationDB.getByUserID(testUser.id); })
             .then(function (response) {
-            assert.equal(response, null);
+            assert.equal(response.length, 0);
             done();
         })
             .catch(function (e) { return done(e); });
     });
-    it('deletes a course', function (done) {
-        courseDB.setUpTable()
-            .then(function () { return courseDB.create(testCourse); })
-            .then(function () { return courseDB.deleteByID(testCourse.id); })
-            .then(function () { return testingCon.get("SELECT * FROM courses WHERE id = ?", testCourse.id, function (e, r) {
-            assert.equal(r, null);
+    it('deletes a notification by endpoint', function (done) {
+        notificationDB.setUpTable()
+            .then(function () { return notificationDB.create(testNotification); })
+            .then(function () { return notificationDB.deleteByEndpoint(testNotification.endpoint); })
+            .then(function () { return notificationDB.getByUserID(testUser.id); })
+            .then(function (response) {
+            assert.equal(response.length, 0);
             done();
-        }); })
+        })
             .catch(function (e) { return done(e); });
     });
 });

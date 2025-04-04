@@ -95,7 +95,7 @@ describe('Sharecode Database', function () {
             .catch((e) => done(e));
     });
 
-    it('gets all the courses linked to a sharecode', function(done) {
+    it('gets all the courses linked to a sharecode', function (done) {
         sharecodeDB.setUpTable()
             .then(() => sharecodeDB.create(testSharecode))
             .then(() => sharecodeDB.getByCode(testSharecode.code))
