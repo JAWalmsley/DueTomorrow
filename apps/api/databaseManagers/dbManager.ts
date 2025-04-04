@@ -2,10 +2,6 @@ const mysql = require('mysql2');
 var hash = require('object-hash');
 import { Database } from "sqlite3";
 
-interface sharecodeData {
-    code: string;
-    courseid: string;
-}
 
 interface notificationData {
     hash: string;
