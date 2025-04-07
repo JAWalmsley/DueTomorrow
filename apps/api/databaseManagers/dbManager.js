@@ -3,8 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DBManager = exports.databaseFilename = void 0;
 var mysql = require('mysql2');
 var hash = require('object-hash');
+var path = require("node:path");
 var sqlite3_1 = require("sqlite3");
-exports.databaseFilename = "database.db";
+exports.databaseFilename = path.join(process.env.DB_FOLDER, '/database.db');
 var DBManager = /** @class */ (function () {
     function DBManager(filename) {
         this.db = new sqlite3_1.Database(filename);

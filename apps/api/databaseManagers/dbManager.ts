@@ -1,8 +1,9 @@
 const mysql = require('mysql2');
 var hash = require('object-hash');
+import path = require("node:path");
 import { Database } from "sqlite3";
 
-export const databaseFilename = "database.db"
+export const databaseFilename = path.join(process.env.DB_FOLDER, '/database.db');
 
 export class DBManager {
     db: Database;

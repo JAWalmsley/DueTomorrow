@@ -12,6 +12,8 @@ services:
             - .env
         networks:
             - dt
+        volumes:
+            - duetomorrow_data:/data
     nginx:
         restart: always
         build:
@@ -30,3 +32,5 @@ networks:
     dt:
         name: dt
         external: true
+volumes:
+    duetomorrow_data:
