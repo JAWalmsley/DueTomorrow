@@ -65,4 +65,4 @@ router.delete('/:userid', isUserAuthorized, (req, res) => {
     res.status(404).send("Can't delete users (yet)")
 });
 
-module.exports = router;
+export default router;

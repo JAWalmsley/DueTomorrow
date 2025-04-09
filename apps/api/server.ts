@@ -1,27 +1,30 @@
-const express = require('express');
-const session = require('express-session');
-const cors = require('cors');
-const helmet = require('helmet');
-const schedule = require('node-schedule');
+import dotenv from 'dotenv';
+dotenv.config();
+
+import express from 'express';
+import session from 'express-session';
+import cors from 'cors';
+import helmet from 'helmet';
+import schedule from 'node-schedule';
 
 const app = express();
 const port = 3001;
 
-const users = require('./routes/users.js');
-const assignments = require('./routes/assignments');
-const courses = require('./routes/courses');
-const login = require('./routes/login');
-const logout = require('./routes/logout');
-const getSharecode = require('./routes/getSharecode.js');
-const createSharecode = require('./routes/createSharecode');
-const notifications = require('./routes/notifications');
+import users from './routes/users';
+import assignments from './routes/assignments';
+import courses from './routes/courses';
+import login from './routes/login';
+import logout from './routes/logout';
+import getSharecode from './routes/getSharecode';
+import createSharecode from './routes/createSharecode';
+import notifications from './routes/notifications';
 
-const sendReminderNotifications = require('./notificationSender.js');
-const { assignmentDBInstance } = require('./databaseManagers/AssignmentDB.js');
-const { courseDBInstance } = require('./databaseManagers/CourseDB.js');
-const { userDBInstance } = require('./databaseManagers/UserDB.js');
-const { sharecodeDBInstance } = require('./databaseManagers/SharecodeDB.js');
-const { notificationDBInstance } = require('./databaseManagers/NotificationDB.js');
+import { sendReminderNotifications } from "./notificationSender"
+import { assignmentDBInstance } from './databaseManagers/AssignmentDB';
+import { courseDBInstance } from './databaseManagers/CourseDB';
+import { userDBInstance } from './databaseManagers/UserDB';
+import { sharecodeDBInstance } from './databaseManagers/SharecodeDB';
+import { notificationDBInstance } from './databaseManagers/NotificationDB';
 
 assignmentDBInstance.setUpTable();
 courseDBInstance.setUpTable();

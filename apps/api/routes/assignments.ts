@@ -58,4 +58,4 @@ router.delete('/:assignmentid', isUserAuthorized, (req, res) => {
         .catch((err) => res.status(400).send(err));
 });
 
-module.exports = router;
+export default router

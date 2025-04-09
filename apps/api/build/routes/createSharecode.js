@@ -77,4 +77,4 @@ router.post('/', isUserAuthorized, function (req, res) { return __awaiter(void 0
         }
     });
 }); });
-module.exports = router;
+exports.default = router;

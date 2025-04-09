@@ -55,4 +55,4 @@ router.delete('/:assignmentid', isUserAuthorized, function (req, res) {
         .then(function () { return res.status(200).send('Successfully deleted'); })
         .catch(function (err) { return res.status(400).send(err); });
 });
-module.exports = router;
+exports.default = router;

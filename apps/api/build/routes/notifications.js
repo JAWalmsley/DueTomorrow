@@ -36,44 +36,61 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var AssignmentDB_1 = require("../databaseManagers/AssignmentDB");
-var CourseDB_1 = require("../databaseManagers/CourseDB");
-var SharecodeDB_1 = require("../databaseManagers/SharecodeDB");
+var NotificationDB_1 = require("../databaseManagers/NotificationDB");
 var express = require('express');
+var webpush = require('web-push');
 var router = express.Router({ mergeParams: true });
-router.get('/:code', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var code, courseReturnList, _i, _a, courseid, c, assignments, a;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0: return [4 /*yield*/, SharecodeDB_1.sharecodeDBInstance.getByCode(req.params.code)];
+var isUserAuthorized = require("./userAuth").isUserAuthorized;
+if (process.env.VAPID_PUBLIC != null) {
+    webpush.setVapidDetails('https://duetomorrow.ca', process.env.VAPID_PUBLIC, process.env.VAPID_PRIVATE);
+}
+else {
+    console.log("DEBUG MODE, not sending any push notifications");
+}
+router.post('/', isUserAuthorized, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var newNotification;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                // console.log("Got a notification request", req);
+                if (!(req.body))
+                    return [2 /*return*/, res.status(400).send('Insufficient data given')];
+                newNotification = {
+                    auth: req.body.keys.auth,
+                    endpoint: req.body.endpoint,
+                    p256dh: req.body.keys.p256dh,
+                    userid: req.params.userid
+                };
+                return [4 /*yield*/, NotificationDB_1.notificationDBInstance.create(newNotification)];
             case 1:
-                code = _b.sent();
-                if (code == null || code.courseids.length === 0) {
-                    return [2 /*return*/, res.status(400).send('Code does not exist')];
-                }
-                courseReturnList = [];
-                _i = 0, _a = code.courseids;
-                _b.label = 2;
-            case 2:
-                if (!(_i < _a.length)) return [3 /*break*/, 6];
-                courseid = _a[_i];
-                return [4 /*yield*/, CourseDB_1.courseDBInstance.getByID(courseid)];
-            case 3:
-                c = _b.sent();
-                assignments = [];
-                return [4 /*yield*/, AssignmentDB_1.assignmentDBInstance.getByCourseID(courseid)];
-            case 4:
-                a = _b.sent();
-                assignments.push.apply(assignments, a.map(function (a) { return ({ name: a.name, due: a.due, weight: a.weight }); }));
-                courseReturnList.push({ name: c.name, colour: c.colour, credits: c.credits, assignments: assignments });
-                _b.label = 5;
-            case 5:
-                _i++;
-                return [3 /*break*/, 2];
-            case 6:
-                res.status(200).send({ courses: courseReturnList });
+                _a.sent();
+                webpush.sendNotification(req.body, JSON.stringify({ title: 'DueTomorrow', body: 'Ready to get notifications!' })).catch(function (err) { return console.log(err); });
+                res.status(200).send('Notification registered');
                 return [2 /*return*/];
         }
     });
 }); });
-module.exports = router;
+router.put('/', isUserAuthorized, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var oldSub, newSub, newNotification;
+    return __generator(this, function (_a) {
+        // console.log("Got a notification request", req);
+        if (!(req.body))
+            return [2 /*return*/, res.status(400).send('Insufficient data given')];
+        oldSub = req.body.oldSubscription;
+        newSub = req.body.newSubscription;
+        console.log("Refreshing a push sub", oldSub, newSub);
+        if (oldSub === undefined || newSub === undefined)
+            return [2 /*return*/, res.status(400).send('Insufficient data given')];
+        newNotification = {
+            auth: newSub.keys.auth,
+            endpoint: newSub.endpoint,
+            p256dh: newSub.keys.p256dh,
+            userid: req.params.userid
+        };
+        NotificationDB_1.notificationDBInstance.create(newNotification);
+        NotificationDB_1.notificationDBInstance.deleteByEndpoint(oldSub.endpoint);
+        res.status(200).send('Notification registered');
+        return [2 /*return*/];
+    });
+}); });
+exports.default = router;

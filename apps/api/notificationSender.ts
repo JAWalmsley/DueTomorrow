@@ -12,7 +12,7 @@ else
 {
     console.log("DEBUG MODE, not sending any push notifications");
 }
-async function sendReminderNotifications() {
+export async function sendReminderNotifications() {
     console.log("Sending scheduled notifications");
     let users = await userDBInstance.getAll()
     for (let user of users) {
@@ -55,5 +55,3 @@ async function sendPush(assignment, course, subscription) {
             }
         });
 }
-
-module.exports = sendReminderNotifications;

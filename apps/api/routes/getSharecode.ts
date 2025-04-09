@@ -21,4 +21,4 @@ router.get('/:code', async (req, res) => {
     res.status(200).send({courses: courseReturnList});
 });
 
-module.exports = router;
+export default router

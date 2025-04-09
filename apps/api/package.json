@@ -2,10 +2,11 @@
   "name": "BetterThanExcel",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "build/server.js",
   "scripts": {
+    "start": "node build/server.js",
     "test": "mocha --exit",
-    "start": "node server.js"
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "chai": "^4.3.6",
     "chai-http": "^4.3.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
     "express": "^4.17.3",
     "express-session": "^1.17.3",
     "helmet": "^6.0.0",

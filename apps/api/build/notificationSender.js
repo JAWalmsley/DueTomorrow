@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.sendReminderNotifications = sendReminderNotifications;
 var AssignmentDB_1 = require("./databaseManagers/AssignmentDB");
 var CourseDB_1 = require("./databaseManagers/CourseDB");
 var NotificationDB_1 = require("./databaseManagers/NotificationDB");
@@ -130,4 +131,3 @@ function sendPush(assignment, course, subscription) {
         });
     });
 }
-module.exports = sendReminderNotifications;

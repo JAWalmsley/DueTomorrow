@@ -47,4 +47,4 @@ router.put('/', isUserAuthorized, async (req, res) => {
     res.status(200).send('Notification registered');
 });
 
-module.exports = router;
+export default router
