@@ -8,25 +8,21 @@ services:
             - "3001:3001"
         extra_hosts:
             - "host.docker.internal:host-gateway"
-        env_file:
-            - .env
         networks:
             - dt
+        volumes:
+            - database:/data
+        env_file: "apps/api/.env"
     nginx:
         restart: always
         build:
             context: ./apps/ui
         networks:
             - dt
-    router:
-        restart: always
-        build:
-            context: ./apps/router/nginxrouter
-        networks:
-            - dt
         ports:
-            - "80:80"
+          - "80:80"
 networks:
     dt:
         name: dt
-        external: true
+volumes:
+    database:

@@ -1,0 +1,229 @@
+// SET UP
+
+db.run(
+    'CREATE TABLE IF NOT EXISTS logins (id VARCHAR(255) PRIMARY KEY, username VARCHAR(255), password VARCHAR(255));',
+    function (err: string, result: any) {
+        if (err) throw err;
+        // console.log("Login table created/exists");
+    }
+);
+
+db.run(
+    'CREATE TABLE IF NOT EXISTS courses (id VARCHAR(255) PRIMARY KEY, userid VARCHAR(255), name VARCHAR(255), colour VARCHAR(7), credits INTEGER, FOREIGN KEY (userid) REFERENCES logins(id) ON DELETE CASCADE);',
+    function (err: string, result: any) {
+        if (err) throw err;
+        // console.log("Courses table created/exists");
+    }
+);
+
+
+
+db.run(
+    'CREATE TABLE IF NOT EXISTS assignments (id VARCHAR(255) PRIMARY KEY, userid VARCHAR(255), courseid VARCHAR(255), name VARCHAR(255),  due DATE, done BOOLEAN, weight INTEGER, grade INTEGER NULL, FOREIGN KEY (userid) REFERENCES logins(id) ON DELETE CASCADE, FOREIGN KEY (courseid) REFERENCES courses(id) ON DELETE CASCADE);',
+    function (err: string, result: any) {
+        if (err) throw err;
+        // console.log("Assignment table created/exists");
+    }
+);
+
+
+
+db.run(
+    'CREATE TABLE IF NOT EXISTS sharecodes (code VARCHAR(50), courseid VARCHAR(255), FOREIGN KEY (courseid) REFERENCES courses(id) ON DELETE CASCADE);',
+    function (err: string, result: any) {
+        if (err) throw err;
+    }
+);
+
+
+
+db.run(
+    'CREATE TABLE IF NOT EXISTS notifications (hash VARCHAR(255) PRIMARY KEY, userid VARCHAR(255), endpoint TEXT, p256dh TEXT, auth TEXT, FOREIGN KEY (userid) REFERENCES logins(id) ON DELETE CASCADE);',
+    function (err: string, result: any) {
+        if (err) throw err;
+    }
+)
+
+
+
+exports.Course = class {
+    /**
+     * Create a course
+     */
+    static create(data: courseData): Promise<any> {
+        return makeReq(
+            'INSERT INTO courses (id, userid, name, colour, credits) VALUES (?, ?, ?, ?, ?)',
+            [data.id, data.userid, data.name, data.colour, data.credits]
+        );
+    }
+
+    /**
+     * Gets all courses belonging to a user
+     * @param {string} userid - The id to search by
+     */
+    static getByUserID(userid: string): Promise<courseData[]> {
+        return makeReq('SELECT * FROM courses WHERE userid = ?', [userid]) as Promise<courseData[]>;
+    }
+
+    /**
+     * Get a course by its id
+     * @param {string} id 
+     */
+    static getByID(id: string): Promise<courseData> {
+        return makeReq('SELECT * FROM courses WHERE id = ?', [id]) as Promise<courseData>;
+    }
+
+    /**
+     * Updates a course
+     * @param id {string} - The id to update
+     * @param data {Object} - The new data to replace
+     * @returns {Promise} mySQL query Promise
+     */
+    static update(id: string, data: Object): Promise<any> {
+        return makeReq('UPDATE courses SET ? WHERE id = ?', [
+            data, id
+        ]);
+    }
+
+    /**
+     * Delete a given course
+     * @param {string} id - The id of the course to delete
+     * @returns {Promise} mySQL query Promise
+     */
+    static delete(id: string): Promise<any> {
+        return makeReq('DELETE FROM courses WHERE id = ?', [id]);
+    }
+};
+
+exports.ShareCode = class {
+    /**
+     * Creates a share code to a list of courses
+     * @param {string} code code to share the list by
+     * @param {string[]} courseids list of course ids to share
+     * @returns 
+     */
+    static async create(code: string, courseids: string[]) {
+        let promises: Promise<any>[] = [];
+        let exists = await this.codeExists(code);
+        if (exists) { return false }
+        courseids.forEach((courseid) => {
+            promises.push(makeReq('INSERT INTO sharecodes (code, courseid) VALUES (?)', [[code, courseid]]));
+        });
+        return Promise.all(promises);
+    }
+
+    /**
+     * Gets the courses that a share code is for
+     * @param {string} code the code to get the course ids for
+     */
+    static getByCode(code): Promise<sharecodeData> {
+        return makeReq('SELECT * FROM sharecodes WHERE code = ?', [code]);
+    }
+
+    /**
+     * Checks if a code already exists
+     * @param {string} code 
+     */
+    static codeExists(code): Promise<boolean> {
+        return makeReq('SELECT * FROM sharecodes WHERE code = ?', [code])
+            .then((result) => {
+                return (result as sharecodeData[]).length > 0;
+            });
+    }
+}
+
+exports.Assignment = class {
+    /**
+     * Create an assignment
+     * @returns {Promise} mySQL query Promise
+     */
+    static create(data: assignmentData): Promise<any> {
+        return makeReq(
+            'INSERT INTO assignments (id, userid, courseid, name, due, done, weight, grade) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+            [data.id, data.userid, data.courseid, data.name, data.due.toISOString(), data.done, data.weight, data.grade]
+        );
+    }
+
+    /**
+     * Get all assignments owned by given user
+     * @param {string} userID
+     * @returns {Promise} mySQL query Promise
+     */
+    static getByUserID(userID): Promise<assignmentData[]> {
+        return makeReq('SELECT * FROM assignments WHERE userid = ? ORDER BY done, due, weight DESC', [userID]) as Promise<assignmentData[]>;
+    }
+
+    /**
+     * Get all assignments belonging to a course
+     * @param {string} courseid 
+     * @returns {Promise} mySQL query Promise
+     */
+    static getByCourseID(courseid: string): Promise<assignmentData[]> {
+        return makeReq('SELECT * FROM assignments WHERE courseid = ?', [courseid]) as Promise<assignmentData[]>;
+    }
+
+    /**
+     * Update an assignment
+     * @param id {string} - id of assignment to update
+     * @param data {Object} - data to update
+     */
+    static update(id, data): Promise<any> {
+        return makeReq('UPDATE assignments SET ? WHERE id = ?', [
+            data, id
+        ]);
+    }
+
+    /**
+     * Delete an assignment
+     * @param {string} id 
+     * @returns {Promise} mySQL query Promise
+     */
+    static delete(id): Promise<any> {
+        return makeReq('DELETE FROM assignments WHERE id = ?', [id]);
+    }
+};
+
+exports.Notification = class {
+    static create(userid, endpoint, p256dh, auth) {
+        let subHash = hash({ userid, endpoint, p256dh, auth })
+        return makeReq(
+            'INSERT INTO notifications (hash, userid, endpoint, p256dh, auth) VALUES (?)',
+            [[subHash, userid, endpoint, p256dh, auth]]
+        ).catch(err => {
+            // Ignore errors if the subscription already exists (hash is primary key)
+            if (err == "ER_DUP_ENTRY") {
+                throw err;
+            }
+        }); 
+    }
+
+    /**
+     * Get all notification subscriptions owned by given user
+     * @param {string} userID
+     * @returns {Promise} mySQL query Promise
+     */
+    static getByUserID(userID) {
+        return makeReq('SELECT * FROM notifications WHERE userid = ?', [userID]);
+    }
+
+    /**
+     * Delete a notification subscription with given endpoint
+     * @param {string} endpoint 
+     * @returns {Promise} mySQL query Promise
+     */
+    static deleteByEndpoint(endpoint) {
+        return makeReq('DELETE FROM notifications WHERE endpoint = ?', [endpoint]);
+    }
+}
+
+/**
+ * Clears all tables in DB
+ * @returns {Promise} mySQL query Promise
+ */
+exports.clearDb = function () {
+    let assignments = makeReq('DELETE FROM assignments', []);
+    let courses = makeReq('DELETE FROM courses', []);
+    let logins = makeReq('DELETE FROM logins', []);
+
+    return Promise.all([logins, courses, assignments]);
+};

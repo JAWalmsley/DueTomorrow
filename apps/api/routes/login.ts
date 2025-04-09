@@ -1,7 +1,8 @@
+import { userDBInstance } from "../databaseManagers/UserDB";
+
 const express = require('express')
 const router = express.Router({mergeParams: true})
 
-const dbManager = require('../dbManager')
 const bcrypt = require('bcrypt');
 
 router.post('/', (req, res) => {
@@ -10,7 +11,7 @@ router.post('/', (req, res) => {
         res.status(400).send('Insufficient data');
         return;
     }
-    let userSearch = dbManager.User.getByUsername(username);
+    let userSearch = userDBInstance.getByUsername(username);
     let passwordCompare = userSearch
         .then(function (user) {
             if (user == undefined) {
@@ -34,4 +35,4 @@ router.post('/', (req, res) => {
     });
 });
 
-module.exports = router;
+export default router

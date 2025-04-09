@@ -2,10 +2,11 @@
   "name": "BetterThanExcel",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "build/server.js",
   "scripts": {
+    "start": "node build/server.js",
     "test": "mocha --exit",
-    "start": "node server.js"
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,8 @@
   },
   "homepage": "https://github.com/JAWalmsley/BetterThanExcel#readme",
   "dependencies": {
+    "@types/assert": "^1.5.11",
+    "@types/node": "^22.13.17",
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
     "BetterThanExcel": "file:",
@@ -26,6 +29,7 @@
     "chai": "^4.3.6",
     "chai-http": "^4.3.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
     "express": "^4.17.3",
     "express-session": "^1.17.3",
     "helmet": "^6.0.0",
@@ -41,10 +45,16 @@
     "object-hash": "^3.0.0",
     "pug": "^3.0.2",
     "quokka-jquery-loader": "^0.0.3",
+    "sqlite3": "^5.1.7",
     "uuid": "^8.3.2",
     "web-push": "^3.6.3"
   },
   "quokka": {
     "plugins": []
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/sqlite3": "^5.1.0",
+    "typescript": "^5.8.2"
   }
 }
