@@ -5,13 +5,13 @@ const webpush = require('web-push');
 const router = express.Router({mergeParams: true});
 const {isUserAuthorized} = require("./userAuth");
 
-if(process.env.VAPID_PUBLIC != null)
+if(process.env.DEBUG)
 {
-    webpush.setVapidDetails('https://duetomorrow.ca', process.env.VAPID_PUBLIC, process.env.VAPID_PRIVATE)
+    console.log("DEBUG MODE, not sending any push notifications");
 }
 else
 {
-    console.log("DEBUG MODE, not sending any push notifications");
+    webpush.setVapidDetails('https://duetomorrow.ca', process.env.VAPID_PUBLIC, process.env.VAPID_PRIVATE)
 }
 
 router.post('/', isUserAuthorized, async (req, res) => {

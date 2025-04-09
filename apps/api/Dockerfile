@@ -10,10 +10,10 @@ COPY package*.json ./
 # run npm install in our local machine
 RUN npm install
 
-RUN npm run build
-
 # copy the generated modules and all other files to the container
 COPY . .
+
+RUN npm run build
 
 # expose the web port
 EXPOSE 3001
