@@ -41,12 +41,12 @@ var AssignmentDB_1 = require("./databaseManagers/AssignmentDB");
 var CourseDB_1 = require("./databaseManagers/CourseDB");
 var NotificationDB_1 = require("./databaseManagers/NotificationDB");
 var UserDB_1 = require("./databaseManagers/UserDB");
-var webpush = require('web-push');
-if (process.env.VAPID_PUBLIC != null) {
-    webpush.setVapidDetails('https://duetomorrow.ca', process.env.VAPID_PUBLIC, process.env.VAPID_PRIVATE);
+var web_push_1 = require("web-push");
+if (process.env.DEBUG) {
+    console.log("DEBUG MODE, not sending any push notifications");
 }
 else {
-    console.log("DEBUG MODE, not sending any push notifications");
+    web_push_1.webpush.setVapidDetails('https://duetomorrow.ca', process.env.VAPID_PUBLIC, process.env.VAPID_PRIVATE);
 }
 function sendReminderNotifications() {
     return __awaiter(this, void 0, void 0, function () {
@@ -54,6 +54,10 @@ function sendReminderNotifications() {
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
+                    if (process.env.DEBUG) {
+                        console.log("DEBUG MODE, not sending any push notifications");
+                        return [2 /*return*/];
+                    }
                     console.log("Sending scheduled notifications");
                     return [4 /*yield*/, UserDB_1.userDBInstance.getAll()];
                 case 1:
@@ -109,7 +113,7 @@ function sendPush(assignment, course, subscription) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, webpush.sendNotification({
+                case 0: return [4 /*yield*/, web_push_1.webpush.sendNotification({
                         endpoint: subscription.endpoint,
                         keys: {
                             auth: subscription.auth,

@@ -3,16 +3,18 @@ import { courseDBInstance } from "./databaseManagers/CourseDB";
 import { notificationDBInstance } from "./databaseManagers/NotificationDB";
 import { userDBInstance } from "./databaseManagers/UserDB";
 
-const webpush = require('web-push');
-if(process.env.VAPID_PUBLIC != null)
-{
-    webpush.setVapidDetails('https://duetomorrow.ca', process.env.VAPID_PUBLIC, process.env.VAPID_PRIVATE)
-}
-else
-{
+import { webpush } from 'web-push';
+if (process.env.DEBUG) {
     console.log("DEBUG MODE, not sending any push notifications");
 }
+else {
+    webpush.setVapidDetails('https://duetomorrow.ca', process.env.VAPID_PUBLIC, process.env.VAPID_PRIVATE)
+}
 export async function sendReminderNotifications() {
+    if (process.env.DEBUG) {
+        console.log("DEBUG MODE, not sending any push notifications");
+        return;
+    }
     console.log("Sending scheduled notifications");
     let users = await userDBInstance.getAll()
     for (let user of users) {
@@ -46,8 +48,8 @@ async function sendPush(assignment, course, subscription) {
             p256dh: subscription.p256dh
         }
     },
-        JSON.stringify({ title: course.name, body: assignment.name + ' is due tomorrow' })).catch(err =>{
-            if(err.statusCode === 410) {
+        JSON.stringify({ title: course.name, body: assignment.name + ' is due tomorrow' })).catch(err => {
+            if (err.statusCode === 410) {
                 // Delete this endpoint because the subscription expired (error 410)
                 notificationDBInstance.deleteByEndpoint(subscription.endpoint);
             } else {
