@@ -10,16 +10,13 @@ COPY package*.json ./
 # run npm install in our local machine
 RUN npm install
 
+RUN npm run build
+
 # copy the generated modules and all other files to the container
 COPY . .
 
 # expose the web port
 EXPOSE 3001
 
-ENV DB_NAME=BTE
-ENV DB_USER=bte
-ENV DB_PASSWORD=password
-ENV JWT_SECRET=fhdisufh893nufndn893
-
 # the command that starts our app
-CMD ["node", "server.js"]
+CMD ["npm", "run", "start"]
