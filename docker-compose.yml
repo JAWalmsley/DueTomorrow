@@ -19,8 +19,14 @@ services:
             context: ./apps/ui
         networks:
             - dt
+    router:
+        restart: always
+        build:
+            context: ./apps/router/nginxrouter
+        networks:
+            - dt
         ports:
-          - "80:80"
+            - "80:80"
 networks:
     dt:
         name: dt

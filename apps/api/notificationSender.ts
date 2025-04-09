@@ -3,7 +3,7 @@ import { courseDBInstance } from "./databaseManagers/CourseDB";
 import { notificationDBInstance } from "./databaseManagers/NotificationDB";
 import { userDBInstance } from "./databaseManagers/UserDB";
 
-import { webpush } from 'web-push';
+import webpush from 'web-push';
 if (process.env.DEBUG) {
     console.log("DEBUG MODE, not sending any push notifications");
 }
