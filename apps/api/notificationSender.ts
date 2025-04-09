@@ -1,5 +1,5 @@
-import { assignmentDBInstance } from "./databaseManagers/AssignmentDB";
-import { courseDBInstance } from "./databaseManagers/CourseDB";
+import { assignmentData, assignmentDBInstance } from "./databaseManagers/AssignmentDB";
+import { courseDBInstance, courseData } from "./databaseManagers/CourseDB";
 import { notificationDBInstance } from "./databaseManagers/NotificationDB";
 import { userDBInstance } from "./databaseManagers/UserDB";
 
@@ -31,7 +31,7 @@ export async function sendReminderNotifications() {
                 // Get number of days until the assignment is due
                 let daysUntil = (d.valueOf() - new Date().valueOf()) / (1000 * 60 * 60 * 24);
                 if (daysUntil < 1 && daysUntil > -1) {
-                    let course = (await courseDBInstance.getByID(assignment.courseid))[0];
+                    let course = (await courseDBInstance.getByID(assignment.courseid));
                     sendPush(assignment, course, subscription);
                 }
             }
@@ -40,6 +40,10 @@ export async function sendReminderNotifications() {
 }
 
 async function sendPush(assignment, course, subscription) {
+    if(assignment == null || course == null || subscription == null)
+    {
+        console.log("ERROR: failed sending course ", course, " with assig", assignment, "and subscription", subscription)
+    }
     await webpush.sendNotification({
         endpoint: subscription.endpoint,
         keys:

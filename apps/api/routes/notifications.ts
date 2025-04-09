@@ -23,9 +23,15 @@ router.post('/', isUserAuthorized, async (req, res) => {
         p256dh: req.body.keys.p256dh,
         userid: req.params.userid
     }
-    await notificationDBInstance.create(newNotification);
-    webpush.sendNotification(req.body, JSON.stringify({title: 'DueTomorrow', body: 'Ready to get notifications!'})).catch(err => console.log(err));
-    res.status(200).send('Notification registered');
+    try{
+        await notificationDBInstance.create(newNotification);
+        webpush.sendNotification(req.body, JSON.stringify({title: 'DueTomorrow', body: 'Ready to get notifications!'})).catch(err => console.log(err));
+        res.status(200).send('Notification registered');
+    }
+    catch{
+        res.status(500).send('Failed making' + JSON.stringify(newNotification));
+    }
+
 });
 
 router.put('/', isUserAuthorized, async (req, res) => {
