@@ -12,11 +12,9 @@ router.get('/:code', async (req, res) => {
     }
     let courseReturnList = [];
     for(let courseid of code.courseids) {
-        let c: courseData = await courseDBInstance.getByID(courseid);
-        let assignments = [];
-        let a: assignmentData[] = await assignmentDBInstance.getByCourseID(courseid);
-        assignments.push(...a.map(a => ({name: a.name, due: a.due, weight: a.weight})));
-        courseReturnList.push({name: c.name, colour: c.colour, credits: c.credits, assignments: assignments});
+        let c = await courseDBInstance.getByID(courseid);
+        let a = await assignmentDBInstance.getByCourseID(courseid);
+        courseReturnList.push({...c, assignments: a});
     }
     res.status(200).send({courses: courseReturnList});
 });

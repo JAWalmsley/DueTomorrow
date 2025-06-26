@@ -18,7 +18,7 @@ export default function SharePage() {
             // console.log('fgettin courses');
             let c = await APICoursesGetByCode(shareCode);
             setCourses(c.courses);
-            // console.log('got ', c);
+            console.log('got ', c);
         }
         if (!courses || courses.length === 0) {
             // console.log('filling...');
@@ -36,12 +36,14 @@ export default function SharePage() {
                     {courses.map((course) => (
                         <Grid item xs={12}>
                             <CourseShareBox
+                                id={course.id}
                                 name={course.name}
                                 colour={course.colour}
                                 credits={course.credits}
                                 assignments={course.assignments}
                                 key={course.name}
                                 loggedin={userid ? true : false}
+                                sharecode={shareCode}
                             ></CourseShareBox>
                         </Grid>
                     ))}

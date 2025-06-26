@@ -42,6 +42,24 @@ export class CourseDB extends DBManager {
             });
     }
 
+    userCanEditCourse(userid: string, courseid: string): Promise<boolean> {
+        return this.makeReq('SELECT editor FROM userCourses WHERE userid = ? AND courseID = ?', [userid, courseid])
+            .then(function (result) {
+                return (result as any[]).length > 0 ? (result[0].editor === 1) : false;
+            });
+    }
+
+    enrollUser(userid: string, courseid: string, editor: boolean): Promise<any> {
+        return this.makeReq('INSERT INTO userCourses (courseID, userid, editor) VALUES (?, ?, ?)', [courseid, userid, false])
+            .catch((err) => {
+                if (err.code === 'SQLITE_CONSTRAINT') {
+                    throw new Error('Already enrolled in course');
+                } else {
+                    throw err;
+                }
+            });
+    }
+
     deleteByID(id: string): Promise<any> {
         return this.makeReq('DELETE FROM courses WHERE id = ?', [id]);
     }

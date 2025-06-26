@@ -85,7 +85,8 @@ export function CourseBox(props) {
                             open={menuOpen} onClose={menuClose} MenuListProps={{ 'aria-labelledby': 'menu-button' }}>
                             <MenuItem onClick={async () => {
                                 // Generate share code here
-                                let response = await APICreateCode({ courseids: [props.course.id,], userid: localStorage.getItem('userid') });
+                                // TODO: configure sharecode editor
+                                let response = await APICreateCode({ courseids: [props.course.id,], userid: localStorage.getItem('userid'), editor: true });
                                 setCode(response);
                                 setDialogOpen(true);
                                 menuClose();

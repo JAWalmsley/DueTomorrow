@@ -17,6 +17,12 @@ describe('Assignment Database', function () {
         username: 'testusername'
     }
 
+    let testUser2: userData = {
+        id: 'testuserid2',
+        password: 'testpassword',
+        username: 'testusername2'
+    }
+
     let testCourse: courseData = {
         id: 'testcourseID',
         colour: '#FFFFFF',
@@ -58,6 +64,7 @@ describe('Assignment Database', function () {
         }
         await userDB.setUpTable();
         await userDB.create(testUser);
+        await userDB.create(testUser2);
         await courseDB.setUpTable();
         await courseDB.create(testCourse, testUser.id);
     });
@@ -74,8 +81,6 @@ describe('Assignment Database', function () {
             .then(() => assignmentDB.create(testAssignment))
             .then(() => testingCon.get("SELECT * FROM assignments WHERE id = ?;", testAssignment.id, function (e, r: assignmentData) {
                 assert.equal(r.id, testAssignment.id);
-                assert.equal(r.done, testAssignment.done);
-                assert.equal(r.grade, testAssignment.grade);
                 assert.equal(r.weight, testAssignment.weight);
                 done();
             }))
@@ -88,9 +93,7 @@ describe('Assignment Database', function () {
             .then(() => assignmentDB.getByID(testAssignment.id))
             .then((response) => {
                 assert.equal(response.id, testAssignment.id);
-                assert.equal(response.done, testAssignment.done);
                 assert.equal(response.courseid, testAssignment.courseid);
-                assert.equal(response.grade, testAssignment.grade);
                 assert.equal(response.name, testAssignment.name);
                 assert.equal(response.weight, testAssignment.weight);
                 done();
@@ -152,13 +155,13 @@ describe('Assignment Database', function () {
     it('marks an assignment as done', function (done) {
         assignmentDB.setUpTable()
             .then(() => assignmentDB.create(testAssignment))
-            .then(() => assignmentDB.setDoneStatus(testAssignment.id, true))
-            .then(() => assignmentDB.getByID(testAssignment.id))
+            .then(() => assignmentDB.setDoneStatus(testAssignment.userid, testAssignment.id, true))
+            .then(() => assignmentDB.getUserStatus(testAssignment.userid, testAssignment.id))
             .then((response) => {
                 assert.equal(response.done, true);
             })
-            .then(() => assignmentDB.setDoneStatus(testAssignment.id, false))
-            .then(() => assignmentDB.getByID(testAssignment.id))
+            .then(() => assignmentDB.setDoneStatus(testAssignment.userid, testAssignment.id, false))
+            .then(() => assignmentDB.getUserStatus(testAssignment.userid, testAssignment.id))
             .then((response) => {
                 assert.equal(response.done, false);
             })
@@ -169,18 +172,18 @@ describe('Assignment Database', function () {
     it('sets an assignment grade', function (done) {
         assignmentDB.setUpTable()
             .then(() => assignmentDB.create(testAssignment))
-            .then(() => assignmentDB.setGrade(testAssignment.id, 19))
-            .then(() => assignmentDB.getByID(testAssignment.id))
+            .then(() => assignmentDB.setGrade(testAssignment.userid, testAssignment.id, 19))
+            .then(() => assignmentDB.getUserStatus(testAssignment.userid, testAssignment.id))
             .then((response) => {
                 assert.equal(response.grade, 19);
             })
-            .then(() => assignmentDB.setGrade(testAssignment.id, 95))
-            .then(() => assignmentDB.getByID(testAssignment.id))
+            .then(() => assignmentDB.setGrade(testAssignment.userid, testAssignment.id, 95))
+            .then(() => assignmentDB.getUserStatus(testAssignment.userid, testAssignment.id))
             .then((response) => {
                 assert.equal(response.grade, 95);
             })
-            .then(() => assignmentDB.setGrade(testAssignment.id, null))
-            .then(() => assignmentDB.getByID(testAssignment.id))
+            .then(() => assignmentDB.setGrade(testAssignment.userid, testAssignment.id, null))
+            .then(() => assignmentDB.getUserStatus(testAssignment.userid, testAssignment.id))
             .then((response) => {
                 assert.equal(response.grade, null);
             })
@@ -202,6 +205,35 @@ describe('Assignment Database', function () {
                 assert.equal(response.weight, 50);
             })
             .then(() => done())
+            .catch((e) => done(e));
+    });
+    it('checks if user can edit assignment', function (done) {
+        assignmentDB.setUpTable()
+            .then(() => assignmentDB.create(testAssignment))
+            .then(() => courseDB.userCanEditCourse(testUser.id, testCourse.id))
+            .then((editable) => {
+                assert.equal(editable, true);
+                return assignmentDB.userCanEditAssignment(testUser.id, testAssignment.id);
+            })
+            .then((editable) => {
+                assert.equal(editable, true);
+                done();
+            })
+            .catch((e) => done(e));
+    });
+    it('checks if user can not edit assignment', function (done) {
+        assignmentDB.setUpTable()
+            .then(() => assignmentDB.create(testAssignment))
+            .then(() => assignmentDB.enrollUser(testUser2.id, testAssignment.id))
+            .then(() => courseDB.userCanEditCourse(testUser2.id, testCourse.id))
+            .then((editable) => {
+                assert.equal(editable, false);
+                return assignmentDB.userCanEditAssignment(testUser2.id, testAssignment.id);
+            })
+            .then((editable) => {
+                assert.equal(editable, false);
+                done();
+            })
             .catch((e) => done(e));
     });
 

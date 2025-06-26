@@ -33,7 +33,8 @@ describe('Sharecode Database', function () {
 
     let testSharecode: sharecodeData = {
         code: 'testsharecode',
-        courseids: [testCourse.id, testCourse2.id]
+        courseids: [testCourse.id, testCourse2.id],
+        editor: false
     }
 
     beforeEach(async function () {
@@ -102,7 +103,9 @@ describe('Sharecode Database', function () {
                 assert.notEqual(response, null);
                 assert.equal(response.code, testSharecode.code);
                 assert.deepStrictEqual(response.courseids, testSharecode.courseids);
+                assert.equal(response.editor, testSharecode.editor);
             })
+            .then(() => done())
             .catch((e) => done(e));
     })
 })

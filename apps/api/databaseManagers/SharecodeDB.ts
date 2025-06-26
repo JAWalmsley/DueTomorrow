@@ -3,11 +3,12 @@ import { databaseFilename, DBManager } from "./dbManager";
 export interface sharecodeData {
     code: string;
     courseids: string[];
+    editor: boolean;
 }
 
 export class SharecodeDB extends DBManager {
     setUpTable(): Promise<any> {
-        return this.makeReq('CREATE TABLE IF NOT EXISTS sharecodes (code VARCHAR(50), courseid VARCHAR(255),PRIMARY KEY (code, courseid), FOREIGN KEY (courseid) REFERENCES courses(id) ON DELETE CASCADE);',
+        return this.makeReq('CREATE TABLE IF NOT EXISTS sharecodes (code VARCHAR(50), courseid VARCHAR(255), editor BOOLEAN NOT NULL CHECK (editor IN (0, 1)), PRIMARY KEY (code, courseid), FOREIGN KEY (courseid) REFERENCES courses(id) ON DELETE CASCADE);',
             []
         );
     }
@@ -17,7 +18,7 @@ export class SharecodeDB extends DBManager {
         .then((exists) => {
             if (!exists) {
                 const promises = data.courseids.map((courseid) => {
-                    return this.makeReq('INSERT INTO sharecodes (code, courseid) VALUES (?, ?)', [data.code, courseid]);
+                    return this.makeReq('INSERT INTO sharecodes (code, courseid, editor) VALUES (?, ?, ?)', [data.code, courseid, data.editor]);
                 });
                 return Promise.all(promises);
             }
@@ -32,11 +33,12 @@ export class SharecodeDB extends DBManager {
     }
 
     getByCode(code: string): Promise<sharecodeData> {
-        let returnData: sharecodeData = {code: code, courseids: []};
+        let returnData: sharecodeData = {code: code, courseids: [], editor: false};
         return this.makeReq('SELECT * FROM sharecodes WHERE code = ?', [code])
         .then((response) => {
             response.forEach((elem) => {
                 returnData.courseids.push(elem.courseid);
+                returnData.editor = elem.editor;
             })
         })
         .then(() => {

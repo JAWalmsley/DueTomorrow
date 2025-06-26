@@ -29,11 +29,15 @@ router.post('/', isUserAuthorized, async (req, res) => {
     
     let newCode: sharecodeData = {
         code: generateCode(codeLength),
-        courseids: req.body.courseids
+        courseids: req.body.courseids,
+        editor: req.body.editor
     }
     sharecodeDBInstance.create(newCode)
-        .then(() => res.status(200).send(newCode))
-        .catch((err) => res.status(400).send(err));
+        .then(() => res.status(200).send(newCode.code))
+        .catch((err) => {
+            console.log(err);
+            res.status(400).send(err);
+        });
 });
 
 export default router

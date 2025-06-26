@@ -12,7 +12,7 @@ import {
     Typography,
 } from '@mui/material';
 
-import { APIAssignmentPost, APICoursesPost } from '../api.js';
+import { APICoursesEnroll } from '../api.js';
 import React, { useCallback, useState } from 'react';
 
 export default function CourseShareBox(props) {
@@ -28,13 +28,9 @@ export default function CourseShareBox(props) {
         }
         setSnackbarOpen(true);
         let userid = localStorage.getItem('userid');
-        let courseid = await APICoursesPost({...course, userid: userid});
-        for(let assignment of assignments) {
-            assignment.userid = userid;
-            assignment.courseid = courseid;
-            APIAssignmentPost(assignment);
-        }
-    }, []);
+        console.log(course.id)
+        await APICoursesEnroll({courseid: course.id, sharecode: props.sharecode, userid: userid})
+    }, [props.sharecode]);
 
     return (
         <>

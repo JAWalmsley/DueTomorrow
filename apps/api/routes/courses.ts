@@ -1,4 +1,6 @@
+import { assignmentDBInstance } from "../databaseManagers/AssignmentDB";
 import { courseData, courseDBInstance } from "../databaseManagers/CourseDB";
+import { sharecodeDBInstance } from "../databaseManagers/SharecodeDB";
 
 const express = require('express')
 const router = express.Router({mergeParams: true})
@@ -20,6 +22,20 @@ router.post('/', isUserAuthorized, (req, res) => {
         .catch((err) => res.status(400).send(err));
 });
 
+router.post('/enroll/:courseid', isUserAuthorized, (req, res) => {
+    if(!(req.body.sharecode)) return res.status(400).send('No sharecode given');
+    sharecodeDBInstance.getByCode(req.body.sharecode)
+        .then((code) => {
+            if(code == null || code.courseids.indexOf(req.params.courseid) === -1) {
+                throw new Error('Invalid sharecode');
+            }
+            return courseDBInstance.enrollUser(req.params.userid, req.params.courseid, code.editor);
+        })
+        .then(() => assignmentDBInstance.enrollUserInCourse(req.params.userid, req.params.courseid))
+        .then(() => res.status(200).send('Successfully enrolled'))
+        .catch((err) => res.status(400).send(err));
+})
+
 router.get('/', isUserAuthorized, (req, res) => {
     courseDBInstance.getByUserID(req.params.userid)
         .then((result) => res.status(200).send(result))
@@ -31,9 +47,18 @@ router.put('/:courseid', isUserAuthorized, (req, res) => {
 });
 
 router.delete('/:courseid', isUserAuthorized, (req, res) => {
-    courseDBInstance.deleteByID(req.params.courseid)
-        .then(() => res.status(200).send('Successfully deleted'))
-        .catch((err) => res.status(400).send(err));
+    courseDBInstance.userCanEditCourse(req.params.userid, req.params.courseid)
+    .then((editable) => {
+        if(editable === false) {
+            throw new Error('You do not have permission to delete this course');
+        }
+        else {
+            return courseDBInstance.deleteByID(req.params.courseid);
+        }
+    })
+    .then(() => res.status(200).send('Successfully deleted'))
+    .catch((err) => res.status(400).send(err));
+    
 });
 
 export default router
