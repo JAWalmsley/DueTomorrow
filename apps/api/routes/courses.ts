@@ -14,9 +14,8 @@ router.post('/', isUserAuthorized, (req, res) => {
         credits: req.body.credits,
         id: newid,
         name: req.body.name,
-        userid: req.params.userid
     }
-    courseDBInstance.create(newCourse)
+    courseDBInstance.create(newCourse, req.params.userid)
         .then(() => res.status(200).send(newid))
         .catch((err) => res.status(400).send(err));
 });

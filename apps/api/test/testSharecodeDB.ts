@@ -22,7 +22,6 @@ describe('Sharecode Database', function () {
         colour: '#FFFFFF',
         credits: 3,
         name: 'test course name',
-        userid: testUser.id
     }
 
     let testCourse2: courseData = {
@@ -30,7 +29,6 @@ describe('Sharecode Database', function () {
         colour: '#FF00FF',
         credits: 4,
         name: 'test course 2 name',
-        userid: testUser.id
     }
 
     let testSharecode: sharecodeData = {
@@ -51,7 +49,8 @@ describe('Sharecode Database', function () {
         await userDB.setUpTable();
         await userDB.create(testUser);
         await courseDB.setUpTable();
-        await courseDB.create(testCourse);
+        await courseDB.create(testCourse, testUser.id);
+        await courseDB.create(testCourse2, testUser.id);
     });
 
     it('sets up table', function (done) {

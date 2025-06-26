@@ -22,7 +22,6 @@ describe('Assignment Database', function () {
         colour: '#FFFFFF',
         credits: 3,
         name: 'test course name',
-        userid: testUser.id
     }
 
     let testAssignment: assignmentData = {
@@ -60,7 +59,7 @@ describe('Assignment Database', function () {
         await userDB.setUpTable();
         await userDB.create(testUser);
         await courseDB.setUpTable();
-        await courseDB.create(testCourse);
+        await courseDB.create(testCourse, testUser.id);
     });
 
     it('sets up table', function () {

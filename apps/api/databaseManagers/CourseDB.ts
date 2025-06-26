@@ -2,7 +2,6 @@ import { databaseFilename, DBManager } from "./dbManager";
 
 export interface courseData {
     id: string;
-    userid: string;
     name: string;
     colour: string;
     credits: number;
@@ -11,20 +10,29 @@ export interface courseData {
 export class CourseDB extends DBManager {
     setUpTable() {
         return this.makeReq(
-            'CREATE TABLE IF NOT EXISTS courses (id VARCHAR(255) PRIMARY KEY, userid VARCHAR(255), name VARCHAR(255), colour VARCHAR(7), credits INTEGER, FOREIGN KEY (userid) REFERENCES logins(id) ON DELETE CASCADE);',
+            'CREATE TABLE IF NOT EXISTS courses (id VARCHAR(255) PRIMARY KEY, name VARCHAR(255), colour VARCHAR(7), credits INTEGER);',
             []
-        );
+        )
+            .then(() => {
+                this.makeReq('CREATE TABLE IF NOT EXISTS userCourses (courseID VARCHAR(255), userid VARCHAR(255), editor BOOLEAN NOT NULL CHECK (editor IN (0, 1)), FOREIGN KEY (courseID) REFERENCES courses(id) ON DELETE CASCADE, FOREIGN KEY (userid) REFERENCES logins(id) ON DELETE CASCADE);',
+                    []
+                );
+            }
+            );
     }
 
-    create(data: courseData): Promise<any> {
+    create(data: courseData, userid: string): Promise<any> {
         return this.makeReq(
-            'INSERT INTO courses (id, userid, name, colour, credits) VALUES (?, ?, ?, ?, ?)',
-            [data.id, data.userid, data.name, data.colour, data.credits]
-        );
+            'INSERT INTO courses (id, name, colour, credits) VALUES (?, ?, ?, ?)',
+            [data.id, data.name, data.colour, data.credits]
+        )
+        .then(() => {
+            this.makeReq('INSERT INTO userCourses (courseID, userid, editor) VALUES (?, ?, ?)', [data.id, userid, true]);
+        });
     }
 
     getByUserID(userid: string): Promise<courseData[]> {
-        return this.makeReq('SELECT * FROM courses WHERE userid = ?', [userid]) as Promise<courseData[]>;
+        return this.makeReq('SELECT * FROM courses WHERE id IN (SELECT courseID FROM userCourses WHERE userid = ?)', [userid]) as Promise<courseData[]>;
     }
 
     getByID(id: string): Promise<null | courseData> {
