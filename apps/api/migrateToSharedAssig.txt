@@ -1,0 +1,16 @@
+-- SQLite
+ATTACH DATABASE "PATH TO OLD DB" AS prod;
+DELETE FROM logins;
+INSERT INTO logins SELECT * FROM prod.logins;
+DELETE FROM courses;
+INSERT INTO courses (id, name, colour, credits) SELECT id, name, colour, credits FROM prod.courses WHERE id NOT IN (SELECT id FROM courses);
+DELETE FROM userCourses;
+INSERT INTO userCourses (courseID, userid, editor) SELECT id, userid, true FROM prod.courses;
+DELETE FROM assignments;
+INSERT INTO assignments (id, courseid, name, due, weight) SELECT id, courseid, name, due, weight FROM prod.assignments WHERE id NOT IN (SELECT id FROM assignments);
+DELETE FROM userAssignmentStatus;
+INSERT INTO userAssignmentStatus (userid, assignmentid, done, grade) SELECT userid, id, done, grade FROM prod.assignments;
+DELETE FROM sharecodes;
+INSERT INTO sharecodes (code, courseid, editor) SELECT code, courseid, true FROM prod.sharecodes;
+DELETE FROM notifications;
+INSERT INTO notifications SELECT * FROM prod.notifications;

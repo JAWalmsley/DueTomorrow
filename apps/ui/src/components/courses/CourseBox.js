@@ -15,7 +15,11 @@ import {
     TextField,
     IconButton,
     DialogTitle,
-    Snackbar
+    Snackbar,
+    DialogActions,
+    Switch,
+    FormGroup,
+    FormControlLabel
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -36,12 +40,19 @@ export function CourseBox(props) {
     const [dialogOpen, setDialogOpen] = React.useState(false);
     const [code, setCode] = React.useState('bas');
     const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+    const [editorSharecode, setEditorSharecode] = React.useState(true);
     const menuOpen = Boolean(anchorEl);
     const menuClick = (event) => {
         setAnchorEl(event.currentTarget);
     }
     const menuClose = () => { setAnchorEl(null); }
     const dialogClose = () => { setDialogOpen(false); }
+    
+    const toggleSharecodeEditor = async function(event) {
+        setEditorSharecode(event.target.checked);
+        let response = await APICreateCode({ courseids: [props.course.id,], userid: localStorage.getItem('userid'), editor: event.target.checked });
+        setCode(response);
+    }
 
     const copyCode = () => {
         navigator.clipboard.writeText(linkPrefix + code);
@@ -132,6 +143,9 @@ export function CourseBox(props) {
                         Share <b>{props.course.name}</b> with others by giving them this link:
                     </DialogContentText>
                     <TextField value={linkPrefix + code} onChange={console.log} style={{ width: '100%', marginTop: '8px' }} InputProps={{ endAdornment: <Button variant="filled" onClick={copyCode}><ContentCopyIcon /></Button> }} />
+                    <FormGroup>
+                        <FormControlLabel control={<Switch checked={editorSharecode} onChange={toggleSharecodeEditor} color="success" />} label="Allow others to edit this course" />
+                    </FormGroup>
                 </DialogContent>
             </Dialog>
             <Snackbar
