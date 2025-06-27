@@ -54,7 +54,7 @@ router.put('/:assignmentid', isUserAuthorized, (req, res) => {
                 return assignmentDBInstance.setGrade(req.params.userid, req.params.assignmentid, req.body.grade);
             }
         })
-        .then(() => courseDBInstance.userCanEditCourse(req.params.userid, req.body.courseid))
+        .then(() => assignmentDBInstance.userCanEditAssignment(req.params.userid, req.params.assignmentid))
         .then((editable) => {
             if (editable && req.body.weight != null) {
                 return assignmentDBInstance.setWeight(req.params.assignmentid, req.body.weight);
