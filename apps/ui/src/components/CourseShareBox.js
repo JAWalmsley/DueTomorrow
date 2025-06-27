@@ -22,14 +22,14 @@ export default function CourseShareBox(props) {
         if (!loggedin) {
             window.location.replace(
                 '/login?redirect=' +
-                    window.location.pathname +
-                    window.location.search
+                window.location.pathname +
+                window.location.search
             );
         }
         setSnackbarOpen(true);
         let userid = localStorage.getItem('userid');
         console.log(course.id)
-        await APICoursesEnroll({courseid: course.id, sharecode: props.sharecode, userid: userid})
+        await APICoursesEnroll({ courseid: course.id, sharecode: props.sharecode, userid: userid })
     }, [props.sharecode]);
 
     return (
@@ -66,13 +66,14 @@ export default function CourseShareBox(props) {
                     <Grid container justifyContent={'flex-end'}>
                         <Button
                             variant="contained"
-                            onClick={() =>
+                            onClick={() => {
                                 importCourse(
                                     props.loggedin,
                                     props,
                                     props.assignments
-                                )
-                            }
+                                );
+                                window.location.replace('/');
+                            }}
                         >
                             Import
                         </Button>
