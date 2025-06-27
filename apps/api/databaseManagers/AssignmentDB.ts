@@ -49,8 +49,8 @@ export class AssignmentDB extends DBManager {
             });
     }
 
-    getByUserID(userid: string): Promise<assignmentData[]> {
-        return this.makeReq("SELECT assignments.id AS id,assignments.name AS name,assignments.due,assignments.weight,assignments.courseid,userAssignmentStatus.done,userAssignmentStatus.grade \
+    getByUserID(userid: string): Promise<({editor: boolean;} & assignmentData)[]> {
+        return this.makeReq("SELECT userCourses.editor as editor, assignments.id AS id,assignments.name AS name,assignments.due,assignments.weight,assignments.courseid,userAssignmentStatus.done,userAssignmentStatus.grade \
                 FROM assignments JOIN userCourses ON userCourses.courseID = assignments.courseid\
                 LEFT JOIN userAssignmentStatus ON userAssignmentStatus.assignmentid = assignments.id AND userAssignmentStatus.userid = ?\
                 WHERE userCourses.userid = ?",

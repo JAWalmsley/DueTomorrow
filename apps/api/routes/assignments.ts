@@ -68,7 +68,7 @@ router.put('/:assignmentid', isUserAuthorized, (req, res) => {
 });
 
 router.delete('/:assignmentid', isUserAuthorized, (req, res) => {
-    courseDBInstance.userCanEditCourse(req.params.userid, req.body.courseid)
+    assignmentDBInstance.userCanEditAssignment(req.params.userid, req.params.assignmentid)
         .then((editable) => {
             if (editable) {
                 return assignmentDBInstance.deleteByID(req.params.assignmentid);

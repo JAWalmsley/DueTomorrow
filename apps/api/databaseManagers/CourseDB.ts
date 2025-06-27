@@ -31,8 +31,8 @@ export class CourseDB extends DBManager {
         });
     }
 
-    getByUserID(userid: string): Promise<courseData[]> {
-        return this.makeReq('SELECT * FROM courses WHERE id IN (SELECT courseID FROM userCourses WHERE userid = ?)', [userid]) as Promise<courseData[]>;
+    getByUserID(userid: string): Promise<({editor: boolean} & courseData)[]> {
+        return this.makeReq('SELECT userCourses.editor, courses.id, courses.name, courses.colour, courses.credits FROM courses JOIN userCourses ON courses.id = userCourses.courseid WHERE userCourses.userid = ?', [userid]);
     }
 
     getByID(id: string): Promise<null | courseData> {

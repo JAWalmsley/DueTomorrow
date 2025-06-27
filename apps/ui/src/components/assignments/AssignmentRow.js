@@ -4,6 +4,7 @@ import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
+import { Tooltip } from '@mui/material';
 
 /**
  * Row of one assignment
@@ -77,16 +78,26 @@ export class AssignmentRow extends React.Component {
                     <TableCell
                         sx={{ color: 'textOnColour.main', textAlign: 'right' }}
                     >
-                        <Button
-                            onClick={() => this.props.deleteAssignmentCallback({
-                                id: this.state.id,
-                            })}
-                            color="primary"
-                            variant="contained"
-                        >
-                            {/* <Delete fontSize="medium" sx={{color: "textOnColour.main"}}/> */}
-                            <Typography variant="button">Delete</Typography>
-                        </Button>
+                        <Tooltip title={this.state.editor ? "" : "You do not have permission to delete this assignment"}>
+                            <span><Button
+                                onClick={() => {
+                                    if (this.state.editor) {
+                                        this.props.deleteAssignmentCallback({
+                                            id: this.state.id,
+                                        })
+                                    }
+                                }
+                                }
+
+                                color="primary"
+                                variant="contained"
+                                disabled={!this.state.editor}
+                            >
+                                {/* <Delete fontSize="medium" sx={{color: "textOnColour.main"}}/> */}
+                                <Typography variant="button">Delete</Typography>
+                            </Button></span>
+
+                        </Tooltip>
                     </TableCell>
                 </TableRow>
             </>
