@@ -47,15 +47,7 @@ router.put('/:courseid', isUserAuthorized, (req, res) => {
 });
 
 router.delete('/:courseid', isUserAuthorized, (req, res) => {
-    courseDBInstance.userCanEditCourse(req.params.userid, req.params.courseid)
-    .then((editable) => {
-        if(editable === false) {
-            throw new Error('You do not have permission to delete this course');
-        }
-        else {
-            return courseDBInstance.deleteByID(req.params.courseid);
-        }
-    })
+    courseDBInstance.unenrollUser(req.params.userid, req.params.courseid)
     .then(() => res.status(200).send('Successfully deleted'))
     .catch((err) => res.status(400).send(err));
     

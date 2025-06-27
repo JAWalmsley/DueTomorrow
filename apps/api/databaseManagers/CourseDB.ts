@@ -60,6 +60,17 @@ export class CourseDB extends DBManager {
             });
     }
 
+    unenrollUser(userid: string, courseid: string): Promise<any> {
+        return this.makeReq('DELETE FROM userCourses WHERE userid = ? AND courseID = ?', [userid, courseid])
+            .catch((err) => {
+                if (err.code === 'SQLITE_CONSTRAINT') {
+                    throw new Error('Not enrolled in course');
+                } else {
+                    throw err;
+                }
+            });
+    }
+
     deleteByID(id: string): Promise<any> {
         return this.makeReq('DELETE FROM courses WHERE id = ?', [id]);
     }
