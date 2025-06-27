@@ -16,19 +16,20 @@ import {
  */
 
 export class AssignmentEntryRow extends React.Component {
-    initialState = {
-        name: '',
-        course: this.props.courses[0].name,
-        courseInput: this.props.courses[0].id.toString(),
-        courseid: this.props.courses[0].id,
-        due: '',
-        weight: '',
-        id: '',
-        errors: { name: '', course: '', due: '', weight: '' },
-    };
     constructor(props) {
         super(props);
-        this.state = this.initialState;
+        this.editableCourses = props.courses.filter((c) => c.editor === 1);
+        this.state = {
+            name: '',
+            course: this.editableCourses.length > 0 ? this.editableCourses[0].name : '',
+            courseInput: this.editableCourses.length > 0 ? this.editableCourses[0].id.toString() : '',
+            courseid: this.editableCourses.length > 0 ? this.editableCourses[0].id : '',
+            due: '',
+            weight: '',
+            id: '',
+            errors: { name: '', course: '', due: '', weight: '' },
+        }
+        this.initialState = { ...this.state };
         this.nameInput = React.createRef();
     }
 
@@ -87,7 +88,7 @@ export class AssignmentEntryRow extends React.Component {
                                 <Autocomplete
                                     disablePortal
                                     id="combo-box-demo"
-                                    options={this.props.courses.map(
+                                    options={this.props.courses.filter((c) => c.editor === 1).map(
                                         (a) => a.name
                                     )}
                                     value={this.state.course}

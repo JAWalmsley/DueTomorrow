@@ -5,7 +5,7 @@
   "main": "build/server.js",
   "scripts": {
     "start": "node build/server.js",
-    "test": "mocha --exit",
+    "test": "mocha build/test/**/*.js --exit",
     "build": "tsc"
   },
   "repository": {
@@ -36,7 +36,6 @@
     "jsdom": "^19.0.0",
     "jsdom-quokka-plugin": "^1.0.16",
     "jsonwebtoken": "^8.5.1",
-    "mocha": "^10.0.0",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
     "node-schedule": "^2.1.1",
@@ -55,6 +54,8 @@
   "devDependencies": {
     "@types/mocha": "^10.0.10",
     "@types/sqlite3": "^5.1.0",
+    "eslint-config-next": "^15.3.4",
+    "mocha": "^11.7.1",
     "typescript": "^5.8.2"
   }
 }

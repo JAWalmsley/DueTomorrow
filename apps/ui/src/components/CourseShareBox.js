@@ -12,7 +12,7 @@ import {
     Typography,
 } from '@mui/material';
 
-import { APIAssignmentPost, APICoursesPost } from '../api.js';
+import { APICoursesEnroll } from '../api.js';
 import React, { useCallback, useState } from 'react';
 
 export default function CourseShareBox(props) {
@@ -22,19 +22,15 @@ export default function CourseShareBox(props) {
         if (!loggedin) {
             window.location.replace(
                 '/login?redirect=' +
-                    window.location.pathname +
-                    window.location.search
+                window.location.pathname +
+                window.location.search
             );
         }
         setSnackbarOpen(true);
         let userid = localStorage.getItem('userid');
-        let courseid = await APICoursesPost({...course, userid: userid});
-        for(let assignment of assignments) {
-            assignment.userid = userid;
-            assignment.courseid = courseid;
-            APIAssignmentPost(assignment);
-        }
-    }, []);
+        console.log(course.id)
+        await APICoursesEnroll({ courseid: course.id, sharecode: props.sharecode, userid: userid })
+    }, [props.sharecode]);
 
     return (
         <>
@@ -70,13 +66,14 @@ export default function CourseShareBox(props) {
                     <Grid container justifyContent={'flex-end'}>
                         <Button
                             variant="contained"
-                            onClick={() =>
+                            onClick={() => {
                                 importCourse(
                                     props.loggedin,
                                     props,
                                     props.assignments
-                                )
-                            }
+                                );
+                                window.location.replace('/');
+                            }}
                         >
                             Import
                         </Button>

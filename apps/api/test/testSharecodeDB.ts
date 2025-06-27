@@ -22,7 +22,6 @@ describe('Sharecode Database', function () {
         colour: '#FFFFFF',
         credits: 3,
         name: 'test course name',
-        userid: testUser.id
     }
 
     let testCourse2: courseData = {
@@ -30,12 +29,12 @@ describe('Sharecode Database', function () {
         colour: '#FF00FF',
         credits: 4,
         name: 'test course 2 name',
-        userid: testUser.id
     }
 
     let testSharecode: sharecodeData = {
         code: 'testsharecode',
-        courseids: [testCourse.id, testCourse2.id]
+        courseids: [testCourse.id, testCourse2.id],
+        editor: false
     }
 
     beforeEach(async function () {
@@ -51,7 +50,8 @@ describe('Sharecode Database', function () {
         await userDB.setUpTable();
         await userDB.create(testUser);
         await courseDB.setUpTable();
-        await courseDB.create(testCourse);
+        await courseDB.create(testCourse, testUser.id);
+        await courseDB.create(testCourse2, testUser.id);
     });
 
     it('sets up table', function (done) {
@@ -103,7 +103,9 @@ describe('Sharecode Database', function () {
                 assert.notEqual(response, null);
                 assert.equal(response.code, testSharecode.code);
                 assert.deepStrictEqual(response.courseids, testSharecode.courseids);
+                assert.equal(response.editor, testSharecode.editor);
             })
+            .then(() => done())
             .catch((e) => done(e));
     })
 })

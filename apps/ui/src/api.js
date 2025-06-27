@@ -210,6 +210,7 @@ export function APICoursesGet(userid) {
  *
  * @param {String} data.userid your userid
  * @param {String} data.courseids the course ids to add to the sharecode
+ * @param {String} data.editor is this sharecode an editor sharecode?
  * @returns
  */
 export function APICreateCode(data) {
@@ -262,6 +263,30 @@ export function APICoursesGetByCode(shareCode) {
  */
 export function APICoursesPost(data) {
     return fetch(config.endpoint + 'users/' + data.userid + '/courses/', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(data),
+    }).then((res) => {
+        if (res.status === 200) {
+            return res.text();
+        }
+        throw new Error(res.statusText);
+    });
+}
+
+/**
+ * Enrolls a user in a new course from a sharecode
+ * @param {string} data.courseid the course id to enroll in
+ * @param {string} data.sharecode the sharecode the user came from
+ * @returns 
+ */
+export function APICoursesEnroll(data) {
+    console.log('enrolling in course', data);
+    return fetch(config.endpoint + 'users/' + data.userid + '/courses/enroll/' + data.courseid, {
         method: 'POST',
         mode: 'cors',
         headers: {
