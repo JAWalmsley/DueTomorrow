@@ -50,7 +50,6 @@ router.delete('/:courseid', isUserAuthorized, (req, res) => {
     courseDBInstance.unenrollUser(req.params.userid, req.params.courseid)
     .then(() => res.status(200).send('Successfully deleted'))
     .catch((err) => res.status(400).send(err));
-    
 });
 
 export default router

@@ -21,16 +21,16 @@ router.post('/', isUserAuthorized, (req, res) => {
         weight: req.body.weight
     }
     courseDBInstance.userCanEditCourse(req.params.userid, req.body.courseid)
-    .then((editable) => {
-        if(editable === false) {
-            throw new Error('You do not have permission to edit this course');
-        }
-        else {
-            return assignmentDBInstance.create(newAssignment);
-        }
-    })
-    .then(() => res.status(200).send(newid))
-    .catch((err) => res.status(400).send(err));
+        .then((editable) => {
+            if (editable === false) {
+                throw new Error('You do not have permission to edit this course');
+            }
+            else {
+                return assignmentDBInstance.create(newAssignment);
+            }
+        })
+        .then(() => res.status(200).send(newid))
+        .catch((err) => res.status(400).send(err));
 });
 
 router.get('/', isUserAuthorized, (req, res) => {
@@ -59,13 +59,24 @@ router.put('/:assignmentid', isUserAuthorized, (req, res) => {
             if (editable && req.body.weight != null) {
                 return assignmentDBInstance.setWeight(req.params.assignmentid, req.body.weight);
             }
+            else {
+                throw new Error('You do not have permission to edit this assignment');
+            }
         })
         .then(() => res.status(200).send('Successfully updated'))
         .catch((err) => res.status(400).send(err));
 });
 
 router.delete('/:assignmentid', isUserAuthorized, (req, res) => {
-    assignmentDBInstance.deleteByID(req.params.assignmentid)
+    courseDBInstance.userCanEditCourse(req.params.userid, req.body.courseid)
+        .then((editable) => {
+            if (editable) {
+                return assignmentDBInstance.deleteByID(req.params.assignmentid);
+            }
+            else {
+                throw new Error('You do not have permission to delete this assignment');
+            }
+        })
         .then(() => res.status(200).send('Successfully deleted'))
         .catch((err) => res.status(400).send(err));
 });

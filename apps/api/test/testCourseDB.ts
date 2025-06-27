@@ -15,6 +15,12 @@ describe('Course Database', function () {
         username: 'testusername'
     }
 
+    let testUser2: userData = {
+        id: 'testuserid2',
+        password: 'testpassword',
+        username: 'testusername2'
+    }
+
     let testCourse: courseData = {
         id: 'testcourseID',
         colour: '#FFFFFF',
@@ -40,6 +46,7 @@ describe('Course Database', function () {
         }
         await userDB.setUpTable();
         await userDB.create(testUser);
+        await userDB.create(testUser2);
     });
 
     it('sets up table', function () {
@@ -107,6 +114,20 @@ describe('Course Database', function () {
             .then(() => courseDB.deleteByID(testCourse.id))
             .then(() => testingCon.get("SELECT * FROM courses WHERE id = ?", testCourse.id, function (e, r: {}[]) {
                 assert.equal(r, null);
+                done();
+            }))
+            .catch((e) => done(e));
+    })
+
+    it('enrolls a user in a course', function (done) {
+        courseDB.setUpTable()
+            .then(() => courseDB.create(testCourse, testUser.id))
+            .then(() => courseDB.enrollUser(testUser2.id, testCourse.id, false))
+            .then(() => testingCon.get("SELECT * FROM userCourses WHERE userid = ? AND courseID = ?", [testUser2.id, testCourse.id], function (e, r: { userid: string, courseID: string, editor: number }) {
+                assert.notEqual(r, null);
+                assert.equal(r.userid, testUser2.id);
+                assert.equal(r.courseID, testCourse.id);
+                assert.equal(r.editor, 0); // Not an editor
                 done();
             }))
             .catch((e) => done(e));

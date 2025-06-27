@@ -14,7 +14,7 @@ export class CourseDB extends DBManager {
             []
         )
             .then(() => {
-                this.makeReq('CREATE TABLE IF NOT EXISTS userCourses (courseID VARCHAR(255), userid VARCHAR(255), editor BOOLEAN NOT NULL CHECK (editor IN (0, 1)), FOREIGN KEY (courseID) REFERENCES courses(id) ON DELETE CASCADE, FOREIGN KEY (userid) REFERENCES logins(id) ON DELETE CASCADE);',
+                this.makeReq('CREATE TABLE IF NOT EXISTS userCourses (courseID VARCHAR(255), userid VARCHAR(255), editor BOOLEAN NOT NULL CHECK (editor IN (0, 1)), PRIMARY KEY (courseID, userid), FOREIGN KEY (courseID) REFERENCES courses(id) ON DELETE CASCADE, FOREIGN KEY (userid) REFERENCES logins(id) ON DELETE CASCADE);',
                     []
                 );
             }
@@ -27,7 +27,7 @@ export class CourseDB extends DBManager {
             [data.id, data.name, data.colour, data.credits]
         )
         .then(() => {
-            this.makeReq('INSERT INTO userCourses (courseID, userid, editor) VALUES (?, ?, ?)', [data.id, userid, true]);
+            return this.enrollUser(userid, data.id, true);
         });
     }
 
@@ -50,7 +50,7 @@ export class CourseDB extends DBManager {
     }
 
     enrollUser(userid: string, courseid: string, editor: boolean): Promise<any> {
-        return this.makeReq('INSERT INTO userCourses (courseID, userid, editor) VALUES (?, ?, ?)', [courseid, userid, false])
+        return this.makeReq('INSERT INTO userCourses (courseID, userid, editor) VALUES (?, ?, ?)', [courseid, userid, editor])
             .catch((err) => {
                 if (err.code === 'SQLITE_CONSTRAINT') {
                     throw new Error('Already enrolled in course');
@@ -61,6 +61,7 @@ export class CourseDB extends DBManager {
     }
 
     unenrollUser(userid: string, courseid: string): Promise<any> {
+        // TODO: some system to delete courses that have no users enrolled
         return this.makeReq('DELETE FROM userCourses WHERE userid = ? AND courseID = ?', [userid, courseid])
             .catch((err) => {
                 if (err.code === 'SQLITE_CONSTRAINT') {
