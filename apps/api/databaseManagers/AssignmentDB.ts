@@ -17,7 +17,7 @@ export class AssignmentDB extends DBManager {
             []
         )
             .then(() => {
-                return this.makeReq('CREATE TABLE IF NOT EXISTS userAssignmentStatus (userid VARCHAR(255), assignmentid VARCHAR(255), done BOOLEAN, grade INTEGER NULL, FOREIGN KEY (userid) REFERENCES logins(id) ON DELETE CASCADE, FOREIGN KEY (assignmentid) REFERENCES assignments(id) ON DELETE CASCADE, PRIMARY KEY (userid, assignmentid));',
+                return this.makeReq('CREATE TABLE IF NOT EXISTS userAssignmentStatus (userid VARCHAR(255), assignmentid VARCHAR(255), done BOOLEAN DEFAULT 0, grade INTEGER NULL, FOREIGN KEY (userid) REFERENCES logins(id) ON DELETE CASCADE, FOREIGN KEY (assignmentid) REFERENCES assignments(id) ON DELETE CASCADE, PRIMARY KEY (userid, assignmentid));',
                     []
                 );
             });
@@ -50,7 +50,7 @@ export class AssignmentDB extends DBManager {
     }
 
     getByUserID(userid: string): Promise<({editor: boolean;} & assignmentData)[]> {
-        return this.makeReq("SELECT userCourses.editor as editor, assignments.id AS id,assignments.name AS name,assignments.due,assignments.weight,assignments.courseid,userAssignmentStatus.done,userAssignmentStatus.grade \
+        return this.makeReq("SELECT userCourses.editor as editor, assignments.id AS id,assignments.name AS name,assignments.due,assignments.weight,assignments.courseid,COALESCE(userAssignmentStatus.done, 0) as done,userAssignmentStatus.grade \
                 FROM assignments JOIN userCourses ON userCourses.courseID = assignments.courseid\
                 LEFT JOIN userAssignmentStatus ON userAssignmentStatus.assignmentid = assignments.id AND userAssignmentStatus.userid = ?\
                 WHERE userCourses.userid = ?",

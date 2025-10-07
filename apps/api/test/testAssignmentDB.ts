@@ -237,4 +237,19 @@ describe('Assignment Database', function () {
             .catch((e) => done(e));
     });
 
+    it('returns done=false for assignments without userAssignmentStatus entry', function (done) {
+        assignmentDB.setUpTable()
+            .then(() => assignmentDB.create(testAssignment))
+            .then(() => courseDB.enrollUser(testUser2.id, testCourse.id, false))
+            .then(() => assignmentDB.getByUserID(testUser2.id))
+            .then((response) => {
+                assert.equal(response.length, 1);
+                assert.equal(response[0].id, testAssignment.id);
+                assert.equal(response[0].done, false);
+                assert.equal(response[0].grade, null);
+                done();
+            })
+            .catch((e) => done(e));
+    });
+
 })
