@@ -17,7 +17,7 @@ export class AssignmentDB extends DBManager {
             []
         )
             .then(() => {
-                return this.makeReq('CREATE TABLE IF NOT EXISTS userAssignmentStatus (userid VARCHAR(255), assignmentid VARCHAR(255), done BOOLEAN DEFAULT 0, grade INTEGER NULL, FOREIGN KEY (userid) REFERENCES logins(id) ON DELETE CASCADE, FOREIGN KEY (assignmentid) REFERENCES assignments(id) ON DELETE CASCADE, PRIMARY KEY (userid, assignmentid));',
+                return this.makeReq('CREATE TABLE IF NOT EXISTS userAssignmentStatus (userid VARCHAR(255), assignmentid VARCHAR(255), done BOOLEAN, grade INTEGER NULL, FOREIGN KEY (userid) REFERENCES logins(id) ON DELETE CASCADE, FOREIGN KEY (assignmentid) REFERENCES assignments(id) ON DELETE CASCADE, PRIMARY KEY (userid, assignmentid));',
                     []
                 );
             });

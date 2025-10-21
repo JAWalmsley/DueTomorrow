@@ -44,6 +44,10 @@ async function sendPush(assignment, course, subscription) {
     {
         console.log("ERROR: failed sending course ", course, " with assig", assignment, "and subscription", subscription)
     }
+    if (process.env.DEBUG) {
+        console.log(`notificationSender: sending notification to subscription ${subscription} about assignment ${assignment.name} in course ${course.name}`);
+        return;
+    }
     await webpush.sendNotification({
         endpoint: subscription.endpoint,
         keys:
