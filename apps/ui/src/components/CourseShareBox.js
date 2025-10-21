@@ -71,8 +71,12 @@ export default function CourseShareBox(props) {
                                     props.loggedin,
                                     props,
                                     props.assignments
-                                );
-                                window.location.replace('/');
+                                ).then(()=>{
+                                    window.location.replace('/');
+                                })
+                                .catch(()=>{
+                                    window.location.replace('/');
+                                })
                             }}
                         >
                             Import
